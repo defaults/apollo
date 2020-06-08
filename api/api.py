@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, session, render_template
 from flask_login import login_required
 
-api = Blueprint('api', 'api', url_prefix='/api')
+api = Blueprint('api', __name__)
 
 
 @api.route('/articles', methods=['GET'])
@@ -25,7 +25,7 @@ def get_subscribers():
     pass
 
 
-@api.route('/subscriber>', methods=['POST'])
+@api.route('/subscriber', methods=['POST'])
 def add_subscriber():
     pass
 
