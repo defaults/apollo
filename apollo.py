@@ -10,16 +10,16 @@ from blog import blog
 app = Flask(__name__)
 
 # register blueprints
-app.register_blueprint(auth)
-app.register_blueprint(api)
-app.register_blueprint(admin)
-app.register_blueprint(blog)
+app.register_blueprint(auth.auth, url_prefix='/auth')
+app.register_blueprint(api.api, url_prefix='/api')
+app.register_blueprint(admin.admin, url_prefix='/a')
+app.register_blueprint(blog.blog)
 
 
 # warmp reguests
-@app.route('/_ah/warmup')
-def warmup():
-    pass
+# @app.route('/_ah/warmup')
+# def warmup():
+#     pass
 
 
 if __name__ == '__main__':

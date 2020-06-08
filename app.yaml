@@ -1,0 +1,24 @@
+service: apollo
+runtime: python37
+threadsafe: yes
+
+default_expiration: "5h"
+
+env_variables:
+  APP_SETTINGS: "apollo.settings"
+
+entrypoint: gunicorn -b :$PORT apollo:app
+
+inbound_services:
+- warmup
+
+skip_files:
+- ^(.*/)?.*/src/.*$
+- ^(.*/)?.*/temp/.*$
+- ^(.*/)?.*/test/.*$
+- ^(.*/)?.*/node_modules/.*$
+
+- ^(src/.*)
+- ^(temp/.*)
+- ^(test/.*)
+- ^(node_modules/.*)
