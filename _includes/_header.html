@@ -1,0 +1,6 @@
+{% comment %} Including header with override {% endcomment %}
+{% if site.overrides.header and site.overrides.header != '' %}
+  {% include overrides/{{ site.overrides.header }} %}
+{% else %}
+  {% include default/header.html %}
+{% endif %}
