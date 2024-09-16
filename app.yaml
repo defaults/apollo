@@ -1,1 +1,8 @@
 runtime: go122 
+
+handlers:
+  - url: /(.*)
+    static_files: _site/\1.html
+    upload: _site/(.*)\.html
+  - url: /
+    static_dir: _site
