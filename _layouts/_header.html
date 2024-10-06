@@ -1,0 +1,16 @@
+<!-- Default Header Content -->
+<header class="bg-gray-800 text-white">
+  <nav class="container mx-auto flex justify-between items-center p-4">
+    <a href="{{ site.baseurl }}/" class="text-2xl font-bold">{{ site.title }}</a>
+    <ul class="flex space-x-6">
+      {% if site.navigation %}
+        {% for item in site.navigation %}
+          <li><a href="{{ site.baseurl }}{{ item.url | default: item.name | downcase | replace: ' ', '-' }}" class="hover:text-gray-400">{{ item.name }}</a></li>
+        {% endfor %}
+      {% else %}
+        <li><a href="{{ site.baseurl }}/" class="hover:text-gray-400">Home</a></li>
+        <li><a href="{{ site.baseurl }}/blog" class="hover:text-gray-400">Blog</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+</header>

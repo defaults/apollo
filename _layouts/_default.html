@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title }} - {{ site.title }}</title>
+  <meta name="description" content="{{ site.description }}">
+  <link rel="stylesheet" href="{{ site.baseurl }}/assets/css/styles.min.css">
+  {% if site.profile_image %}
+    <meta property="og:image" content="{{ site.baseurl }}{{ site.profile_image }}">
+  {% endif %}
+  {% if site.overrides.css %}
+    <link rel="stylesheet" href="{{ site.baseurl }}/override/{{ site.overrides.css }}">
+  {% endif %}
+  <script src="{{ site.baseurl }}/assets/js/main.min.js" defer></script>
+  {% if site.overrides.js %}
+    <script src="{{ site.baseurl }}/override/{{ site.overrides.js }}" defer></script>
+  {% endif %}
+</head>
+<body class="bg-white text-gray-900">
+  <!-- Include Header -->
+  {% if site.overrides.header %}
+    {% include override/header.html %}
+  {% else %}
+    {% include _includes/header.html %}
+  {% endif %}
+
+  <!-- Main Content -->
+  <main class="container mx-auto p-6">
+    {{ content }}
+  </main>
+
+  <!-- Include Footer -->
+  {% if site.overrides.footer %}
+    {% include override/footer.html %}
+  {% else %}
+    {% include _includes/footer.html %}
+  {% endif %}
+</body>
+</html>
