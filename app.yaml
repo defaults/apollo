@@ -20,7 +20,7 @@ handlers:
     http_headers:
       Cache-Control: "public, max-age=31536000"
 
-  # Serve all other routes with default.html
+  # Serve all other routes with index.html
   - url: /.*
     static_files: build/index.html
     upload: build/index.html

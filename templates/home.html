@@ -1,21 +1,4 @@
-<!-- layouts/home.html -->
-<div class="intro">
-    <img src="{{ site.profile_image | relative_url }}" alt="Profile Image" class="profile-img">
-    <h1>{{ site.name }}</h1>
-    <p>{{ site.description }}</p>
-    <!-- Additional introduction content -->
-  </div>
-  
-  <div class="content-section">
-    <h2>Latest Blog Posts</h2>
-    <ul>
-      {% for post in site.posts limit:5 %}
-        <li><a href="{{ post.url | relative_url }}">{{ post.title }}</a> - {{ post.date | date: "%B %d, %Y" }}</li>
-      {% endfor %}
-    </ul>
-  </div>
-
-  <!-- Home Page Template (home.html) -->
+<!-- Home Page Template (home.html) -->
 {% extends "default.html" %}
 {% block content %}
 <section class="hero">

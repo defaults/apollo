@@ -4,29 +4,28 @@
   "description": "A personal website builder template.",
   "main": "main.go",
   "scripts": {
-    "build:css": "NODE_ENV=production postcss assets/css/tailwind.css -o build/css/styles.min.css",
-    "build:js": "terser assets/js/main.js -o build/js/main.min.js",
-    "build:html": "jekyll build && htmlnano _site/*.html build/",
-    "optimize:images": "imagemin assets/images/* --out-dir=build/images",
+    "build:css": "NODE_ENV=production postcss assets/css/styles.css -o build/css/styles.min.css",
+    "build:js": "mkdir -p build/js && terser assets/js/main.js -o build/js/main.min.js",
+    "build:html": "jekyll build --config config.yml && find build/ -name '*.html' -exec npx html-minifier-terser {} --collapse-whitespace --remove-comments --minify-js true --minify-css true --output {} \\;",
+    "optimize:images": "sharp assets/images/* --output build/images/",
     "build": "npm run build:css && npm run build:js && npm run build:html && npm run optimize:images",
-    "watch:css": "postcss assets/css/tailwind.css -o assets/css/tailwind.css --watch",
-    "serve": "jekyll serve",
+    "watch:css": "postcss assets/css/styles.css -o assets/css/styles.css --watch",
+    "serve": "jekyll serve --config config.yml",
     "start": "npm run build && go run main.go",
-    "deploy": "npm run build && cp app.yaml build/ && gcloud app deploy build/app.yaml"
+    "deploy": "npm run build && gcloud app deploy app.yaml"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.12",
-    "cssnano": "^5.1.14",
-    "htmlnano": "^7.0.0",
-    "imagemin": "^8.0.0",
-    "imagemin-mozjpeg": "^9.0.0",
-    "imagemin-pngquant": "^9.0.0",
-    "imagemin-svgo": "^10.0.0",
-    "postcss": "^8.4.16",
-    "postcss-cli": "^9.1.0",
-    "terser": "^5.14.2",
-    "tailwindcss": "^3.2.4"
+    "autoprefixer": "^10.4.20",
+    "cssnano": "^7.0.6",
+    "html-minifier-terser": "^7.2.0",
+    "postcss": "^8.4.47",
+    "postcss-cli": "^11.0.0",
+    "sharp": "^0.33.5",
+    "tailwindcss": "^3.4.13",
+    "terser": "^5.34.1"
   },
   "author": "Vikash Kumar",
   "license": "MIT"
 }
+
+
