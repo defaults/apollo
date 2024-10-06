@@ -1,0 +1,21 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Build directories
+/build/
+/_site/
+
+# NPM
+node_modules/
+package-lock.json
+
+# Overrides (exclude from git)
+override/
+
+# Go
+/bin/
+/pkg/

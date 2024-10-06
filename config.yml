@@ -1,0 +1,35 @@
+title: "Apollo"
+description: "A personal website builder template."
+baseurl: "" # the subpath of your site, e.g., /blog
+url: "https://apollo.vikash.me" # the base hostname & protocol for your site
+profile_image: "/assets/images/profile.jpg"
+
+# Jekyll Settings
+theme: minima
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+
+# Custom Settings
+site:
+  title: "My Personal Website"
+  navigation:
+    - name: "Home"
+      url: "/"
+    - name: "Blog"
+      url: "/blog"
+    - name: "Publications"
+      url: "/publications"
+  footer_links:
+    - name: "Contact"
+      url: "/contact"
+    - name: "About"
+      url: "/about"
+  overrides:
+    css: "styles.min.css"
+    js: "main.min.js"
+    header: "header.html"
+    footer: "footer.html"
+
+# Permalink settings for clean URLs
+permalink: pretty

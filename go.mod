@@ -1,3 +1,3 @@
-module vikash.me/apollo
+module github.com/defaults/apollo
 
-go 1.19
+go 1.22
