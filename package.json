@@ -1,31 +1,13 @@
 {
   "name": "apollo",
   "version": "1.0.0",
-  "description": "A personal website builder template.",
-  "main": "main.go",
+  "description": "A personal website generator",
   "scripts": {
-    "build:css": "NODE_ENV=production postcss assets/css/styles.css -o build/css/styles.min.css",
-    "build:js": "mkdir -p build/js && terser assets/js/main.js -o build/js/main.min.js",
-    "build:html": "jekyll build --config config.yml && find build/ -name '*.html' -exec npx html-minifier-terser {} --collapse-whitespace --remove-comments --minify-js true --minify-css true --output {} \\;",
-    "optimize:images": "sharp assets/images/* --output build/images/",
-    "build": "npm run build:css && npm run build:js && npm run build:html && npm run optimize:images",
-    "watch:css": "postcss assets/css/styles.css -o assets/css/styles.css --watch",
-    "serve": "jekyll serve --config config.yml",
-    "start": "npm run build && go run main.go",
-    "deploy": "npm run build && gcloud app deploy app.yaml"
+    "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --minify",
+    "watch:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --watch"
   },
-  "devDependencies": {
-    "autoprefixer": "^10.4.20",
-    "cssnano": "^7.0.6",
-    "html-minifier-terser": "^7.2.0",
-    "postcss": "^8.4.47",
-    "postcss-cli": "^11.0.0",
-    "sharp": "^0.33.5",
-    "tailwindcss": "^3.4.13",
-    "terser": "^5.34.1"
-  },
-  "author": "Vikash Kumar",
-  "license": "MIT"
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "tailwindcss": "^3.4.1"
+  }
 }
-
-

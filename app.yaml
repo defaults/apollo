@@ -1,29 +1,12 @@
 runtime: go122
 
 handlers:
-  # Serve static assets like CSS, JS, images
-  - url: /assets
-    static_dir: build/assets/
-    secure: always
-    http_headers:
-      Cache-Control: "public, max-age=31536000"
+  # Serve all static files with urls ending with a file extension
+  - url: /(.*\..*)$
+    static_files: _site/\1
+    upload: _site/(.*\..*)$
 
-  - url: /images
-    static_dir: build/images/
-    secure: always
-    http_headers:
-      Cache-Control: "public, max-age=31536000"
-
-  - url: /_overrides
-    static_dir: override/
-    secure: always
-    http_headers:
-      Cache-Control: "public, max-age=31536000"
-
-  # Serve all other routes with index.html
+  # Catch all handler to index.html
   - url: /.*
-    static_files: build/index.html
-    upload: build/index.html
-    secure: always
-    http_headers:
-      Cache-Control: "public, max-age=600"
+    static_files: _site/index.html
+    upload: _site/index.html

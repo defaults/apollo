@@ -10,12 +10,19 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+# Collections
+collections:
+  publications:
+    output: true
+    permalink: /publications/:title/
+    directory: content/_publications
+
 # Site Navigation and Overrides
 site:
   title: "My Personal Website"
   navigation:
     - name: "Home"
-      url: "/home/"
+      url: "/"
     - name: "Blog"
       url: "/blog/"
     - name: "Publications"
@@ -25,15 +32,15 @@ site:
       url: "/contact/"
     - name: "About"
       url: "/about/"
-  # overrides:
-  #   css: "styles.min.css"
-  #   js: "main.min.js"
+  overrides:
+    css: "main.css"
+    js: "main.min.js"
 
-# Permalink settings for clean URLs
-permalink: pretty
+# Content Repository
+content_repo: "https://github.com/yourusername/content-repo.git"
 
 # Directory Configurations
 layouts_dir: _layouts
 includes_dir: _includes
-posts_dir: content/blogs
-destination: build/
+posts_dir: content/_posts
+destination: _site 

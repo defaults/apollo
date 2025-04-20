@@ -1,0 +1,76 @@
+name: Build and Deploy
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      content_repo:
+        description: 'Content repository URL'
+        required: true
+        default: 'https://github.com/yourusername/content-repo.git'
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Apollo
+        uses: actions/checkout@v3
+        with:
+          path: apollo
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          working-directory: apollo
+
+      - name: Install Jekyll dependencies
+        working-directory: apollo
+        run: |
+          gem install bundler
+          bundle install
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18' # Or your preferred version
+          cache: 'npm'
+          cache-dependency-path: apollo/package-lock.json
+
+      - name: Install Node.js dependencies
+        working-directory: apollo
+        run: npm ci
+
+      - name: Build CSS
+        working-directory: apollo
+        run: npm run build:css
+
+      - name: Checkout Content Repository
+        run: |
+          git clone ${{ github.event.inputs.content_repo || 'https://github.com/yourusername/content-repo.git' }} content-repo
+          # Create content directory structure
+          mkdir -p apollo/content/_posts apollo/content/_publications
+          # Copy posts and publications to their respective directories
+          cp -r content-repo/_posts/* apollo/content/_posts/ || true
+          cp -r content-repo/_publications/* apollo/content/_publications/ || true
+          # Copy any other content files
+          cp -r content-repo/pages apollo/content/ || true
+          cp -r content-repo/assets apollo/content/ || true
+
+      - name: Build site
+        working-directory: apollo
+        run: bundle exec jekyll build
+
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          service_account-key: ${{ secrets.GCP_SA_KEY }}
+          export_default_credentials: true
+
+      - name: Deploy to App Engine
+        working-directory: apollo
+        run: gcloud app deploy app.yaml --quiet 

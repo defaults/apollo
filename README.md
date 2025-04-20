@@ -1,58 +1,136 @@
-# Apollo
+# Apollo - Personal Website Generator
 
-Apollo is a personal website builder template leveraging Jekyll, Tailwind CSS, and Google App Engine with Go 1.22. It provides a flexible and customizable platform for creating and maintaining your personal website, blog, and publications.
+Apollo is a simple and flexible personal website generator built with Jekyll. It allows you to create beautiful personal websites with minimal configuration and easy customization. The content can be stored in a separate repository, making it easy to manage and update.
 
 ## Features
 
-- **Jekyll Templating**: Write content in Markdown for easy management.
-- **Tailwind CSS**: Utilize utility-first CSS for rapid UI development.
-- **Google App Engine Deployment**: Host your website on Google's reliable infrastructure.
-- **Customizable Overrides**: Easily override headers, footers, styles, and scripts.
-- **Blog Functionality**: Manage blog posts in Markdown, automatically generating HTML pages.
-- **Optimized Build Process**: Compile and minify CSS, JS, and HTML for efficient deployment.
-
-## Project Structure
-Apollo/
-├── override/
-│   ├── header.html
-│   ├── footer.html
-│   ├── styles.css
-│   └── main.js
-├── assets/
-│   ├── css/
-│   │   └── tailwind.css
-│   ├── js/
-│   │   └── main.js
-│   └── images/
-│       ├── profile.jpg
-│       └── icons/
-│           └── … (your icon files)
-├── build/
-│   ├── css/
-│   │   └── styles.min.css
-│   ├── js/
-│   │   └── main.min.js
-│   ├── images/
-│   │   └── … (optimized images)
-│   └── … (generated HTML files)
-├── _config.yml
-├── package.json
-├── tailwind.config.js
-├── postcss.config.js
-├── htmlnano.config.js
-├── go.mod
-├── go.sum
-├── app.yaml
-├── main.go
-├── .gitignore
-└── README.md
+- Jekyll-based templating and markdown processing
+- Separate content repository for easy content management
+- Mobile-first and responsive design using Tailwind CSS
+- Easy customization through config files
+- Support for blog posts (`_posts`) and publications (`_publications`) collections
+- Customizable templates
+- Automated build and deployment to Google App Engine with GitHub Actions
 
 ## Getting Started
 
-### 1. Clone the Repository
+1.  **Clone this repository:**
+    ```bash
+    git clone https://github.com/yourusername/apollo.git
+    cd apollo
+    ```
 
-Users can clone the Apollo repository and set it up as their own personal website.
+2.  **Install dependencies:**
+    ```bash
+    # Install Ruby & Jekyll dependencies
+    gem install bundler
+    bundle install
 
-```bash
-git clone https://github.com/yourusername/apollo.git my-personal-website
-cd my-personal-website
+    # Install Node.js & Tailwind dependencies
+    # Ensure you have Node.js and npm installed
+    npm install
+    ```
+
+3.  **Create a content repository:**
+    *   Create a new GitHub repository for your content.
+    *   Structure it as shown in `content-repo-example/README.md` (e.g., with `_posts`, `_publications`, `pages`, `assets` directories).
+    *   Update the `content_repo` field in `_config.yml` with your repository URL.
+
+4.  **Customize your site:**
+    *   Edit `_config.yml` to change site settings.
+    *   Add your content locally in the `content/` directory or push to your content repository.
+    *   Customize templates in the `_layouts` and `_includes` directories.
+    *   Modify Tailwind styles in `assets/css/input.css`.
+
+5.  **Build and serve locally:**
+    ```bash
+    # Build CSS
+    npm run build:css
+
+    # Build Jekyll site and serve
+    bundle exec jekyll serve --livereload
+    ```
+    Your site will be available at `http://localhost:4000`.
+
+## Directory Structure
+
+```
+apollo/
+├── content/               # All content (posts, publications, pages, assets)
+│   ├── _posts/
+│   └── _publications/
+├── _layouts/              # Jekyll layout templates
+├── _includes/             # Jekyll include files
+├── assets/                # Static assets (CSS input/output, JS, images)
+│   ├── css/
+│   └── js/
+├── content-repo-example/  # Example structure for external content repo
+├── _config.yml            # Jekyll & Site configuration
+├── app.yaml               # Google App Engine configuration
+├── Gemfile                # Ruby dependencies (Jekyll)
+├── package.json           # Node.js dependencies (Tailwind)
+├── tailwind.config.js     # Tailwind CSS configuration
+├── index.html             # Site homepage
+├── README.md              # This file
+└── .github/workflows/     # GitHub Actions workflow
+```
+
+## Content Repository
+
+The content repository should follow the structure outlined in `content-repo-example/README.md`. This allows for separation of concerns between the site template and the actual content.
+
+## Automated Build and Deployment
+
+Apollo uses GitHub Actions (`.github/workflows/build-and-deploy.yml`) to automate the build and deployment process:
+
+1.  When changes are pushed to the `main` branch of this repository, or when manually triggered with a content repository URL:
+    *   The Apollo repository is checked out.
+    *   Ruby/Jekyll dependencies are installed.
+    *   Node.js dependencies are installed.
+    *   Tailwind CSS is built (`npm run build:css`).
+    *   The specified content repository is cloned.
+    *   Content is copied into the `apollo/content/` directory.
+    *   Jekyll builds the site into the `_site` directory.
+    *   The site is deployed to Google App Engine using `gcloud app deploy`.
+
+To set up automated deployment:
+
+1.  Create a Google Cloud project.
+2.  Enable the App Engine Admin API.
+3.  Create a service account with the `App Engine Deployer` and `Storage Object Viewer` roles.
+4.  Generate a JSON key for the service account.
+5.  Add the following secrets to your Apollo GitHub repository settings:
+    *   `GCP_PROJECT_ID`: Your Google Cloud project ID.
+    *   `GCP_SA_KEY`: The content of the service account JSON key file.
+
+## Customization
+
+### Configuration
+
+Edit `_config.yml` to customize:
+*   Site title and description
+*   Navigation menu
+*   Footer links
+*   Profile image
+*   Theme settings
+*   Content repository URL
+
+### Templates
+
+Templates are located in the `_layouts` and `_includes` directories. You can modify existing templates or create new ones.
+
+### Styles
+
+Customize styles by editing `assets/css/input.css` and the `tailwind.config.js` file. Run `npm run build:css` to regenerate the final `assets/css/main.css`.
+
+### Content
+
+Add your content in Markdown format in your content repository (or the local `content/` directory) following the structure in `content-repo-example/README.md`:
+*   Blog posts in `_posts/`
+*   Publications in `_publications/`
+*   Pages in `pages/`
+*   Assets (images, PDFs) in `assets/`
+
+## License
+
+MIT License - feel free to use this template for your personal website.

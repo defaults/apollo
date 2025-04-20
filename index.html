@@ -1,0 +1,28 @@
+---
+layout: default
+title: Home
+description: Welcome to my personal website
+---
+
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+        <div class="flex items-center">
+            {% if site.profile_image %}
+            <img class="h-16 w-16 rounded-full" src="{{ site.profile_image | relative_url }}" alt="Profile">
+            {% endif %}
+            <div class="ml-4">
+                <h1 class="text-2xl font-bold text-gray-900">{{ site.title }}</h1>
+                <p class="mt-1 text-sm text-gray-500">{{ site.description }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div class="prose max-w-none">
+            <h2 class="text-xl font-semibold text-gray-900">Welcome</h2>
+            <p class="mt-2 text-gray-600">
+                This is a personal website built with Apollo, a simple and flexible website generator.
+                Customize this content by creating an override in the _overrides directory.
+            </p>
+        </div>
+    </div>
+</div> 

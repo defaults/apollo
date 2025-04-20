@@ -1,0 +1,46 @@
+---
+layout: default
+---
+
+<article class="bg-white shadow overflow-hidden sm:rounded-lg">
+    <div class="px-4 py-5 sm:px-6">
+        <h1 class="text-3xl font-bold text-gray-900">{{ page.title }}</h1>
+        <div class="mt-2 flex items-center text-sm text-gray-500">
+            <time datetime="{{ page.date | date_to_xmlschema }}">
+                {{ page.date | date: "%B %Y" }}
+            </time>
+            {% if page.authors %}
+            <span class="mx-2">•</span>
+            <span>{{ page.authors | join: ", " }}</span>
+            {% endif %}
+        </div>
+    </div>
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div class="prose max-w-none">
+            {{ content }}
+        </div>
+    </div>
+    {% if page.doi or page.pdf or page.code %}
+    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
+        <div class="flex space-x-4">
+            {% if page.doi %}
+            <a href="https://doi.org/{{ page.doi }}" class="text-blue-600 hover:text-blue-800" target="_blank">
+                DOI
+            </a>
+            {% endif %}
+            
+            {% if page.pdf %}
+            <a href="{{ page.pdf | relative_url }}" class="text-blue-600 hover:text-blue-800" target="_blank">
+                PDF
+            </a>
+            {% endif %}
+            
+            {% if page.code %}
+            <a href="{{ page.code }}" class="text-blue-600 hover:text-blue-800" target="_blank">
+                Code
+            </a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</article> 
