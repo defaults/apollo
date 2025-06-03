@@ -32,7 +32,7 @@ Previously, I held positions at [previous institutions/companies] and contribute
 
 ## Publications
 
-For a complete list of my publications, please visit the [Publications](/publications/) page.
+For a complete list of my publications, please visit my [Google Scholar profile](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID).
 
 ## Personal
 

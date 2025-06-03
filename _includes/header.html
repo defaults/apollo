@@ -3,7 +3,7 @@
   <nav class="flex items-center justify-between">
     <!-- Site title/name -->
     <div>
-      <a href="/" class="text-xl font-semibold text-text-light dark:text-text-dark nav-link">
+      <a href="/" class="text-lg sm:text-xl lg:text-2xl font-semibold text-text-light dark:text-text-dark nav-link">
         {{ site.title | default: "Your Name" }}
       </a>
     </div>
@@ -14,7 +14,6 @@
       <div class="hidden sm:flex items-center space-x-6">
         <a href="/" class="text-text-light dark:text-text-dark nav-link">Home</a>
         <a href="/blog/" class="text-text-light dark:text-text-dark nav-link">Blog</a>
-        <a href="/publications/" class="text-text-light dark:text-text-dark nav-link">Publications</a>
       </div>
       
       <!-- Theme toggle -->
@@ -35,6 +34,5 @@
   <div id="mobile-menu" class="hidden sm:hidden mt-4 space-y-2">
     <a href="/" class="block py-2 text-text-light dark:text-text-dark nav-link">Home</a>
     <a href="/blog/" class="block py-2 text-text-light dark:text-text-dark nav-link">Blog</a>
-    <a href="/publications/" class="block py-2 text-text-light dark:text-text-dark nav-link">Publications</a>
   </div>
 </header>

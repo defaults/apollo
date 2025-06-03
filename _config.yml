@@ -16,10 +16,9 @@ sass:
   style: compressed
 
 # Collections
-collections:
-  publications:
-    output: true
-    permalink: /publications/:title/
+# publications:
+#   output: true
+#   permalink: /publications/:title/
 
 # Include content pages and make them accessible
 include:
@@ -34,11 +33,11 @@ defaults:
       path: "content/pages"
     values:
       layout: default
-  - scope:
-      path: ""
-      type: "publications"
-    values:
-      layout: publication
+  # - scope:
+  #     path: ""
+  #     type: "publications"
+  #   values:
+  #     layout: publication
   - scope:
       path: "content/_posts"
       type: "posts"
@@ -53,8 +52,6 @@ site:
       url: "/"
     - name: "Blog"
       url: "/blog/"
-    - name: "Publications"
-      url: "/publications/"
   footer_links:
     - name: "Contact"
       url: "/contact/"

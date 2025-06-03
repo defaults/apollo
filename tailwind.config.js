@@ -18,7 +18,8 @@ module.exports = {
         'text-dark': '#f0eee6',
       },
       fontFamily: {
-        'mono': ['Monaco', 'Menlo', 'Ubuntu Mono', 'monospace'],
+        'serif': ['Georgia', 'Times New Roman', 'serif'],
+        'sans': ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
       maxWidth: {
         'content': '65ch',
