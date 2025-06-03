@@ -5,7 +5,7 @@ layout: default
 <article class="space-y-8">
   <!-- Post Header -->
   <header class="space-y-4">
-    <h1 class="text-2xl font-bold">{{ page.title }}</h1>
+    <h1 class="text-xl sm:text-2xl lg:text-3xl font-bold">{{ page.title }}</h1>
     
     <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
       <time datetime="{{ page.date | date_to_xmlschema }}">
@@ -31,14 +31,14 @@ layout: default
   </header>
 
   <!-- Post Content -->
-  <div class="prose prose-lg max-w-none prose-gray dark:prose-invert">
+  <div class="prose prose-base sm:prose-lg lg:prose-xl max-w-none prose-gray dark:prose-invert">
     {{ content }}
   </div>
 
   <!-- Post Footer -->
   <footer class="border-t border-gray-300 dark:border-gray-600 pt-8">
     <div class="flex justify-between items-center">
-      <a href="/blog/" class="content-link text-sm">← All posts</a>
+      <a href="/essays/" class="content-link text-sm">← All essays</a>
       
       {% if page.next or page.previous %}
       <div class="text-sm space-x-4">

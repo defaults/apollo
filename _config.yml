@@ -50,8 +50,8 @@ site:
   navigation:
     - name: "Home"
       url: "/"
-    - name: "Blog"
-      url: "/blog/"
+    - name: "Essays"
+      url: "/essays/"
   footer_links:
     - name: "Contact"
       url: "/contact/"

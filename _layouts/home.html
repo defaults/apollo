@@ -10,35 +10,7 @@ layout: default
     </div>
   </section>
 
-  <!-- Short Posts -->
-  {% assign short_posts = site.posts | where: "type", "short" | limit: 5 %}
-  {% if short_posts.size > 0 %}
-  <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Short posts</h2>
-    <div class="space-y-3">
-      {% for post in short_posts %}
-      <div>
-        <a href="{{ post.url | relative_url }}" class="content-link font-medium">{{ post.title }}</a>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
 
-  <!-- Essays -->
-  {% assign essays = site.posts | where: "type", "essay" | limit: 10 %}
-  {% if essays.size > 0 %}
-  <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Essays</h2>
-    <div class="space-y-3">
-      {% for post in essays %}
-      <div>
-        <a href="{{ post.url | relative_url }}" class="content-link font-medium">{{ post.title }}</a>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
 
   <!-- Research -->
   <section>
@@ -68,20 +40,20 @@ layout: default
   </section>
   {% endif %}
 
-  <!-- Regular Blog Posts (if no specific type) -->
-  {% assign regular_posts = site.posts | where_exp: "item", "item.type == nil or item.type == 'post'" | limit: 5 %}
-  {% if regular_posts.size > 0 %}
+  <!-- Essays -->
+  {% assign essays = site.posts | limit: 5 %}
+  {% if essays.size > 0 %}
   <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Recent Posts</h2>
+    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Essays</h2>
     <div class="space-y-3">
-      {% for post in regular_posts %}
+      {% for post in essays %}
       <div class="flex justify-between items-start">
         <a href="{{ post.url | relative_url }}" class="content-link font-medium">{{ post.title }}</a>
         <span class="text-sm text-gray-600 dark:text-gray-400 ml-4 flex-shrink-0">{{ post.date | date: "%Y" }}</span>
       </div>
       {% endfor %}
       <div class="mt-4">
-        <a href="/blog/" class="content-link text-sm">View all posts →</a>
+        <a href="/essays/" class="content-link text-sm">View all essays →</a>
       </div>
     </div>
   </section>

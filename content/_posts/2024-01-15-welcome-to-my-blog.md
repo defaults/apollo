@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Welcome to My Blog"
+title: "Welcome to My Essays"
 date: 2024-01-15
 type: post
 description: "An introduction to this personal website and what you can expect to find here."
@@ -12,7 +12,6 @@ Welcome to my personal website! This is where I'll be sharing my thoughts, resea
 
 This site is organized into several sections:
 
-- **Short posts**: Brief thoughts and quick updates
 - **Essays**: Longer-form writing on topics I'm passionate about  
 - **Research**: Academic papers and publications
 - **Interviews**: Conversations and talks I've participated in
