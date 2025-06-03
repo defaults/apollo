@@ -8,7 +8,8 @@ Apollo is a simple and flexible personal website generator built with Jekyll. It
 - Separate content repository for easy content management
 - Mobile-first and responsive design using Tailwind CSS
 - Easy customization through config files
-- Support for blog posts (`_posts`) and publications (`_publications`) collections
+- Support for blog posts (`content/_posts`) and publications (`content/_publications`) collections
+- Content pages stored in `content/pages` for easy replacement
 - Customizable templates
 - Automated build and deployment to Google App Engine with GitHub Actions
 
@@ -56,9 +57,11 @@ Apollo is a simple and flexible personal website generator built with Jekyll. It
 
 ```
 apollo/
-├── content/               # All content (posts, publications, pages, assets)
-│   ├── _posts/
-│   └── _publications/
+├── content/               # All user-replaceable content
+│   ├── _posts/            # Blog posts
+│   ├── _publications/     # Publications
+│   ├── pages/             # Content pages (about, contact, etc.)
+│   └── README.md          # Content directory documentation
 ├── _layouts/              # Jekyll layout templates
 ├── _includes/             # Jekyll include files
 ├── assets/                # Static assets (CSS input/output, JS, images)
@@ -125,11 +128,13 @@ Customize styles by editing `assets/css/input.css` and the `tailwind.config.js` 
 
 ### Content
 
-Add your content in Markdown format in your content repository (or the local `content/` directory) following the structure in `content-repo-example/README.md`:
-*   Blog posts in `_posts/`
-*   Publications in `_publications/`
-*   Pages in `pages/`
-*   Assets (images, PDFs) in `assets/`
+Add your content in Markdown format in your content repository (or the local `content/` directory):
+* Blog posts in `content/_posts/`
+* Publications in `content/_publications/`
+* Pages in `content/pages/`
+* Assets (images, PDFs) in `assets/`
+
+This structure allows users to easily replace all content by copying or syncing the `content` directory from another repository.
 
 ## License
 

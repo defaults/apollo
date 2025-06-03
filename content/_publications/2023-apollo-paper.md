@@ -1,23 +1,29 @@
 ---
 layout: publication
-title: "Apollo: A Personal Website Generator"
+title: "Apollo: A Flexible Personal Website Generator"
 date: 2023-06-15
-authors: ["Your Name", "Co-author Name"]
-description: "A flexible and customizable personal website generator built with Jekyll and Go"
-doi: "10.1234/example.doi"
-pdf: "/assets/pdfs/apollo-paper.pdf"
+authors: ["Jane Doe", "John Smith"]
+venue: "Personal Website Conference 2023"
+description: "A paper describing the design and implementation of Apollo, a flexible personal website generator"
+pdf: "https://example.com/apollo-paper.pdf"
 code: "https://github.com/yourusername/apollo"
 ---
 
-# Abstract
+## Abstract
 
-Apollo is a personal website generator designed to simplify the process of creating and maintaining personal websites. It combines the power of Jekyll for templating and markdown processing with Go for automation and deployment. This paper presents the design and implementation of Apollo, highlighting its key features and benefits.
+This paper presents Apollo, a flexible personal website generator that simplifies the process of creating and maintaining personal academic websites. We describe the architecture of Apollo, which separates content from presentation and allows for easy customization. We evaluate Apollo through user studies and find that it significantly reduces the time and effort required to create and maintain a personal website compared to traditional approaches.
 
-# Introduction
+## Introduction
 
-Personal websites are an essential tool for professionals to showcase their work, share their thoughts, and establish an online presence. However, creating and maintaining a personal website can be challenging, especially for those without extensive web development experience.
+Personal websites are an important tool for academics and professionals to showcase their work and establish an online presence. However, creating and maintaining a personal website can be time-consuming and require technical expertise. Apollo aims to address these challenges by providing a flexible, easy-to-use framework for generating personal websites.
 
-Apollo addresses this challenge by providing a simple and flexible framework for building personal websites. It leverages Jekyll's templating capabilities and Go's automation features to create a seamless experience for users.
+## Key Features
+
+- Content-presentation separation
+- Flexible templates
+- Easy customization
+- Support for publications and blog posts
+- Mobile-friendly design
 
 # Design and Implementation
 

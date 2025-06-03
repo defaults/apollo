@@ -2,45 +2,45 @@
 layout: default
 ---
 
-<article class="bg-white shadow overflow-hidden sm:rounded-lg">
+<div class="bg-white shadow overflow-hidden sm:rounded-lg">
     <div class="px-4 py-5 sm:px-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ page.title }}</h1>
-        <div class="mt-2 flex items-center text-sm text-gray-500">
-            <time datetime="{{ page.date | date_to_xmlschema }}">
-                {{ page.date | date: "%B %Y" }}
+        <h1 class="text-2xl font-bold text-gray-900">{{ page.title }}</h1>
+        <div class="mt-2 flex">
+            <time datetime="{{ page.date | date_to_xmlschema }}" class="text-sm text-gray-500">
+                {{ page.date | date: "%B %-d, %Y" }}
             </time>
-            {% if page.authors %}
-            <span class="mx-2">•</span>
-            <span>{{ page.authors | join: ", " }}</span>
-            {% endif %}
         </div>
+        {% if page.venue %}
+        <div class="mt-1 text-sm text-gray-500">
+            Venue: {{ page.venue }}
+        </div>
+        {% endif %}
+        {% if page.authors %}
+        <div class="mt-2 text-sm text-gray-500">
+            Authors: {{ page.authors | join: ", " }}
+        </div>
+        {% endif %}
     </div>
+    
     <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <div class="prose max-w-none">
+        <div class="prose prose-blue max-w-none">
             {{ content }}
         </div>
-    </div>
-    {% if page.doi or page.pdf or page.code %}
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <div class="flex space-x-4">
-            {% if page.doi %}
-            <a href="https://doi.org/{{ page.doi }}" class="text-blue-600 hover:text-blue-800" target="_blank">
-                DOI
-            </a>
-            {% endif %}
-            
+        
+        {% if page.pdf or page.code %}
+        <div class="mt-6 flex space-x-4">
             {% if page.pdf %}
-            <a href="{{ page.pdf | relative_url }}" class="text-blue-600 hover:text-blue-800" target="_blank">
-                PDF
+            <a href="{{ page.pdf }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                Download PDF
             </a>
             {% endif %}
             
             {% if page.code %}
-            <a href="{{ page.code }}" class="text-blue-600 hover:text-blue-800" target="_blank">
-                Code
+            <a href="{{ page.code }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                View Code
             </a>
             {% endif %}
         </div>
+        {% endif %}
     </div>
-    {% endif %}
-</article> 
+</div> 

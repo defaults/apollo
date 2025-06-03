@@ -10,12 +10,35 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
+# Sass settings to use our custom styles
+sass:
+  sass_dir: assets/css
+  style: compressed
+
 # Collections
 collections:
   publications:
     output: true
     permalink: /publications/:title/
-    directory: content/_publications
+
+# Include content pages and make them accessible
+include:
+  - content/pages
+
+# Set Jekyll to look for posts in content/_posts
+posts_dir: content/_posts
+
+# Use defaults to handle permalink and layout configs
+defaults:
+  - scope:
+      path: "content/pages"
+    values:
+      layout: default
+  - scope:
+      path: ""
+      type: "publications"
+    values:
+      layout: publication
 
 # Site Navigation and Overrides
 site:
@@ -32,9 +55,6 @@ site:
       url: "/contact/"
     - name: "About"
       url: "/about/"
-  overrides:
-    css: "main.css"
-    js: "main.min.js"
 
 # Content Repository
 content_repo: "https://github.com/yourusername/content-repo.git"
@@ -42,5 +62,8 @@ content_repo: "https://github.com/yourusername/content-repo.git"
 # Directory Configurations
 layouts_dir: _layouts
 includes_dir: _includes
-posts_dir: content/_posts
+
+# Content directory structure
+content_dir: content
+page_dir: content/pages
 destination: _site 
