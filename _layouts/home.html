@@ -5,7 +5,7 @@ layout: default
 <div class="space-y-12">
   <!-- Name and Bio -->
   <section>
-    <div class="prose prose-base sm:prose-lg lg:prose-xl max-w-none dark:prose-invert">
+    <div class="prose max-w-none dark:prose-invert">
       {{ content }}
     </div>
   </section>
@@ -14,7 +14,7 @@ layout: default
 
   <!-- Research -->
   <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Research</h2>
+    <h2 class="text-xl font-semibold mb-6">Research</h2>
     <div class="space-y-3">
       <div>
         <a href="https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID" class="content-link font-medium" target="_blank" rel="noopener noreferrer">Google Scholar</a>
@@ -26,7 +26,7 @@ layout: default
   {% assign interviews = site.posts | where: "type", "interview" | limit: 10 %}
   {% if interviews.size > 0 %}
   <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Interviews</h2>
+    <h2 class="text-xl font-semibold mb-6">Interviews</h2>
     <div class="space-y-3">
       {% for post in interviews %}
       <div class="flex justify-between items-start">
@@ -44,7 +44,7 @@ layout: default
   {% assign essays = site.posts | limit: 5 %}
   {% if essays.size > 0 %}
   <section>
-    <h2 class="text-lg sm:text-xl lg:text-2xl font-semibold mb-6">Essays</h2>
+    <h2 class="text-xl font-semibold mb-6">Essays</h2>
     <div class="space-y-3">
       {% for post in essays %}
       <div class="flex justify-between items-start">
