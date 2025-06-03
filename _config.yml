@@ -1,5 +1,5 @@
 title: "Apollo"
-description: "A personal website builder template."
+description: "A minimal personal website focused on research and writing."
 baseurl: "" # e.g., /blog
 url: "https://apollo.vikash.me" # Base URL
 profile_image: "/assets/images/profile.jpg"
@@ -39,10 +39,15 @@ defaults:
       type: "publications"
     values:
       layout: publication
+  - scope:
+      path: "content/_posts"
+      type: "posts"
+    values:
+      layout: post
 
 # Site Navigation and Overrides
 site:
-  title: "My Personal Website"
+  title: "Dr. Alex Research" # Example name for testing
   navigation:
     - name: "Home"
       url: "/"

@@ -2,45 +2,73 @@
 layout: default
 ---
 
-<div class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-        <h1 class="text-2xl font-bold text-gray-900">{{ page.title }}</h1>
-        <div class="mt-2 flex">
-            <time datetime="{{ page.date | date_to_xmlschema }}" class="text-sm text-gray-500">
-                {{ page.date | date: "%B %-d, %Y" }}
-            </time>
-        </div>
-        {% if page.venue %}
-        <div class="mt-1 text-sm text-gray-500">
-            Venue: {{ page.venue }}
-        </div>
-        {% endif %}
-        {% if page.authors %}
-        <div class="mt-2 text-sm text-gray-500">
-            Authors: {{ page.authors | join: ", " }}
-        </div>
-        {% endif %}
-    </div>
+<article class="space-y-8">
+  <!-- Publication Header -->
+  <header class="space-y-4">
+    <h1 class="text-2xl font-bold">{{ page.title }}</h1>
     
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <div class="prose prose-blue max-w-none">
-            {{ content }}
-        </div>
-        
-        {% if page.pdf or page.code %}
-        <div class="mt-6 flex space-x-4">
-            {% if page.pdf %}
-            <a href="{{ page.pdf }}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                Download PDF
-            </a>
-            {% endif %}
-            
-            {% if page.code %}
-            <a href="{{ page.code }}" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                View Code
-            </a>
-            {% endif %}
-        </div>
+    <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
+      {% if page.authors %}
+      <p class="font-medium">{{ page.authors }}</p>
+      {% endif %}
+      
+      <div class="flex flex-wrap items-center gap-4">
+        {% if page.venue %}
+        <span class="italic">{{ page.venue }}</span>
         {% endif %}
+        
+        {% if page.date %}
+        <time datetime="{{ page.date | date_to_xmlschema }}">
+          {{ page.date | date: "%Y" }}
+        </time>
+        {% endif %}
+        
+        {% if page.status %}
+        <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">
+          {{ page.status }}
+        </span>
+        {% endif %}
+      </div>
+      
+      <!-- Links -->
+      {% if page.pdf_url or page.arxiv_url or page.doi or page.code_url %}
+      <div class="flex flex-wrap gap-4 pt-2">
+        {% if page.pdf_url %}
+        <a href="{{ page.pdf_url }}" class="content-link text-sm">PDF</a>
+        {% endif %}
+        {% if page.arxiv_url %}
+        <a href="{{ page.arxiv_url }}" class="content-link text-sm">arXiv</a>
+        {% endif %}
+        {% if page.doi %}
+        <a href="https://doi.org/{{ page.doi }}" class="content-link text-sm">DOI</a>
+        {% endif %}
+        {% if page.code_url %}
+        <a href="{{ page.code_url }}" class="content-link text-sm">Code</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
-</div> 
+  </header>
+
+  <!-- Abstract -->
+  {% if page.abstract %}
+  <section>
+    <h2 class="text-lg font-semibold mb-3">Abstract</h2>
+    <div class="prose max-w-none text-gray-700 dark:text-gray-300">
+      {{ page.abstract }}
+    </div>
+  </section>
+  {% endif %}
+
+  <!-- Publication Content -->
+  {% if content and content != '' %}
+  <div class="prose prose-lg max-w-none prose-gray dark:prose-invert">
+    {{ content }}
+  </div>
+  {% endif %}
+
+  <!-- Footer -->
+  <footer class="border-t border-gray-300 dark:border-gray-600 pt-8">
+    <a href="/publications/" class="content-link text-sm">← All publications</a>
+  </footer>
+</article> 

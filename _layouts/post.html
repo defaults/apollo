@@ -2,41 +2,54 @@
 layout: default
 ---
 
-<article class="bg-white shadow overflow-hidden sm:rounded-lg">
-    <div class="px-4 py-5 sm:px-6">
-        <h1 class="text-3xl font-bold text-gray-900">{{ page.title }}</h1>
-        <div class="mt-2 flex items-center text-sm text-gray-500">
-            <time datetime="{{ page.date | date_to_xmlschema }}">
-                {{ page.date | date: "%B %-d, %Y" }}
-            </time>
-            {% if page.author %}
-            <span class="mx-2">•</span>
-            <span>{{ page.author }}</span>
-            {% endif %}
-        </div>
+<article class="space-y-8">
+  <!-- Post Header -->
+  <header class="space-y-4">
+    <h1 class="text-2xl font-bold">{{ page.title }}</h1>
+    
+    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
+      <time datetime="{{ page.date | date_to_xmlschema }}">
+        {{ page.date | date: "%B %d, %Y" }}
+      </time>
+      
+      {% if page.type %}
+      <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">
+        {{ page.type | capitalize }}
+      </span>
+      {% endif %}
+      
+      {% if page.authors %}
+      <span>by {{ page.authors }}</span>
+      {% endif %}
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <div class="prose max-w-none">
-            {{ content }}
-        </div>
+    
+    {% if page.description %}
+    <p class="text-lg text-gray-600 dark:text-gray-400">
+      {{ page.description }}
+    </p>
+    {% endif %}
+  </header>
+
+  <!-- Post Content -->
+  <div class="prose prose-lg max-w-none prose-gray dark:prose-invert">
+    {{ content }}
+  </div>
+
+  <!-- Post Footer -->
+  <footer class="border-t border-gray-300 dark:border-gray-600 pt-8">
+    <div class="flex justify-between items-center">
+      <a href="/blog/" class="content-link text-sm">← All posts</a>
+      
+      {% if page.next or page.previous %}
+      <div class="text-sm space-x-4">
+        {% if page.previous %}
+        <a href="{{ page.previous.url | relative_url }}" class="content-link">← {{ page.previous.title | truncate: 30 }}</a>
+        {% endif %}
+        {% if page.next %}
+        <a href="{{ page.next.url | relative_url }}" class="content-link">{{ page.next.title | truncate: 30 }} →</a>
+        {% endif %}
+      </div>
+      {% endif %}
     </div>
-    <div class="border-t border-gray-200 px-4 py-5 sm:px-6">
-        <div class="flex justify-between">
-            {% if page.previous.url %}
-            <a href="{{ page.previous.url | relative_url }}" class="text-blue-600 hover:text-blue-800">
-                &larr; {{ page.previous.title }}
-            </a>
-            {% else %}
-            <span></span>
-            {% endif %}
-            
-            {% if page.next.url %}
-            <a href="{{ page.next.url | relative_url }}" class="text-blue-600 hover:text-blue-800">
-                {{ page.next.title }} &rarr;
-            </a>
-            {% else %}
-            <span></span>
-            {% endif %}
-        </div>
-    </div>
+  </footer>
 </article> 
