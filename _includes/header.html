@@ -3,36 +3,29 @@
   <nav class="flex items-center justify-between">
     <!-- Site title/name -->
     <div>
-      <a href="/" class="text-xl font-semibold text-text-light dark:text-text-dark nav-link">
-        {{ site.title | default: "Your Name" }}
-      </a>
+      <div class="text-xl font-semibold text-text-light dark:text-text-dark">
+        <!-- Always show clickable home title -->
+        <a href="/" class="nav-link hover:text-click focus:text-click focus:outline-none">{{ site.title | default: "Apollo" }}</a>
+        
+        {% if page.layout == 'list' and page.collection == 'posts' %}
+          <!-- Essays listing page -->
+          <span class="text-gray-500 dark:text-gray-400"> / </span>
+          <span class="text-gray-500 dark:text-gray-400">Essays</span>
+        {% elsif page.layout == 'post' %}
+          <!-- Individual essay page -->
+          <span class="text-gray-500 dark:text-gray-400"> / </span>
+          <a href="/essays/" class="text-gray-500 dark:text-gray-400 hover:text-click focus:text-click focus:outline-none">Essays</a>
+          <span class="text-gray-500 dark:text-gray-400"> / </span>
+        {% endif %}
+      </div>
     </div>
     
-    <!-- Navigation links and theme toggle -->
-    <div class="flex items-center space-x-6">
-      <!-- Main navigation -->
-      <div class="hidden sm:flex items-center space-x-6">
-        <a href="/" class="text-text-light dark:text-text-dark nav-link">Home</a>
-        <a href="/essays/" class="text-text-light dark:text-text-dark nav-link">Essays</a>
-      </div>
-      
-      <!-- Theme toggle -->
-      <button id="theme-toggle" class="theme-toggle text-lg" aria-label="Toggle theme">
-        🌙
-      </button>
-      
-      <!-- Mobile menu button -->
-      <button id="mobile-menu-toggle" class="sm:hidden p-2 text-text-light dark:text-text-dark" aria-label="Toggle menu">
-        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
-        </svg>
+    <!-- Theme toggle -->
+    <div>
+      <button id="theme-toggle" class="p-2 text-text-light dark:text-text-dark hover:opacity-70 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-click focus:ring-offset-2" aria-label="Toggle theme">
+        <span id="theme-icon" class="text-lg">🌙</span>
       </button>
     </div>
   </nav>
-  
-  <!-- Mobile navigation -->
-  <div id="mobile-menu" class="hidden sm:hidden mt-4 space-y-2">
-    <a href="/" class="block py-2 text-text-light dark:text-text-dark nav-link">Home</a>
-    <a href="/essays/" class="block py-2 text-text-light dark:text-text-dark nav-link">Essays</a>
-  </div>
+
 </header>

@@ -16,6 +16,7 @@ module.exports = {
         'primary-dark': '#1f1e1d',
         'text-light': '#1f1e1d',
         'text-dark': '#f0eee6',
+        'click': '#3AA99F',
       },
       fontFamily: {
         'serif': ['Georgia', 'Times New Roman', 'serif'],

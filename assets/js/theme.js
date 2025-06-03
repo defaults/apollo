@@ -1,6 +1,7 @@
 // Theme toggle functionality
 (function() {
   const themeToggle = document.getElementById('theme-toggle');
+  const themeIcon = document.getElementById('theme-icon');
   const html = document.documentElement;
   
   // Check for saved theme preference or default to light mode
@@ -13,14 +14,15 @@
     html.classList.remove('dark');
   }
   
-  // Update toggle button text
-  function updateToggleText() {
-    if (themeToggle) {
-      themeToggle.textContent = html.classList.contains('dark') ? '☀️' : '🌙';
+  // Update icon based on current theme
+  function updateThemeIcon() {
+    if (themeIcon) {
+      themeIcon.textContent = html.classList.contains('dark') ? '☀️' : '🌙';
     }
   }
   
-  updateToggleText();
+  // Initialize icon
+  updateThemeIcon();
   
   // Toggle theme function
   function toggleTheme() {
@@ -31,7 +33,7 @@
       html.classList.add('dark');
       localStorage.setItem('theme', 'dark');
     }
-    updateToggleText();
+    updateThemeIcon();
   }
   
   // Add event listener to toggle button

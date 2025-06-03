@@ -20,10 +20,6 @@
   .nav-link {
     @apply hover:opacity-70 transition-opacity duration-200;
   }
-  
-  .theme-toggle {
-    @apply p-2 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors duration-200 cursor-pointer;
-  }
 }
 
 /* Custom styles can be added here */ 
