@@ -25,9 +25,14 @@ module.exports = {
         'click': '#3AA99F',
       },
       fontFamily: {
+        'sans': ['Lato', 'Helvetica', 'Arial', 'sans-serif'],
         'serif': ['Georgia', 'Times New Roman', 'serif'],
       },
       fontSize: {
+        'xl': '1.25rem', // 20px
+        '2xl': '1.5rem',  // 24px
+        '3xl': '2.25rem',  // 36px
+        '4xl': '3rem',    // 48px
         'dario-title': ['2.5rem', { lineHeight: '1.1', fontWeight: '700' }],
         'dario-subtitle': ['1.25rem', { lineHeight: '1.3', fontWeight: '600' }],
         'dario-body': ['1rem', { lineHeight: '1.7' }],
