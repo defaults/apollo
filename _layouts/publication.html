@@ -28,8 +28,8 @@ layout: default
           {{ page.status }}
         </span>
         {% endif %}
-      </div>
-      
+    </div>
+    
       <!-- Links -->
       {% if page.pdf_url or page.arxiv_url or page.doi or page.code_url %}
       <div class="flex flex-wrap gap-4 pt-2">
@@ -41,12 +41,12 @@ layout: default
         {% endif %}
         {% if page.doi %}
         <a href="https://doi.org/{{ page.doi }}" class="content-link text-sm">DOI</a>
-        {% endif %}
+            {% endif %}
         {% if page.code_url %}
         <a href="{{ page.code_url }}" class="content-link text-sm">Code</a>
+            {% endif %}
+        </div>
         {% endif %}
-      </div>
-      {% endif %}
     </div>
   </header>
 
@@ -64,7 +64,7 @@ layout: default
   {% if content and content != '' %}
   <div class="prose max-w-none prose-gray dark:prose-invert">
     {{ content }}
-  </div>
+</div> 
   {% endif %}
 
   <!-- Footer -->

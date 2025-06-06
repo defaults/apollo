@@ -1,16 +1,22 @@
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './_layouts/**/*.html',
     './_includes/**/*.html',
-    './_posts/**/*.{md,html}',
-    './_publications/**/*.{md,html}',
-    './content/**/*.{md,html}',
-    './*.{md,html}',
+    './_layouts/**/*.html',
+    './_posts/**/*.md',
+    './_posts/**/*.html',
+    './*.html',
+    './*.md',
+    './content/**/*.md',
+    './content/**/*.html',
     './assets/js/**/*.js'
   ],
   darkMode: 'class',
   theme: {
     extend: {
+      maxWidth: {
+        'content': '65ch',
+      },
       colors: {
         'primary-light': '#f0eee6',
         'primary-dark': '#1f1e1d',
@@ -20,10 +26,12 @@ module.exports = {
       },
       fontFamily: {
         'serif': ['Georgia', 'Times New Roman', 'serif'],
-        'sans': ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
       },
-      maxWidth: {
-        'content': '65ch',
+      fontSize: {
+        'dario-title': ['2.5rem', { lineHeight: '1.1', fontWeight: '700' }],
+        'dario-subtitle': ['1.25rem', { lineHeight: '1.3', fontWeight: '600' }],
+        'dario-body': ['1rem', { lineHeight: '1.7' }],
+        'dario-section': ['1.125rem', { lineHeight: '1.4', fontWeight: '600' }],
       }
     },
   },

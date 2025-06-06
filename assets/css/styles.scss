@@ -1,11 +1,11 @@
 @use "sass:color";
 
-// Define variables (copied from minima theme)
+// Define variables based on Steph Ango's actual typography
 $base-font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", "Segoe UI Symbol", "Segoe UI Emoji", "Apple Color Emoji", Roboto, Helvetica, Arial, sans-serif !default;
-$base-font-size:   16px !default;
+$base-font-size:   20px !default; // Steph uses larger base size
 $base-font-weight: 400 !default;
 $small-font-size:  $base-font-size * 0.875 !default;
-$base-line-height: 1.5 !default;
+$base-line-height: 1.5 !default; // Tighter line height like Steph's
 
 $spacing-unit:     30px !default;
 
@@ -19,5 +19,133 @@ $grey-color-dark:  color.adjust($grey-color, $lightness: -25%) !default;
 
 // Import the minima theme but override deprecated calls
 @import "minima";
+
+// Typography matching Steph Ango's actual style
+body {
+  font-size: 20px; // Larger base font like Steph's
+  line-height: 1.5; // Tighter, more readable
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: #333;
+  max-width: 60ch; // Slightly narrower for better reading
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+// Typography scale matching Steph's proportions
+h1 {
+  font-size: 2rem; // 40px - larger and more prominent
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 1.5rem; // 30px
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.25rem; // 25px
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+h4 {
+  font-size: 1.1rem; // 22px
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+// Paragraph and body text - matching Steph's readable style
+p, li {
+  font-size: 1rem; // 20px base
+  line-height: 1.5; // Tighter, like Steph's
+  margin-bottom: 1rem; // Less spacing between paragraphs
+}
+
+// List spacing - tighter like Steph's
+ul, ol {
+  margin-bottom: 1rem;
+  
+  li {
+    margin-bottom: 0.25rem; // Tighter list spacing
+  }
+}
+
+// Links styling - clean underlines in content, consistent hover color
+main a:not(.site-title):not(.nav-link) {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.1em;
+  color: inherit; /* Inherit color from parent */
+  
+  &:hover, &:focus {
+    color: #3AA99F; /* Apply click color on hover/focus */
+    text-decoration-color: #3AA99F;
+  }
+}
+
+// Essays list specific styling - now handled by the main 'a' rule above
+.content-link {
+  /* This class is no longer needed for special styling */
+}
+
+// Navigation links should not have underlines
+nav a, .nav-link, .site-title {
+  text-decoration: none !important;
+  
+  &:hover, &:focus {
+    text-decoration: none !important;
+  }
+}
+
+// Tighter spacing for better rhythm like Steph's
+.space-y-1 > * + * {
+  margin-top: 0.25rem;
+}
+
+.space-y-2 > * + * {
+  margin-top: 0.5rem;
+}
+
+.space-y-3 > * + * {
+  margin-top: 0.75rem;
+}
+
+.space-y-4 > * + * {
+  margin-top: 1rem;
+}
+
+.space-y-8 > * + * {
+  margin-top: 2rem;
+}
+
+.space-y-12 > * + * {
+  margin-top: 3rem;
+}
+
+// Prose content styling - matching Steph's readability
+.prose {
+  line-height: 1.5;
+  max-width: 60ch;
+  
+  p {
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  h1, h2, h3, h4 {
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  h1:first-child, h2:first-child, h3:first-child, h4:first-child {
+    margin-top: 0;
+  }
+}
 
 // Add any custom styles below 

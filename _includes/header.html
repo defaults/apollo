@@ -5,7 +5,7 @@
     <div>
       <div class="text-xl font-semibold text-text-light dark:text-text-dark">
         <!-- Always show clickable home title -->
-        <a href="/" class="nav-link hover:text-click focus:text-click focus:outline-none">{{ site.title | default: "Apollo" }}</a>
+        <a href="/" class="nav-link">{{ site.title | default: "Apollo" }}</a>
         
         {% if page.layout == 'list' and page.collection == 'posts' %}
           <!-- Essays listing page -->
@@ -14,7 +14,7 @@
         {% elsif page.layout == 'post' %}
           <!-- Individual essay page -->
           <span class="text-gray-500 dark:text-gray-400"> / </span>
-          <a href="/essays/" class="text-gray-500 dark:text-gray-400 hover:text-click focus:text-click focus:outline-none">Essays</a>
+          <a href="/essays/" class="focus:outline-none">Essays</a>
           <span class="text-gray-500 dark:text-gray-400"> / </span>
         {% endif %}
       </div>
@@ -22,7 +22,7 @@
     
     <!-- Theme toggle -->
     <div>
-      <button id="theme-toggle" class="p-2 text-text-light dark:text-text-dark hover:opacity-70 transition-opacity duration-200 focus:outline-none focus:ring-2 focus:ring-click focus:ring-offset-2" aria-label="Toggle theme">
+      <button id="theme-toggle" class="p-2 text-text-light dark:text-text-dark hover:opacity-70 transition-opacity duration-200 focus:outline-none" aria-label="Toggle theme">
         <span id="theme-icon" class="text-lg">🌙</span>
       </button>
     </div>

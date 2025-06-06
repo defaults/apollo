@@ -2,54 +2,41 @@
 layout: default
 ---
 
-<article class="space-y-8">
-  <!-- Post Header -->
-  <header class="space-y-4">
-    <h1 class="text-2xl font-bold">{{ page.title }}</h1>
-    
-    <div class="flex flex-wrap items-center gap-4 text-sm text-gray-600 dark:text-gray-400">
-      <time datetime="{{ page.date | date_to_xmlschema }}">
-        {{ page.date | date: "%B %d, %Y" }}
-      </time>
-      
-      {% if page.type %}
-      <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">
-        {{ page.type | capitalize }}
-      </span>
-      {% endif %}
-      
-      {% if page.authors %}
-      <span>by {{ page.authors }}</span>
-      {% endif %}
-    </div>
-    
-    {% if page.description %}
-    <p class="text-lg text-gray-600 dark:text-gray-400">
-      {{ page.description }}
-    </p>
-    {% endif %}
-  </header>
-
-  <!-- Post Content -->
-  <div class="prose max-w-none prose-gray dark:prose-invert">
-    {{ content }}
-  </div>
-
-  <!-- Post Footer -->
-  <footer class="border-t border-gray-300 dark:border-gray-600 pt-8">
-    <div class="flex justify-between items-center">
-      <a href="/essays/" class="content-link text-sm hover:text-click focus:text-click">← All essays</a>
-      
-      {% if page.next or page.previous %}
-      <div class="text-sm space-x-4">
-        {% if page.previous %}
-        <a href="{{ page.previous.url | relative_url }}" class="content-link hover:text-click focus:text-click">← {{ page.previous.title | truncate: 30 }}</a>
+<div class="essay-container">
+  <div class="essay-layout">
+    <!-- Main Content -->
+    <article class="essay-content space-y-8">
+      <!-- Post Header -->
+      <header class="space-y-4">
+        <h1 class="text-dario-title text-text-light dark:text-text-dark">{{ page.title }}</h1>
+        
+        <div class="flex flex-wrap items-center gap-4 text-base text-gray-600 dark:text-gray-400">
+          <time datetime="{{ page.date | date_to_xmlschema }}">
+            {{ page.date | date: "%B %d, %Y" }}
+          </time>
+          
+          {% if page.type %}
+          <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-base">
+            {{ page.type | capitalize }}
+          </span>
+          {% endif %}
+          
+          {% if page.authors %}
+          <span>by {{ page.authors }}</span>
+          {% endif %}
+        </div>
+        
+        {% if page.description %}
+        <p class="text-dario-subtitle text-gray-600 dark:text-gray-400">
+          {{ page.description }}
+        </p>
         {% endif %}
-        {% if page.next %}
-        <a href="{{ page.next.url | relative_url }}" class="content-link hover:text-click focus:text-click">{{ page.next.title | truncate: 30 }} →</a>
-        {% endif %}
+      </header>
+
+      <!-- Post Content -->
+      <div class="prose max-w-none prose-gray dark:prose-invert text-dario-body">
+        {{ content }}
       </div>
-      {% endif %}
-    </div>
-  </footer>
-</article> 
+    </article>
+  </div>
+</div> 

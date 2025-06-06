@@ -1,71 +1,44 @@
-title: "Apollo"
-description: "A minimal personal website focused on research and writing."
-baseurl: "" # e.g., /blog
-url: "https://apollo.vikash.me" # Base URL
-profile_image: "/assets/images/profile.jpg"
+title: Apollo
+description: >-
+  A personal website generator.
 
-# Jekyll Settings
-theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
 
-# Sass settings to use our custom styles
-sass:
-  sass_dir: assets/css
-  style: compressed
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - README.md
+  - LICENSE
+  - tailwind.config.js
+  - package.json
+  - package-lock.json
+  - content-repo-example/
+  - app.yaml
+  
+collections:
+  posts:
+    output: true
+    permalink: /essays/:slug/
 
-# Collections
-# publications:
-#   output: true
-#   permalink: /publications/:title/
-
-# Include content pages and make them accessible
-include:
-  - content/pages
-
-# Set Jekyll to look for posts in content/_posts
-posts_dir: content/_posts
-
-# Use defaults to handle permalink and layout configs
 defaults:
-  - scope:
-      path: "content/pages"
-    values:
-      layout: default
-  # - scope:
-  #     path: ""
-  #     type: "publications"
-  #   values:
-  #     layout: publication
-  - scope:
-      path: "content/_posts"
+  -
+    scope:
+      path: ""
       type: "posts"
     values:
-      layout: post
-
-# Site Navigation and Overrides
-site:
-  title: "Dr. Alex Research" # Example name for testing
-  navigation:
-    - name: "Home"
-      url: "/"
-    - name: "Essays"
-      url: "/essays/"
-  footer_links:
-    - name: "Contact"
-      url: "/contact/"
-    - name: "About"
-      url: "/about/"
-
-# Content Repository
-content_repo: "https://github.com/yourusername/content-repo.git"
-
-# Directory Configurations
-layouts_dir: _layouts
-includes_dir: _includes
-
-# Content directory structure
-content_dir: content
-page_dir: content/pages
-destination: _site 
+      layout: "post"
+  -
+    scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "default"
