@@ -2,6 +2,7 @@
 layout: home
 title: Home
 description: Personal website and portfolio
+permalink: /
 ---
 
 {{ site.title | default: "Your Name" }} is a [your role/profession], [brief description of your work or expertise].

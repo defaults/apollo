@@ -25,6 +25,9 @@ exclude:
   - content-repo-example/
   - app.yaml
   
+include:
+  - _pages
+
 collections:
   posts:
     output: true
