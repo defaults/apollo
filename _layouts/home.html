@@ -10,14 +10,12 @@ layout: default
     </div>
   </section>
 
-
-
   <!-- Research -->
   <section>
     <h2 class="text-xl font-semibold mb-6">Research</h2>
     <div class="space-y-3">
       <div>
-        <a href="https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID" class="content-link text-base" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+        <a href="https://scholar.google.com/citations?user={{ site.features.google_scholar.user_id | default: 'YOUR_GOOGLE_SCHOLAR_ID' }}" class="content-link text-base" target="_blank" rel="noopener noreferrer">Google Scholar</a>
       </div>
     </div>
   </section>

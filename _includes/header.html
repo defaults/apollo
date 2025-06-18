@@ -5,7 +5,7 @@
     <div>
       <div class="text-xl font-semibold text-text-light dark:text-text-dark font-sans">
         <!-- Always show clickable home title -->
-        <a href="/" class="nav-link">{{ site.title | default: "Apollo" }}</a>
+        <a href="/" class="nav-link">{{ site.user.name | default: site.title | default: "Apollo" }}</a>
         
         {% if page.layout == 'list' and page.collection == 'posts' %}
           <!-- Essays listing page -->

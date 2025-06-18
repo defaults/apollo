@@ -1,0 +1,122 @@
+name: Build and Deploy Apollo Blog
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  repository_dispatch:
+    types: [content-update]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          
+      - name: Setup Pages
+        id: pages
+        uses: actions/configure-pages@v4
+        
+      - name: Check for user configuration
+        run: |
+          if [ ! -f "user-config.yml" ]; then
+            echo "⚠️  No user-config.yml found. Creating default configuration..."
+            cat > user-config.yml << EOF
+          # Default User Configuration for Apollo Blog
+          user:
+            name: "Apollo Blog"
+            domain: ""
+            description: "A personal website and blog"
+          
+          content:
+            source: "local"
+            repository: ""
+          
+          features:
+            google_scholar:
+              enabled: false
+              user_id: ""
+            subscription:
+              enabled: false
+              service: ""
+              url: ""
+            social:
+              enabled: false
+              twitter: ""
+              linkedin: ""
+              github: ""
+          
+          build:
+            auto_rebuild: true
+            include_drafts: false
+          EOF
+          else
+            echo "✅ Found user configuration"
+          fi
+          
+      - name: Sync external content (if configured)
+        run: |
+          # Read content source from user config
+          if [ -f "user-config.yml" ]; then
+            CONTENT_SOURCE=$(grep -A1 "content:" user-config.yml | grep "source:" | awk '{print $2}' | tr -d '"' || echo "local")
+            CONTENT_REPO=$(grep -A2 "content:" user-config.yml | grep "repository:" | awk '{print $2}' | tr -d '"' || echo "")
+            
+            if [ "$CONTENT_SOURCE" = "external" ] && [ ! -z "$CONTENT_REPO" ]; then
+              echo "🔄 Syncing content from external repository: $CONTENT_REPO"
+              if [ -d "content" ]; then
+                rm -rf content
+              fi
+              git clone $CONTENT_REPO content
+              echo "✅ External content synced"
+            else
+              echo "📁 Using local content"
+            fi
+          fi
+          
+      - name: Build site
+        run: |
+          echo "🔧 Building Apollo Blog..."
+          
+          # Merge configurations
+          cp _config.yml _site-config.yml
+          echo "" >> _site-config.yml
+          echo "# User Configuration (auto-merged)" >> _site-config.yml
+          cat user-config.yml >> _site-config.yml
+          
+          # Build with Jekyll
+          bundle exec jekyll build --config _site-config.yml
+          
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: _site
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v3 

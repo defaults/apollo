@@ -1,141 +1,297 @@
-# Apollo - Personal Website Generator
+# Apollo Blog 🚀
 
-Apollo is a simple and flexible personal website generator built with Jekyll. It allows you to create beautiful personal websites with minimal configuration and easy customization. The content can be stored in a separate repository, making it easy to manage and update.
+A powerful, flexible Jekyll-based personal website and blog generator that adapts to your content workflow.
 
-## Features
+## Features ✨
 
-- Jekyll-based templating and markdown processing
-- Separate content repository for easy content management
-- Mobile-first and responsive design using Tailwind CSS
-- Easy customization through config files
-- Support for blog posts (`content/_posts`) and publications (`content/_publications`) collections
-- Content pages stored in `content/pages` for easy replacement
-- Customizable templates
-- Automated build and deployment to Google App Engine with GitHub Actions
+- **Flexible Content Management**: Use local markdown files or external Git repositories
+- **Dynamic Configuration**: Personalize without modifying core code
+- **Auto-deployment**: Automatic rebuilds when content changes
+- **Clean Design**: Minimal, readable design with dark/light mode support
+- **Optional Integrations**: Google Scholar, email subscriptions, social links
+- **Conflict-free Updates**: Pull updates without losing your configuration
 
-## Getting Started
+## Quick Start 🏃‍♂️
 
-1.  **Clone this repository:**
-    ```bash
-    git clone https://github.com/yourusername/apollo.git
-    cd apollo
-    ```
+### 1. Clone and Setup
 
-2.  **Install dependencies:**
-    ```bash
-    # Install Ruby & Jekyll dependencies
-    gem install bundler
-    bundle install
-
-    # Install Node.js & Tailwind dependencies
-    # Ensure you have Node.js and npm installed
-    npm install
-    ```
-
-3.  **Create a content repository:**
-    *   Create a new GitHub repository for your content.
-    *   Structure it as shown in `content-repo-example/README.md` (e.g., with `_posts`, `_publications`, `pages`, `assets` directories).
-    *   Update the `content_repo` field in `_config.yml` with your repository URL.
-
-4.  **Customize your site:**
-    *   Edit `_config.yml` to change site settings.
-    *   Add your content locally in the `content/` directory or push to your content repository.
-    *   Customize templates in the `_layouts` and `_includes` directories.
-    *   Modify Tailwind styles in `assets/css/input.css`.
-
-5.  **Build and serve locally:**
-    ```bash
-    # Build CSS
-    npm run build:css
-
-    # Build Jekyll site and serve
-    bundle exec jekyll serve --livereload
-    ```
-    Your site will be available at `http://localhost:4000`.
-
-## Directory Structure
-
-```
-apollo/
-├── content/               # All user-replaceable content
-│   ├── _posts/            # Blog posts
-│   ├── _publications/     # Publications
-│   ├── pages/             # Content pages (about, contact, etc.)
-│   └── README.md          # Content directory documentation
-├── _layouts/              # Jekyll layout templates
-├── _includes/             # Jekyll include files
-├── assets/                # Static assets (CSS input/output, JS, images)
-│   ├── css/
-│   └── js/
-├── content-repo-example/  # Example structure for external content repo
-├── _config.yml            # Jekyll & Site configuration
-├── app.yaml               # Google App Engine configuration
-├── Gemfile                # Ruby dependencies (Jekyll)
-├── package.json           # Node.js dependencies (Tailwind)
-├── tailwind.config.js     # Tailwind CSS configuration
-├── index.html             # Site homepage
-├── README.md              # This file
-└── .github/workflows/     # GitHub Actions workflow
+```bash
+git clone https://github.com/your-username/apollo.git
+cd apollo
+bundle install
+chmod +x setup.sh
+./setup.sh
 ```
 
-## Content Repository
+### 2. Configure Your Blog
 
-The content repository should follow the structure outlined in `content-repo-example/README.md`. This allows for separation of concerns between the site template and the actual content.
+The setup script will ask you about:
+- **Personal Information**: Name, domain, description
+- **Content Source**: Local folder or external Git repository
+- **Optional Features**: Google Scholar, email subscriptions, social links
 
-## Automated Build and Deployment
+### 3. Build and Run
 
-Apollo uses GitHub Actions (`.github/workflows/build-and-deploy.yml`) to automate the build and deployment process:
+```bash
+# Build your site
+./build.sh
 
-1.  When changes are pushed to the `main` branch of this repository, or when manually triggered with a content repository URL:
-    *   The Apollo repository is checked out.
-    *   Ruby/Jekyll dependencies are installed.
-    *   Node.js dependencies are installed.
-    *   Tailwind CSS is built (`npm run build:css`).
-    *   The specified content repository is cloned.
-    *   Content is copied into the `apollo/content/` directory.
-    *   Jekyll builds the site into the `_site` directory.
-    *   The site is deployed to Google App Engine using `gcloud app deploy`.
+# Serve locally for development
+bundle exec jekyll serve --config _site-config.yml
+```
 
-To set up automated deployment:
+## Content Management 📝
 
-1.  Create a Google Cloud project.
-2.  Enable the App Engine Admin API.
-3.  Create a service account with the `App Engine Deployer` and `Storage Object Viewer` roles.
-4.  Generate a JSON key for the service account.
-5.  Add the following secrets to your Apollo GitHub repository settings:
-    *   `GCP_PROJECT_ID`: Your Google Cloud project ID.
-    *   `GCP_SA_KEY`: The content of the service account JSON key file.
+### Option 1: Local Content (Recommended for Getting Started)
 
-## Customization
+When you choose local content, Apollo creates a `content/` directory:
 
-### Configuration
+```
+content/
+├── posts/          # Your blog posts
+├── pages/          # Static pages (about, etc.)
+└── assets/
+    └── images/     # Images for your posts
+```
 
-Edit `_config.yml` to customize:
-*   Site title and description
-*   Navigation menu
-*   Footer links
-*   Profile image
-*   Theme settings
-*   Content repository URL
+- Write posts in `content/posts/` using Jekyll's naming convention: `YYYY-MM-DD-title.md`
+- Add pages like About in `content/pages/`
+- The setup script initializes this with example content
 
-### Templates
+### Option 2: External Git Repository
 
-Templates are located in the `_layouts` and `_includes` directories. You can modify existing templates or create new ones.
+Perfect for:
+- Separating content from code
+- Writing on multiple devices
+- Collaborating with editors
+- Version controlling content separately
 
-### Styles
+1. Create a separate repository for your content
+2. Choose "External Git repository" during setup
+3. Push content changes to trigger automatic rebuilds
 
-Customize styles by editing `assets/css/input.css` and the `tailwind.config.js` file. Run `npm run build:css` to regenerate the final `assets/css/main.css`.
+**External Repository Structure:**
+```
+your-content-repo/
+├── posts/
+│   ├── 2024-01-15-my-first-post.md
+│   └── 2024-02-01-another-post.md
+├── pages/
+│   ├── about.md
+│   └── contact.md
+└── assets/
+    └── images/
+```
 
-### Content
+## Configuration 🔧
 
-Add your content in Markdown format in your content repository (or the local `content/` directory):
-* Blog posts in `content/_posts/`
-* Publications in `content/_publications/`
-* Pages in `content/pages/`
-* Assets (images, PDFs) in `assets/`
+### User Configuration (`user-config.yml`)
 
-This structure allows users to easily replace all content by copying or syncing the `content` directory from another repository.
+This file contains your personal settings and won't be overwritten by updates:
 
-## License
+```yaml
+user:
+  name: "Your Name"
+  domain: "yourdomain.com"
+  description: "Brief description about yourself"
 
-MIT License - feel free to use this template for your personal website.
+content:
+  source: "local"  # or "external"
+  repository: ""   # Git URL if external
+
+features:
+  google_scholar:
+    enabled: true
+    user_id: "your-google-scholar-id"
+  
+  subscription:
+    enabled: true
+    service: "mailchimp"  # mailchimp, convertkit, custom
+    url: "your-form-url"
+  
+  social:
+    enabled: true
+    twitter: "yourusername"
+    linkedin: "https://linkedin.com/in/yourusername"
+    github: "yourusername"
+
+build:
+  auto_rebuild: true
+  include_drafts: false
+```
+
+## Deployment 🚀
+
+### GitHub Pages (Recommended)
+
+1. **Enable GitHub Pages** in your repository settings
+2. **Set source** to "GitHub Actions"
+3. **Push your changes** - the included workflow handles everything!
+
+The deployment process:
+- Checks for user configuration
+- Syncs external content (if configured)
+- Merges configurations
+- Builds and deploys to GitHub Pages
+
+### External Content Auto-Deployment
+
+For external content repositories:
+
+1. **Deploy the webhook handler** (optional, for instant updates):
+   ```bash
+   # Deploy webhook-handler.js to your preferred platform
+   # Set environment variables:
+   # - GITHUB_TOKEN
+   # - WEBHOOK_SECRET
+   # - BLOG_REPO_OWNER
+   # - BLOG_REPO_NAME
+   ```
+
+2. **Add webhook** to your content repository:
+   - Go to Settings > Webhooks
+   - Add webhook URL: `https://your-handler.com/webhook/content-update`
+   - Set content type to `application/json`
+   - Add your webhook secret
+
+## Writing Content ✍️
+
+### Blog Posts
+
+Create files in `content/posts/` (or your external repo):
+
+```markdown
+---
+layout: post
+title: "My Awesome Post"
+date: 2024-01-15
+description: "A brief description of the post"
+---
+
+Your content here...
+```
+
+### Pages
+
+Create files in `content/pages/`:
+
+```markdown
+---
+layout: default
+title: "About"
+permalink: /about/
+---
+
+About me...
+```
+
+## Development 💻
+
+### Local Development
+
+```bash
+# Install dependencies
+bundle install
+
+# Run setup if not done
+./setup.sh
+
+# Build the site
+./build.sh
+
+# Serve locally with live reload
+bundle exec jekyll serve --config _site-config.yml --livereload
+```
+
+### Testing External Content
+
+```bash
+# If using external content, sync it
+./sync-content.sh
+
+# Then build
+./build.sh
+```
+
+## Customization 🎨
+
+### Styling
+
+The theme uses Tailwind CSS. Modify styles in:
+- `assets/css/styles.css` - Main styles
+- `_layouts/` - HTML templates
+- `_includes/` - Reusable components
+
+### Adding Features
+
+1. **Modify `user-config.yml`** to add new configuration options
+2. **Update layouts** in `_layouts/` and `_includes/` to use new features
+3. **Test locally** before deploying
+
+## Troubleshooting 🔧
+
+### Common Issues
+
+**Build fails with missing user-config.yml:**
+```bash
+./setup.sh  # Run setup again
+```
+
+**External content not syncing:**
+```bash
+./sync-content.sh  # Manual sync
+```
+
+**Local development not working:**
+```bash
+bundle install
+bundle exec jekyll serve --config _site-config.yml
+```
+
+**Styles not loading:**
+- Check if Tailwind CSS is properly configured
+- Verify `assets/css/styles.css` is included in layouts
+
+### Getting Help
+
+1. Check the [Issues](https://github.com/your-username/apollo/issues) page
+2. Review the deployment logs in GitHub Actions
+3. Verify your `user-config.yml` syntax
+
+## Updating Apollo 🔄
+
+Apollo is designed for conflict-free updates:
+
+```bash
+git pull origin main
+# Your user-config.yml and content/ are preserved
+./build.sh  # Rebuild with updates
+```
+
+## Contributing 🤝
+
+Contributions are welcome! Please:
+
+1. Fork the repository
+2. Create a feature branch
+3. Make your changes
+4. Test thoroughly
+5. Submit a pull request
+
+## License 📄
+
+[Add your license here]
+
+## Roadmap 🗺️
+
+- [ ] Theme customization UI
+- [ ] More subscription service integrations
+- [ ] Content scheduling
+- [ ] SEO optimization tools
+- [ ] Multi-author support
+
+---
+
+**Happy blogging!** 🎉
+
+For questions or support, please [open an issue](https://github.com/your-username/apollo/issues).

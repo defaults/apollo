@@ -1,3 +1,36 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Jekyll
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+
+# User configuration (should not be committed)
+user-config.yml
+_site-config.yml
+
+# Content directory (for local development)
+content/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
 # Binaries
 *.exe
 *.exe~
@@ -7,10 +40,8 @@
 
 # Build directories
 /build/
-/_site/
 
 # NPM
-node_modules/
 package-lock.json
 
 # Overrides (exclude from git)

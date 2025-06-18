@@ -24,20 +24,63 @@ exclude:
   - package-lock.json
   - content-repo-example/
   - app.yaml
+  - user-config.yml
+  - build.sh
+  - setup.sh
+  - sync-content.sh
+  - _site-config.yml
   
 include:
   - _pages
+  - content/pages
 
 collections:
   posts:
     output: true
     permalink: /essays/:slug/
+  content_posts:
+    output: true
+    permalink: /essays/:slug/
+
+# Default user settings (will be overridden by user-config.yml)
+user:
+  name: "Your Name"
+  domain: ""
+  description: "A personal website"
+
+content:
+  source: "local"
+  repository: ""
+
+features:
+  google_scholar:
+    enabled: false
+    user_id: ""
+  subscription:
+    enabled: false
+    service: ""
+    url: ""
+  social:
+    enabled: false
+    twitter: ""
+    linkedin: ""
+    github: ""
+
+build:
+  auto_rebuild: true
+  include_drafts: false
 
 defaults:
   -
     scope:
       path: ""
       type: "posts"
+    values:
+      layout: "post"
+  -
+    scope:
+      path: "content/posts"
+      type: "content_posts"
     values:
       layout: "post"
   -
