@@ -6,19 +6,17 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
   {% if site.site.overrides.css %}
     <link rel="stylesheet" href="{{ '/_overrides/' | relative_url }}{{ site.site.overrides.css }}">
   {% endif %}
   {% seo %}
 </head>
-<body class="h-full bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark font-serif leading-relaxed text-base">
+<body class="h-full">
   {% include header.html %}
 
-  <main class="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
+  <main class="content">
     {{ content }}
   </main>
 

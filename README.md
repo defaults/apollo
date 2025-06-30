@@ -1,15 +1,14 @@
 # Apollo Blog 🚀
 
-A powerful, flexible Jekyll-based personal website and blog generator that adapts to your content workflow.
+A simple, flexible Jekyll-based personal website generator with file-structure-based routing.
 
 ## Features ✨
 
-- **Flexible Content Management**: Use local markdown files or external Git repositories
-- **Dynamic Configuration**: Personalize without modifying core code
-- **Auto-deployment**: Automatic rebuilds when content changes
+- **File-based Content Structure**: URLs match your file organization
+- **Single Configuration**: All settings in one `_config.yml` file
+- **Flexible Content Sources**: Local content directory or external Git repository
 - **Clean Design**: Minimal, readable design with dark/light mode support
-- **Optional Integrations**: Google Scholar, email subscriptions, social links
-- **Conflict-free Updates**: Pull updates without losing your configuration
+- **Auto-deployment**: GitHub Actions for automatic deployment
 
 ## Quick Start 🏃‍♂️
 
@@ -19,276 +18,230 @@ A powerful, flexible Jekyll-based personal website and blog generator that adapt
 git clone https://github.com/your-username/apollo.git
 cd apollo
 bundle install
-chmod +x setup.sh
-./setup.sh
 ```
 
-### 2. Configure Your Blog
+### 2. Add Your Content
 
-The setup script will ask you about:
-- **Personal Information**: Name, domain, description
-- **Content Source**: Local folder or external Git repository
-- **Optional Features**: Google Scholar, email subscriptions, social links
+All content goes in the `content/` directory with URLs matching file structure:
 
-### 3. Build and Run
+```
+content/
+├── home/
+│   └── index.md          # Homepage (/)
+├── blog/
+│   ├── post1.md          # Blog posts (/essays/post1)
+│   └── post2.md          # Blog posts (/essays/post2)
+├── about.md              # About page (/about/)
+├── 404.md                # 404 page
+└── essays/
+    └── index.md          # Essays listing (/essays/)
+```
+
+### 3. Configure Your Site
+
+Edit `_config.yml`:
+
+```yaml
+# Site Settings  
+user:
+  name: "Your Name"
+  domain: "yourdomain.com"
+  description: "Your description"
+
+# Content Settings
+content:
+  source: "local"           # "local" or "external"
+  repository: ""            # Git URL if external
+
+# Optional Features
+features:
+  google_scholar:
+    enabled: true
+    user_id: "your-scholar-id"
+```
+
+### 4. Build and Run
 
 ```bash
-# Build your site
-./build.sh
+# Build the site
+bundle exec jekyll build
 
-# Serve locally for development
-bundle exec jekyll serve --config _site-config.yml
+# Serve locally
+bundle exec jekyll serve --livereload
 ```
 
 ## Content Management 📝
 
-### Option 1: Local Content (Recommended for Getting Started)
+### File Structure = URL Structure
 
-When you choose local content, Apollo creates a `content/` directory:
-
-```
-content/
-├── posts/          # Your blog posts
-├── pages/          # Static pages (about, etc.)
-└── assets/
-    └── images/     # Images for your posts
-```
-
-- Write posts in `content/posts/` using Jekyll's naming convention: `YYYY-MM-DD-title.md`
-- Add pages like About in `content/pages/`
-- The setup script initializes this with example content
-
-### Option 2: External Git Repository
-
-Perfect for:
-- Separating content from code
-- Writing on multiple devices
-- Collaborating with editors
-- Version controlling content separately
-
-1. Create a separate repository for your content
-2. Choose "External Git repository" during setup
-3. Push content changes to trigger automatic rebuilds
-
-**External Repository Structure:**
-```
-your-content-repo/
-├── posts/
-│   ├── 2024-01-15-my-first-post.md
-│   └── 2024-02-01-another-post.md
-├── pages/
-│   ├── about.md
-│   └── contact.md
-└── assets/
-    └── images/
-```
-
-## Configuration 🔧
-
-### User Configuration (`user-config.yml`)
-
-This file contains your personal settings and won't be overwritten by updates:
-
-```yaml
-user:
-  name: "Your Name"
-  domain: "yourdomain.com"
-  description: "Brief description about yourself"
-
-content:
-  source: "local"  # or "external"
-  repository: ""   # Git URL if external
-
-features:
-  google_scholar:
-    enabled: true
-    user_id: "your-google-scholar-id"
-  
-  subscription:
-    enabled: true
-    service: "mailchimp"  # mailchimp, convertkit, custom
-    url: "your-form-url"
-  
-  social:
-    enabled: true
-    twitter: "yourusername"
-    linkedin: "https://linkedin.com/in/yourusername"
-    github: "yourusername"
-
-build:
-  auto_rebuild: true
-  include_drafts: false
-```
-
-## Deployment 🚀
-
-### GitHub Pages (Recommended)
-
-1. **Enable GitHub Pages** in your repository settings
-2. **Set source** to "GitHub Actions"
-3. **Push your changes** - the included workflow handles everything!
-
-The deployment process:
-- Checks for user configuration
-- Syncs external content (if configured)
-- Merges configurations
-- Builds and deploys to GitHub Pages
-
-### External Content Auto-Deployment
-
-For external content repositories:
-
-1. **Deploy the webhook handler** (optional, for instant updates):
-   ```bash
-   # Deploy webhook-handler.js to your preferred platform
-   # Set environment variables:
-   # - GITHUB_TOKEN
-   # - WEBHOOK_SECRET
-   # - BLOG_REPO_OWNER
-   # - BLOG_REPO_NAME
-   ```
-
-2. **Add webhook** to your content repository:
-   - Go to Settings > Webhooks
-   - Add webhook URL: `https://your-handler.com/webhook/content-update`
-   - Set content type to `application/json`
-   - Add your webhook secret
-
-## Writing Content ✍️
+- `content/home/index.md` → `/` (homepage)
+- `content/about.md` → `/about/`
+- `content/blog/my-post.md` → `/essays/my-post/` (blog posts)
+- `content/projects/index.md` → `/projects/`
+- `content/contact.md` → `/contact/`
 
 ### Blog Posts
 
-Create files in `content/posts/` (or your external repo):
+Files in `content/blog/` automatically become blog posts under `/essays/`:
 
 ```markdown
 ---
 layout: post
-title: "My Awesome Post"
+title: "My First Post"
 date: 2024-01-15
-description: "A brief description of the post"
+description: "Post description"
 ---
 
-Your content here...
+Your blog content here...
 ```
 
-### Pages
+### External Content Repository
 
-Create files in `content/pages/`:
+To use external content (great for collaboration or multiple devices):
 
-```markdown
----
-layout: default
-title: "About"
-permalink: /about/
----
+1. **Set up external repo**:
+   ```yaml
+   content:
+     source: "external"
+     repository: "https://github.com/username/my-content.git"
+   ```
 
-About me...
-```
+2. **External repo structure**:
+   ```
+   my-content-repo/
+   ├── home/index.md
+   ├── blog/
+   │   ├── post1.md
+   │   └── post2.md
+   └── about.md
+   ```
 
-## Development 💻
+3. **Deploy**: GitHub Actions automatically syncs and builds
+
+## Deployment 🚀
+
+### GitHub Pages (Automatic)
+
+1. **Enable GitHub Pages** in repository settings
+2. **Set source** to "GitHub Actions"  
+3. **Push changes** - automatic deployment!
+
+The included workflow:
+- Syncs external content (if configured)
+- Builds with Jekyll
+- Deploys to GitHub Pages
 
 ### Local Development
 
 ```bash
-# Install dependencies
-bundle install
+# Watch for changes with live reload
+bundle exec jekyll serve --livereload
 
-# Run setup if not done
-./setup.sh
-
-# Build the site
-./build.sh
-
-# Serve locally with live reload
-bundle exec jekyll serve --config _site-config.yml --livereload
+# Build for production
+bundle exec jekyll build
 ```
 
-### Testing External Content
+## Configuration Options 🔧
 
-```bash
-# If using external content, sync it
-./sync-content.sh
+### Basic Settings
 
-# Then build
-./build.sh
+```yaml
+user:
+  name: "Your Name"        # Appears in header
+  domain: "example.com"    # Your domain
+  description: "Bio text"  # Site description
+```
+
+### Content Source
+
+```yaml
+content:
+  source: "local"          # or "external"
+  repository: ""           # Git URL for external content
+```
+
+### Optional Features
+
+```yaml
+features:
+  google_scholar:
+    enabled: true
+    user_id: "your-scholar-id"
+```
+
+## Project Structure 📁
+
+```
+apollo/
+├── content/              # All your content (markdown files)
+├── _layouts/             # Jekyll templates
+├── _includes/            # Reusable components
+├── _plugins/             # Content loading logic
+├── assets/               # CSS, JS, images
+├── _config.yml           # Site configuration
+└── .github/workflows/    # Auto-deployment
 ```
 
 ## Customization 🎨
 
 ### Styling
 
-The theme uses Tailwind CSS. Modify styles in:
-- `assets/css/styles.css` - Main styles
-- `_layouts/` - HTML templates
-- `_includes/` - Reusable components
+Modify `assets/css/styles.css` and Tailwind configuration in `tailwind.config.js`.
 
-### Adding Features
+### Layouts
 
-1. **Modify `user-config.yml`** to add new configuration options
-2. **Update layouts** in `_layouts/` and `_includes/` to use new features
-3. **Test locally** before deploying
+Edit templates in `_layouts/` and `_includes/` directories.
 
-## Troubleshooting 🔧
+### Content Loading
 
-### Common Issues
+The content loader (`_plugins/content_loader.rb`) handles file-to-URL mapping.
 
-**Build fails with missing user-config.yml:**
-```bash
-./setup.sh  # Run setup again
-```
+## Examples 💡
 
-**External content not syncing:**
-```bash
-./sync-content.sh  # Manual sync
-```
+### Adding a Projects Page
 
-**Local development not working:**
-```bash
-bundle install
-bundle exec jekyll serve --config _site-config.yml
-```
+1. Create `content/projects/index.md`:
+   ```markdown
+   ---
+   layout: default
+   title: Projects
+   permalink: /projects/
+   ---
+   
+   # My Projects
+   
+   Here are some projects I've worked on...
+   ```
 
-**Styles not loading:**
-- Check if Tailwind CSS is properly configured
-- Verify `assets/css/styles.css` is included in layouts
+2. Accessible at `/projects/`
 
-### Getting Help
+### Adding Nested Content
 
-1. Check the [Issues](https://github.com/your-username/apollo/issues) page
-2. Review the deployment logs in GitHub Actions
-3. Verify your `user-config.yml` syntax
+1. Create `content/projects/web-apps/apollo.md`:
+   ```markdown
+   ---
+   layout: default
+   title: Apollo Blog
+   ---
+   
+   # Apollo Blog Project
+   
+   Details about the Apollo blog system...
+   ```
 
-## Updating Apollo 🔄
-
-Apollo is designed for conflict-free updates:
-
-```bash
-git pull origin main
-# Your user-config.yml and content/ are preserved
-./build.sh  # Rebuild with updates
-```
+2. Accessible at `/projects/web-apps/apollo/`
 
 ## Contributing 🤝
-
-Contributions are welcome! Please:
 
 1. Fork the repository
 2. Create a feature branch
 3. Make your changes
-4. Test thoroughly
+4. Test locally
 5. Submit a pull request
 
 ## License 📄
 
-[Add your license here]
-
-## Roadmap 🗺️
-
-- [ ] Theme customization UI
-- [ ] More subscription service integrations
-- [ ] Content scheduling
-- [ ] SEO optimization tools
-- [ ] Multi-author support
+MIT License - see LICENSE file for details.
 
 ---
 

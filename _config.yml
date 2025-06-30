@@ -1,7 +1,24 @@
 title: Apollo
-description: >-
-  A personal website generator.
+description: A personal website generator
 
+# Content Settings
+content:
+  source: "local"           # "local" for content/ directory, "external" for git submodule/repo
+  repository: ""            # Git URL if using external content
+
+# Site Settings  
+user:
+  name: "Your Name"
+  domain: ""
+  description: "A personal website"
+
+# Optional Features
+features:
+  google_scholar:
+    enabled: false
+    user_id: ""
+
+# Jekyll Settings
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
@@ -13,62 +30,26 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - node_modules/
-  - vendor/bundle/
-  - vendor/cache/
-  - vendor/gems/
-  - vendor/ruby/
+  - vendor/
   - README.md
   - LICENSE
   - tailwind.config.js
   - package.json
   - package-lock.json
-  - content-repo-example/
-  - app.yaml
   - user-config.yml
   - build.sh
   - setup.sh
   - sync-content.sh
   - _site-config.yml
-  
+  - FEATURES.md
+
 include:
-  - _pages
-  - content/pages
+  - content
 
 collections:
   posts:
     output: true
     permalink: /essays/:slug/
-  content_posts:
-    output: true
-    permalink: /essays/:slug/
-
-# Default user settings (will be overridden by user-config.yml)
-user:
-  name: "Your Name"
-  domain: ""
-  description: "A personal website"
-
-content:
-  source: "local"
-  repository: ""
-
-features:
-  google_scholar:
-    enabled: false
-    user_id: ""
-  subscription:
-    enabled: false
-    service: ""
-    url: ""
-  social:
-    enabled: false
-    twitter: ""
-    linkedin: ""
-    github: ""
-
-build:
-  auto_rebuild: true
-  include_drafts: false
 
 defaults:
   -
@@ -79,12 +60,6 @@ defaults:
       layout: "post"
   -
     scope:
-      path: "content/posts"
-      type: "content_posts"
-    values:
-      layout: "post"
-  -
-    scope:
-      path: "" # an empty string here means all files in the project
+      path: ""
     values:
       layout: "default"
