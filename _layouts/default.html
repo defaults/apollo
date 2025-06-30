@@ -7,16 +7,15 @@
   <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
   <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
   {% if site.site.overrides.css %}
     <link rel="stylesheet" href="{{ '/_overrides/' | relative_url }}{{ site.site.overrides.css }}">
   {% endif %}
   {% seo %}
 </head>
-<body class="h-full">
+<body class="h-full bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark font-serif leading-relaxed text-base">
   {% include header.html %}
 
-  <main class="content">
+  <main class="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
     {{ content }}
   </main>
 

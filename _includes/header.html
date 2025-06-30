@@ -1,28 +1,30 @@
 <!-- Default Header Content -->
-<header>
-  <nav>
+<header class="max-w-content mx-auto px-4 py-8 sm:px-6 lg:px-8">
+  <nav class="flex items-center justify-between">
     <!-- Site title/name -->
     <div>
-      <div style="font-size: 1.25rem; font-weight: var(--heading-weight); color: var(--color-tx-normal);">
+      <div class="text-xl font-semibold text-text-light dark:text-text-dark">
         <!-- Always show clickable home title -->
-        <a href="/" style="color: var(--color-tx-normal); text-decoration: none; transition: color 0.2s ease;">{{ site.user.name | default: site.title | default: "Apollo" }}</a>
+        <a href="/" class="nav-link">{{ site.title | default: "Apollo" }}</a>
         
         {% if page.layout == 'list' and page.collection == 'posts' %}
           <!-- Essays listing page -->
-          <span style="color: var(--color-tx-muted);"> / Essays</span>
+          <span class="text-gray-500 dark:text-gray-400"> / Essays</span>
         {% elsif page.layout == 'post' %}
           <!-- Individual essay page -->
-          <span style="color: var(--color-tx-muted);"> / </span>
-          <a href="/essays/" style="color: var(--color-tx-muted); text-decoration: none;">Essays</a>
+          <span class="text-gray-500 dark:text-gray-400"> / </span>
+          <a href="/essays/" class="text-gray-500 dark:text-gray-400 hover:text-click focus:text-click">Essays</a>
+          <span class="text-gray-500 dark:text-gray-400"> /</span>
         {% endif %}
       </div>
     </div>
     
     <!-- Theme toggle -->
     <div>
-      <button id="theme-toggle" style="padding: 0.5rem; color: var(--color-tx-normal); cursor: pointer; background: none; border: none; font-size: 1.125rem; transition: opacity 0.2s ease;" aria-label="Toggle theme">
-        <span id="theme-icon">🌙</span>
+      <button id="theme-toggle" class="p-2 text-text-light dark:text-text-dark hover:opacity-70 transition-opacity duration-200 focus:outline-none" aria-label="Toggle theme">
+        <span id="theme-icon" class="text-lg">🌙</span>
       </button>
     </div>
   </nav>
+
 </header>
