@@ -6,7 +6,7 @@ _includes/
 _layouts/
 _plugins/
 _sass/
-assets/
+/assets/
 content/
 
 # Ignore development files
@@ -37,4 +37,5 @@ scripts/
 # Keep only the built site and configuration
 # _site/ (this is what we want to deploy)
 # app.yaml (needed for App Engine)
-# _config.yml (needed for Jekyll metadata) 
+# _config.yml (needed for Jekyll metadata)
+# main.py and requirements.txt (needed for Python runtime) 

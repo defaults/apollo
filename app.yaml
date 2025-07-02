@@ -38,10 +38,6 @@ handlers:
   static_files: _site/\1
   upload: _site/.*
 
-# Fallback to a basic Python app for any unmatched requests
-- url: /.*
-  script: auto
-
 error_handlers:
 - file: _site/404.html
   error_code: over_quota
