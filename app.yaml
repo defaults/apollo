@@ -2,36 +2,48 @@ runtime: python39
 
 # Static file handlers for Jekyll site
 handlers:
-# Handle Jekyll assets
+# Handle assets (CSS, JS, images)
 - url: /assets
   static_dir: _site/assets
-  
-# Handle feed.xml
-- url: /feed.xml
-  static_files: _site/feed.xml
-  upload: _site/feed.xml
+  secure: always
 
-# Handle all other pages (Jekyll generates HTML files)
-- url: /(.+)/
-  static_files: _site/\1/index.html
-  upload: _site/.*/index.html
+# Handle feed.xml and sitemap.xml
+- url: /(feed|sitemap)\.xml
+  static_files: _site/\1.xml
+  upload: _site/(feed|sitemap)\.xml
+  secure: always
+
+# Handle robots.txt
+- url: /robots\.txt
+  static_files: _site/robots.txt
+  upload: _site/robots\.txt
+  secure: always
 
 # Handle root index
 - url: /
   static_files: _site/index.html
   upload: _site/index.html
+  secure: always
 
-# Handle direct HTML files (for any remaining routes)
+# Handle directories with trailing slash (Jekyll pretty URLs)
+- url: /(.+)/
+  static_files: _site/\1/index.html
+  upload: _site/.*/index.html
+  secure: always
+
+# Handle direct HTML files
 - url: /(.+)\.html
   static_files: _site/\1.html
   upload: _site/.*\.html
+  secure: always
 
-# Catch-all for any other files
+# Catch-all for any other static files
 - url: /(.+)
   static_files: _site/\1
   upload: _site/.*
+  secure: always
 
-# Default error handlers
+# Error handlers
 error_handlers:
 - file: _site/404.html
   error_code: over_quota
@@ -40,6 +52,11 @@ error_handlers:
 - file: _site/404.html
   error_code: timeout
 
-# Security headers
+# Performance and security settings
+automatic_scaling:
+  min_instances: 0
+  max_instances: 10
+
+# Security headers for static content
 env_variables:
-  # Optional: Add any environment variables here
+  SECURE_SSL_REDIRECT: "true"

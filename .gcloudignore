@@ -16,19 +16,23 @@ vendor/
 node_modules/
 Gemfile
 Gemfile.lock
-package.json
-package-lock.json
-tailwind.config.js
 
 # Ignore Git and GitHub files
 .git/
 .github/
 .gitignore
 README.md
+DEPLOYMENT.md
 
-# Ignore local development
+# Ignore local development and scripts
 .bundle/
 *.log
+scripts/
+
+# Ignore backup and temporary files
+*~
+*.backup
+*.tmp
 
 # Keep only the built site and configuration
 # _site/ (this is what we want to deploy)

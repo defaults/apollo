@@ -19,18 +19,32 @@ jobs:
         ruby-version: '3.2'
         bundler-cache: true
         
-    - name: Setup Node.js (for any JS dependencies)
-      uses: actions/setup-node@v4
+    - name: Cache Jekyll build
+      uses: actions/cache@v3
       with:
-        node-version: '18'
+        path: |
+          .jekyll-cache
+          _site
+        key: ${{ runner.os }}-jekyll-${{ hashFiles('_config.yml', 'Gemfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-jekyll-
         
-    - name: Install dependencies
+    - name: Install Jekyll dependencies
       run: |
-        bundle install
+        bundle install --deployment --without development test
         
     - name: Build Jekyll site
       run: |
-        bundle exec jekyll build
+        bundle exec jekyll build --verbose
+        
+    - name: Verify build output
+      run: |
+        if [ ! -d "_site" ]; then
+          echo "❌ Build failed - _site directory not found"
+          exit 1
+        fi
+        echo "✅ Build successful - _site directory contains:"
+        ls -la _site/
         
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v2
@@ -39,11 +53,23 @@ jobs:
         service_account_key: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
         export_default_credentials: true
         
+    - name: Verify Google Cloud authentication
+      run: |
+        gcloud auth list
+        gcloud config list project
+        
     - name: Deploy to App Engine
       run: |
-        gcloud app deploy --quiet --promote
+        echo "🚀 Deploying to App Engine..."
+        gcloud app deploy --quiet --promote --version=$(date +%Y%m%d%H%M%S)
         
-    - name: Show deployment URL
+    - name: Show deployment info
       run: |
-        echo "Deployment complete!"
-        echo "Site URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com" 
+        echo "✅ Deployment complete!"
+        echo "📍 Site URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com"
+        echo "📊 View logs: https://console.cloud.google.com/logs/query?project=${{ secrets.GCP_PROJECT_ID }}"
+        
+    - name: Test deployment
+      run: |
+        sleep 30  # Wait for deployment to propagate
+        curl -f -s https://${{ secrets.GCP_PROJECT_ID }}.appspot.com || echo "⚠️ Site not responding yet, may need a few more minutes" 
