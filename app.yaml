@@ -1,58 +1,59 @@
 runtime: python39
 
-# Static file handlers for Jekyll site
+# This is a placeholder main.py that will never be called
+# since all requests are handled by static file handlers
+skip_files:
+- ^(.*/)?#.*#$
+- ^(.*/)?.*~$
+- ^(.*/)?.*\.py[co]$
+- ^(.*/)?.*/RCS/.*$
+- ^(.*/)?\..*$
+
 handlers:
-# Handle root index explicitly first
+# Handle root index
 - url: /
   static_files: _site/index.html
   upload: _site/index.html
 
-# Handle assets (CSS, JS, images)
+# Handle assets
 - url: /assets/(.*)
   static_files: _site/assets/\1
   upload: _site/assets/.*
 
-# Handle feed.xml
+# Handle feed
 - url: /feed\.xml
   static_files: _site/feed.xml
   upload: _site/feed.xml
 
-# Handle sitemap.xml (if it exists)
-- url: /sitemap\.xml
-  static_files: _site/sitemap.xml
-  upload: _site/sitemap.xml
-
-# Handle robots.txt (if it exists)
-- url: /robots\.txt
-  static_files: _site/robots.txt
-  upload: _site/robots.txt
-
-# Handle Jekyll pretty URLs - directories with trailing slash
+# Handle Jekyll pretty URLs with trailing slash
 - url: /(.+)/$
   static_files: _site/\1/index.html
   upload: _site/.*/index.html
 
-# Handle Jekyll pretty URLs - directories without trailing slash
-- url: /([^/]+)$
+# Handle Jekyll pretty URLs without trailing slash
+- url: /([^/\.]+)$
   static_files: _site/\1/index.html
   upload: _site/.*/index.html
 
-# Handle direct HTML files
-- url: /(.+)\.html$
-  static_files: _site/\1.html
+# Handle HTML files directly
+- url: /(.+\.html)$
+  static_files: _site/\1
   upload: _site/.*\.html
 
-# Catch-all for any other files
+# Catch-all for other files
 - url: /(.*)
   static_files: _site/\1
   upload: _site/.*
 
-# Error handlers
+# Fallback to a basic Python app for any unmatched requests
+- url: /.*
+  script: auto
+
 error_handlers:
 - file: _site/404.html
   error_code: over_quota
 - file: _site/404.html
-  error_code: dos_api_denial
+  error_code: dos_api_denial  
 - file: _site/404.html
   error_code: timeout
 
