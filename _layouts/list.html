@@ -2,35 +2,25 @@
 layout: default
 ---
 
-<div class="space-y-8">
-  
-  <!-- Page Description -->
+<article>
   {% if page.description %}
-  <div class="prose max-w-none text-gray-600 dark:text-gray-400">
-    {{ page.description }}
-  </div>
+  <div class="muted">{{ page.description }}</div>
   {% endif %}
 
-  <!-- Content (posts or publications) -->
-  <div class="space-y-2">
-    {% if page.collection == 'publications' %}
-      {% assign items = site.publications | sort: 'date' | reverse %}
-    {% else %}
-      {% assign items = site.posts | sort: 'date' | reverse %}
-    {% endif %}
-    
-    {% for item in items %}
-    <div class="group">
-      <span class="text-gray-500 dark:text-gray-400 text-base">{{ item.date | date: "%y" }} · {{ item.date | date: "%m" }}</span>
-      <a href="{{ item.url | relative_url }}" class="content-link ml-2 text-base hover:text-click focus:text-click">{{ item.title }}</a>
-    </div>
-    {% endfor %}
-    
-    {% comment %} If no items found {% endcomment %}
-    {% if items.size == 0 %}
-    <div class="text-center py-12">
-      <p class="text-gray-600 dark:text-gray-400">No {{ page.collection | default: 'posts' }} found yet.</p>
-    </div>
-    {% endif %}
-  </div>
-</div> 
+  {% if page.collection == 'publications' %}
+    {% assign items = site.publications | sort: 'date' | reverse %}
+  {% else %}
+    {% assign items = site.posts | sort: 'date' | reverse %}
+  {% endif %}
+  
+  {% for item in items %}
+  <p>
+    <span class="muted">{{ item.date | date: "%y" }} · {{ item.date | date: "%m" }}</span>
+    <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
+  </p>
+  {% endfor %}
+  
+  {% if items.size == 0 %}
+  <p class="muted">No {{ page.collection | default: 'posts' }} found yet.</p>
+  {% endif %}
+</article> 

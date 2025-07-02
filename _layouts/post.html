@@ -2,41 +2,26 @@
 layout: default
 ---
 
-<div class="essay-container">
-  <div class="essay-layout">
-    <!-- Main Content -->
-    <article class="essay-content space-y-8">
-      <!-- Post Header -->
-      <header class="space-y-4">
-        <h1 class="text-2xl font-bold">{{ page.title }}</h1>
-        
-        <div class="flex flex-wrap items-center gap-4 text-base text-gray-600 dark:text-gray-400">
-          <time datetime="{{ page.date | date_to_xmlschema }}">
-            {{ page.date | date: "%B %d, %Y" }}
-          </time>
-          
-          {% if page.type %}
-          <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-base">
-            {{ page.type | capitalize }}
-          </span>
-          {% endif %}
-          
-          {% if page.authors %}
-          <span>by {{ page.authors }}</span>
-          {% endif %}
-        </div>
-        
-        {% if page.description %}
-        <p class="text-dario-subtitle text-gray-600 dark:text-gray-400">
-          {{ page.description }}
-        </p>
-        {% endif %}
-      </header>
-
-      <!-- Post Content -->
-      <div class="prose max-w-none prose-gray dark:prose-invert text-dario-body">
-        {{ content }}
-      </div>
-    </article>
+<article>
+  <h1>{{ page.title }}</h1>
+  
+  <div class="muted">
+    <time datetime="{{ page.date | date_to_xmlschema }}">
+      {{ page.date | date: "%B %d, %Y" }}
+    </time>
+    
+    {% if page.type %}
+    <span> • {{ page.type | capitalize }}</span>
+    {% endif %}
+    
+    {% if page.authors %}
+    <span> • by {{ page.authors }}</span>
+    {% endif %}
   </div>
-</div> 
+  
+  {% if page.description %}
+  <p class="muted">{{ page.description }}</p>
+  {% endif %}
+
+  {{ content }}
+</article> 

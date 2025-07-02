@@ -1,41 +1,71 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  <link rel="stylesheet" href="{{ '/assets/css/main.css' | relative_url }}">
-  {% if site.site.overrides.css %}
-    <link rel="stylesheet" href="{{ '/_overrides/' | relative_url }}{{ site.site.overrides.css }}">
-  {% endif %}
+  
+  <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
   {% seo %}
 </head>
-<body class="h-full bg-primary-light dark:bg-primary-dark text-text-light dark:text-text-dark font-serif leading-relaxed text-base">
-  {% include header.html %}
-
-  <main class="max-w-content mx-auto px-4 sm:px-6 lg:px-8">
-    {{ content }}
-  </main>
-
-  {% include footer.html %}
-
-  <script src="{{ '/assets/js/theme.js' | relative_url }}"></script>
+<body class="theme-light">
+  <!-- Apply saved theme immediately to prevent flash -->
   <script>
-    // Mobile menu toggle
-    document.addEventListener('DOMContentLoaded', function() {
-      const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
-      const mobileMenu = document.getElementById('mobile-menu');
+    (function() {
+      const savedTheme = localStorage.getItem('theme') || 'light';
+      document.body.className = savedTheme === 'dark' ? 'theme-dark' : 'theme-light';
+    })();
+  </script>
+  
+  <nav>
+    <div style="display: flex; align-items: center; justify-content: space-between;">
+      <div>
+        <a href="/" class="plain">{{ site.title | default: "Apollo" }}</a>
+        {% if page.layout == 'list' and page.collection == 'posts' %}
+          <span class="muted"> / Essays</span>
+        {% elsif page.layout == 'post' %}
+          <span class="muted"> / </span>
+          <a href="/essays/" class="muted plain">Essays</a>
+          <span class="muted"> /</span>
+        {% endif %}
+      </div>
       
-      if (mobileMenuToggle && mobileMenu) {
-        mobileMenuToggle.addEventListener('click', function() {
-          mobileMenu.classList.toggle('hidden');
-        });
-      }
+      <button id="theme-toggle" aria-label="Toggle theme">
+        <div class="theme-toggle-slide"></div>
+        <div class="theme-toggle-switch"></div>
+      </button>
+    </div>
+  </nav>
+
+  {{ content }}
+
+  <!-- Theme toggle functionality -->
+  <script>
+    window.addEventListener('load', function() {
+        const button = document.getElementById('theme-toggle');
+        
+        if (button) {
+            button.onclick = function() {
+                const body = document.body;
+                let newTheme;
+                
+                if (body.classList.contains('theme-dark')) {
+                    body.className = 'theme-light';
+                    newTheme = 'light';
+                } else {
+                    body.className = 'theme-dark';
+                    newTheme = 'dark';
+                }
+                
+                // Save the theme preference
+                localStorage.setItem('theme', newTheme);
+            };
+        }
     });
   </script>
-
+  
   {% feed_meta %}
 </body>
 </html>

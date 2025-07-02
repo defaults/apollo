@@ -2,73 +2,50 @@
 layout: default
 ---
 
-<article class="space-y-8">
-  <!-- Publication Header -->
-  <header class="space-y-4">
-    <h1 class="text-2xl font-bold">{{ page.title }}</h1>
+<article>
+  <h1>{{ page.title }}</h1>
+  
+  <div class="muted">
+    {% if page.authors %}
+    <p>{{ page.authors }}</p>
+    {% endif %}
     
-    <div class="space-y-2 text-sm text-gray-600 dark:text-gray-400">
-      {% if page.authors %}
-      <p class="font-medium">{{ page.authors }}</p>
+    {% if page.venue %}
+    <span>{{ page.venue }}</span>
+    {% endif %}
+    
+    {% if page.date %}
+    <span>{{ page.date | date: "%Y" }}</span>
+    {% endif %}
+    
+    {% if page.status %}
+    <span>{{ page.status }}</span>
+    {% endif %}
+    
+    {% if page.pdf_url or page.arxiv_url or page.doi or page.code_url %}
+    <p>
+      {% if page.pdf_url %}
+      <a href="{{ page.pdf_url }}">PDF</a>
       {% endif %}
-      
-      <div class="flex flex-wrap items-center gap-4">
-        {% if page.venue %}
-        <span class="italic">{{ page.venue }}</span>
-        {% endif %}
-        
-        {% if page.date %}
-        <time datetime="{{ page.date | date_to_xmlschema }}">
-          {{ page.date | date: "%Y" }}
-        </time>
-        {% endif %}
-        
-        {% if page.status %}
-        <span class="px-2 py-1 bg-gray-200 dark:bg-gray-700 rounded text-xs">
-          {{ page.status }}
-        </span>
-        {% endif %}
-    </div>
-    
-      <!-- Links -->
-      {% if page.pdf_url or page.arxiv_url or page.doi or page.code_url %}
-      <div class="flex flex-wrap gap-4 pt-2">
-        {% if page.pdf_url %}
-        <a href="{{ page.pdf_url }}" class="content-link text-sm">PDF</a>
-        {% endif %}
-        {% if page.arxiv_url %}
-        <a href="{{ page.arxiv_url }}" class="content-link text-sm">arXiv</a>
-        {% endif %}
-        {% if page.doi %}
-        <a href="https://doi.org/{{ page.doi }}" class="content-link text-sm">DOI</a>
-            {% endif %}
-        {% if page.code_url %}
-        <a href="{{ page.code_url }}" class="content-link text-sm">Code</a>
-            {% endif %}
-        </div>
-        {% endif %}
-    </div>
-  </header>
+      {% if page.arxiv_url %}
+      <a href="{{ page.arxiv_url }}">arXiv</a>
+      {% endif %}
+      {% if page.doi %}
+      <a href="https://doi.org/{{ page.doi }}">DOI</a>
+      {% endif %}
+      {% if page.code_url %}
+      <a href="{{ page.code_url }}">Code</a>
+      {% endif %}
+    </p>
+    {% endif %}
+  </div>
 
-  <!-- Abstract -->
   {% if page.abstract %}
-  <section>
-    <h2 class="text-lg font-semibold mb-3">Abstract</h2>
-    <div class="prose max-w-none text-gray-700 dark:text-gray-300">
-      {{ page.abstract }}
-    </div>
-  </section>
+  <h2>Abstract</h2>
+  {{ page.abstract }}
   {% endif %}
 
-  <!-- Publication Content -->
-  {% if content and content != '' %}
-  <div class="prose max-w-none prose-gray dark:prose-invert">
-    {{ content }}
-</div> 
-  {% endif %}
+  {{ content }}
 
-  <!-- Footer -->
-  <footer class="border-t border-gray-300 dark:border-gray-600 pt-8">
-    <a href="/publications/" class="content-link text-sm">← All publications</a>
-  </footer>
+  <p><a href="/publications/">← All publications</a></p>
 </article> 
