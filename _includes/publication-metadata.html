@@ -1,0 +1,34 @@
+<div class="muted">
+  {% if page.authors %}
+  <p>{{ page.authors }}</p>
+  {% endif %}
+  
+  {% if page.venue %}
+  <span>{{ page.venue }}</span>
+  {% endif %}
+  
+  {% if page.date %}
+  <span>{{ page.date | date: "%Y" }}</span>
+  {% endif %}
+  
+  {% if page.status %}
+  <span>{{ page.status }}</span>
+  {% endif %}
+  
+  {% if page.pdf_url or page.arxiv_url or page.doi or page.code_url %}
+  <p>
+    {% if page.pdf_url %}
+    <a href="{{ page.pdf_url }}">PDF</a>
+    {% endif %}
+    {% if page.arxiv_url %}
+    <a href="{{ page.arxiv_url }}">arXiv</a>
+    {% endif %}
+    {% if page.doi %}
+    <a href="https://doi.org/{{ page.doi }}">DOI</a>
+    {% endif %}
+    {% if page.code_url %}
+    <a href="{{ page.code_url }}">Code</a>
+    {% endif %}
+  </p>
+  {% endif %}
+</div> 

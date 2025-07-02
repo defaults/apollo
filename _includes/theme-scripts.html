@@ -1,0 +1,32 @@
+<!-- Apply saved theme immediately to prevent flash -->
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.body.className = savedTheme === 'dark' ? 'theme-dark' : 'theme-light';
+  })();
+</script>
+
+<!-- Theme toggle functionality -->
+<script>
+  window.addEventListener('load', function() {
+      const button = document.getElementById('theme-toggle');
+      
+      if (button) {
+          button.onclick = function() {
+              const body = document.body;
+              let newTheme;
+              
+              if (body.classList.contains('theme-dark')) {
+                  body.className = 'theme-light';
+                  newTheme = 'light';
+              } else {
+                  body.className = 'theme-dark';
+                  newTheme = 'dark';
+              }
+              
+              // Save the theme preference
+              localStorage.setItem('theme', newTheme);
+          };
+      }
+  });
+</script> 

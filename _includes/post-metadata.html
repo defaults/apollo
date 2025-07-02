@@ -1,0 +1,13 @@
+<div class="muted">
+  <time datetime="{{ page.date | date_to_xmlschema }}">
+    {{ page.date | date: "%B %d, %Y" }}
+  </time>
+  
+  {% if page.type %}
+  <span> • {{ page.type | capitalize }}</span>
+  {% endif %}
+  
+  {% if page.authors %}
+  <span> • by {{ page.authors }}</span>
+  {% endif %}
+</div> 

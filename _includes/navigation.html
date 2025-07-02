@@ -1,0 +1,19 @@
+<nav>
+  <div style="display: flex; align-items: center; justify-content: space-between;">
+    <div>
+      <a href="/" class="plain">{{ site.title | default: "Apollo" }}</a>
+      {% if page.layout == 'list' and page.collection == 'posts' %}
+        <span class="muted"> / Essays</span>
+      {% elsif page.layout == 'post' %}
+        <span class="muted"> / </span>
+        <a href="/essays/" class="muted plain">Essays</a>
+        <span class="muted"> /</span>
+      {% endif %}
+    </div>
+    
+    <button id="theme-toggle" aria-label="Toggle theme">
+      <div class="theme-toggle-slide"></div>
+      <div class="theme-toggle-switch"></div>
+    </button>
+  </div>
+</nav> 
