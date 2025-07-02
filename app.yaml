@@ -4,15 +4,14 @@ runtime: python39
 # since all requests are handled by static file handlers
 
 handlers:
+# Handle assets with static_dir (more reliable for directories)
+- url: /assets
+  static_dir: _site/assets
+
 # Handle root index
 - url: /
   static_files: _site/index.html
   upload: _site/index.html
-
-# Handle assets
-- url: /assets/(.*)
-  static_files: _site/assets/\1
-  upload: _site/assets/.*
 
 # Handle feed
 - url: /feed\.xml
