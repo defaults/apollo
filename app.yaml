@@ -2,46 +2,50 @@ runtime: python39
 
 # Static file handlers for Jekyll site
 handlers:
-# Handle assets (CSS, JS, images)
-- url: /assets
-  static_dir: _site/assets
-  secure: always
-
-# Handle feed.xml and sitemap.xml
-- url: /(feed|sitemap)\.xml
-  static_files: _site/\1.xml
-  upload: _site/(feed|sitemap)\.xml
-  secure: always
-
-# Handle robots.txt
-- url: /robots\.txt
-  static_files: _site/robots.txt
-  upload: _site/robots\.txt
-  secure: always
-
-# Handle root index
+# Handle root index explicitly first
 - url: /
   static_files: _site/index.html
   upload: _site/index.html
-  secure: always
 
-# Handle directories with trailing slash (Jekyll pretty URLs)
-- url: /(.+)/
+# Handle assets (CSS, JS, images)
+- url: /assets/(.*)
+  static_files: _site/assets/\1
+  upload: _site/assets/.*
+
+# Handle feed.xml
+- url: /feed\.xml
+  static_files: _site/feed.xml
+  upload: _site/feed.xml
+
+# Handle sitemap.xml (if it exists)
+- url: /sitemap\.xml
+  static_files: _site/sitemap.xml
+  upload: _site/sitemap.xml
+
+# Handle robots.txt (if it exists)
+- url: /robots\.txt
+  static_files: _site/robots.txt
+  upload: _site/robots.txt
+
+# Handle Jekyll pretty URLs - directories with trailing slash
+- url: /(.+)/$
   static_files: _site/\1/index.html
   upload: _site/.*/index.html
-  secure: always
+
+# Handle Jekyll pretty URLs - directories without trailing slash
+- url: /([^/]+)$
+  static_files: _site/\1/index.html
+  upload: _site/.*/index.html
 
 # Handle direct HTML files
-- url: /(.+)\.html
+- url: /(.+)\.html$
   static_files: _site/\1.html
   upload: _site/.*\.html
-  secure: always
 
-# Catch-all for any other static files
-- url: /(.+)
+# Catch-all for any other files
+- url: /(.*)
   static_files: _site/\1
   upload: _site/.*
-  secure: always
 
 # Error handlers
 error_handlers:

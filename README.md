@@ -40,6 +40,7 @@ content/
 ### 3. Configure Your Site
 
 Edit `_config.yml`:
+
 ```yaml
 # Site Settings  
 user:

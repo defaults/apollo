@@ -42,6 +42,10 @@ exclude:
   - sync-content.sh
   - _site-config.yml
   - FEATURES.md
+  - app.yaml
+  - .gcloudignore
+  - DEPLOYMENT.md
+  - scripts/
 
 include:
   - content
