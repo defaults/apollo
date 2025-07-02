@@ -1,12 +1,45 @@
-runtime: go122
+runtime: python39
 
+# Static file handlers for Jekyll site
 handlers:
-  # Serve all static files with urls ending with a file extension
-  - url: /(.*\..*)$
-    static_files: _site/\1
-    upload: _site/(.*\..*)$
+# Handle Jekyll assets
+- url: /assets
+  static_dir: _site/assets
+  
+# Handle feed.xml
+- url: /feed.xml
+  static_files: _site/feed.xml
+  upload: _site/feed.xml
 
-  # Catch all handler to index.html
-  - url: /.*
-    static_files: _site/index.html
-    upload: _site/index.html
+# Handle all other pages (Jekyll generates HTML files)
+- url: /(.+)/
+  static_files: _site/\1/index.html
+  upload: _site/.*/index.html
+
+# Handle root index
+- url: /
+  static_files: _site/index.html
+  upload: _site/index.html
+
+# Handle direct HTML files (for any remaining routes)
+- url: /(.+)\.html
+  static_files: _site/\1.html
+  upload: _site/.*\.html
+
+# Catch-all for any other files
+- url: /(.+)
+  static_files: _site/\1
+  upload: _site/.*
+
+# Default error handlers
+error_handlers:
+- file: _site/404.html
+  error_code: over_quota
+- file: _site/404.html
+  error_code: dos_api_denial
+- file: _site/404.html
+  error_code: timeout
+
+# Security headers
+env_variables:
+  # Optional: Add any environment variables here

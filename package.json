@@ -1,13 +1,5 @@
 {
   "name": "apollo",
   "version": "1.0.0",
-  "description": "A personal website generator",
-  "scripts": {
-    "build:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --minify",
-    "watch:css": "tailwindcss -i ./assets/css/input.css -o ./assets/css/main.css --watch"
-  },
-  "dependencies": {
-    "@tailwindcss/typography": "^0.5.10",
-    "tailwindcss": "^3.4.1"
-  }
+  "description": "A personal website generator"
 }

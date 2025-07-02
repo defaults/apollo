@@ -1,0 +1,36 @@
+# Ignore Jekyll source files - we only want the built _site directory
+_posts/
+_drafts/
+_data/
+_includes/
+_layouts/
+_plugins/
+_sass/
+assets/
+content/
+
+# Ignore development files
+.jekyll-cache/
+.sass-cache/
+vendor/
+node_modules/
+Gemfile
+Gemfile.lock
+package.json
+package-lock.json
+tailwind.config.js
+
+# Ignore Git and GitHub files
+.git/
+.github/
+.gitignore
+README.md
+
+# Ignore local development
+.bundle/
+*.log
+
+# Keep only the built site and configuration
+# _site/ (this is what we want to deploy)
+# app.yaml (needed for App Engine)
+# _config.yml (needed for Jekyll metadata) 
