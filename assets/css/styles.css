@@ -509,6 +509,11 @@ article a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversef
     color: var(--color-tx-muted)
 }
 
+/* Main site title styling */
+nav a.plain {
+    font-weight: 600;
+}
+
 /* Theme Toggle */
 #theme-toggle {
     height: 20px;
