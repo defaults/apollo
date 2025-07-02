@@ -46,6 +46,8 @@ exclude:
   - .gcloudignore
   - DEPLOYMENT.md
   - scripts/
+  - main.py
+  - requirements.txt
 
 include:
   - content
