@@ -72,12 +72,10 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    needs: [check-content-updates]
     if: |
       github.event_name == 'push' || 
       github.event_name == 'workflow_dispatch' || 
-      github.event_name == 'repository_dispatch' ||
-      (github.event_name == 'schedule' && needs.check-content-updates.outputs.should_deploy == 'true')
+      github.event_name == 'repository_dispatch'
     
     steps:
     - name: Checkout code
@@ -211,15 +209,7 @@ jobs:
     - name: Deploy to App Engine
       run: |
         echo "🚀 Deploying to App Engine..."
-        
-        # Create version name based on trigger type
-        if [ "${{ github.event_name }}" = "schedule" ]; then
-          VERSION_SUFFIX="content-$(date +%Y%m%d%H%M%S)"
-        else
-          VERSION_SUFFIX="$(date +%Y%m%d%H%M%S)"
-        fi
-        
-        gcloud app deploy --quiet --promote --version="$VERSION_SUFFIX"
+        gcloud app deploy --quiet --promote --version="$(date +%Y%m%d%H%M%S)"
         
     - name: Show deployment info
       run: |
@@ -248,14 +238,83 @@ jobs:
         else
           echo "⚠️ Site returned status $RESPONSE, may need a few more minutes"
         fi
+
+  # Separate job for scheduled content deployments
+  deploy-content-updates:
+    runs-on: ubuntu-latest
+    needs: [check-content-updates]
+    if: github.event_name == 'schedule' && needs.check-content-updates.outputs.should_deploy == 'true'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ env.RUBY_VERSION }}
+        bundler-cache: false
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        bundle config path vendor/bundle
+        bundle config set --local without 'development test'
+        bundle install --jobs 4 --retry 3
+        npm ci
+        
+    - name: Sync external content
+      run: |
+        echo "📡 Syncing updated external content..."
+        CONTENT_REPO=$(grep -o 'repository: "[^"]*"' _config.yml | cut -d'"' -f2)
+        
+        rm -rf content
+        mkdir -p content
+        
+        if [ -d "content-external" ]; then
+          cd content-external
+          git pull origin main || git pull origin master
+          cd ..
+          cp -r content-external/* content/
+        else
+          git clone "$CONTENT_REPO" temp-content
+          cp -r temp-content/* content/
+          rm -rf temp-content
+        fi
+        
+    - name: Build Jekyll site
+      run: |
+        echo "🏗️ Building Jekyll site with updated content..."
+        bundle exec jekyll build --verbose
+        
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        
+    - name: Deploy to App Engine
+      run: |
+        echo "🚀 Deploying content updates to App Engine..."
+        gcloud app deploy --quiet --promote --version="content-$(date +%Y%m%d%H%M%S)"
         
     - name: Update submodule reference
-      if: success() && contains(github.event_name, 'schedule')
+      if: success()
       run: |
-        # Update submodule reference if this was a content update
-        CONTENT_SOURCE=$(grep -o 'source: "[^"]*"' _config.yml | cut -d'"' -f2)
-        
-        if [ "$CONTENT_SOURCE" = "external" ] && [ -d "content-external" ]; then
+        if [ -d "content-external" ]; then
           cd content-external
           git pull origin main || git pull origin master
           cd ..
