@@ -66,17 +66,14 @@ The GitHub Action will:
 2. Deploy to Google App Engine
 3. Your site will be available at `https://YOUR_PROJECT_ID.appspot.com`
 
-## Manual Deployment
+## Automatic Deployment
 
-If you want to deploy manually (without GitHub Actions):
+Once the secrets are configured, any push to the `master` branch will automatically trigger a deployment.
 
-```bash
-# Build the Jekyll site
-bundle exec jekyll build
-
-# Deploy to App Engine
-gcloud app deploy
-```
+The GitHub Action will:
+1. Build the Jekyll site
+2. Deploy to Google App Engine
+3. Your site will be available at `https://YOUR_PROJECT_ID.appspot.com`
 
 ## Monitoring Deployments
 
