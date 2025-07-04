@@ -45,17 +45,3 @@ handlers:
 
 error_handlers:
 - file: _site/404.html
-  error_code: over_quota
-- file: _site/404.html
-  error_code: dos_api_denial  
-- file: _site/404.html
-  error_code: timeout
-
-# Performance and security settings
-automatic_scaling:
-  min_instances: 0
-  max_instances: 10
-
-# Security headers for static content
-env_variables:
-  SECURE_SSL_REDIRECT: "true"

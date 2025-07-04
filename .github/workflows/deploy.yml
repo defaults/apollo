@@ -17,79 +17,18 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.2'
-        bundler-cache: false
-        
-    - name: Cache gems
-      uses: actions/cache@v3
-      with:
-        path: vendor/bundle
-        key: ${{ runner.os }}-gems-${{ hashFiles('**/Gemfile.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-gems-
-        
-    - name: Install system dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y build-essential
-        
-    - name: Install Jekyll dependencies
-      run: |
-        bundle config path vendor/bundle
-        bundle config set --local without 'development test'
-        bundle install --jobs 4 --retry 3
+        bundler-cache: true
         
     - name: Build Jekyll site
-      run: |
-        bundle exec jekyll build --verbose
+      run: bundle exec jekyll build --verbose
         
-    - name: Create deployment package
-      run: |
-        # Copy non-Jekyll files to the _site directory
-        cp main.py requirements.txt _site/
-
-        # Create a new app.yaml in the _site directory with correct paths
-        cat <<EOF > _site/app.yaml
-runtime: python39
-handlers:
-- url: /
-  static_files: index.html
-  upload: index.html
-- url: /assets/(.*)
-  static_files: assets/\1
-  upload: assets/.*
-- url: /feed\.xml
-  static_files: feed.xml
-  upload: feed.xml
-- url: /(.+)/
-  static_files: \1/index.html
-  upload: .*/index.html
-- url: /([^/\.]+)
-  static_files: \1/index.html
-  upload: .*/index.html
-- url: /(.+\.html)
-  static_files: \1
-  upload: .*\.html
-- url: /(.*)
-  static_files: \1
-  upload: .*
-- url: /.*
-  script: auto
-error_handlers:
-- file: 404.html
-EOF
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
         credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
         
     - name: Setup Google Cloud CLI
       uses: google-github-actions/setup-gcloud@v2
-      with:
-        project_id: ${{ secrets.GCP_PROJECT_ID }}
-        
+      
     - name: Deploy to App Engine
-      working-directory: ./_site
-      run: |
-        gcloud app deploy --quiet --promote --version=$(date +%Y%m%d%H%M%S)
+      run: gcloud app deploy --quiet --promote

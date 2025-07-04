@@ -1,0 +1,12 @@
+# Ignore everything by default
+*
+.*
+
+# Whitelist the necessary files for App Engine
+!app.yaml
+!main.py
+!requirements.txt
+
+# Whitelist the entire built site directory
+!_site/
+!_site/**
