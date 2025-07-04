@@ -186,6 +186,10 @@ template {
         --border-radius: 0;
         --image-radius: 0
     }
+
+    body {
+        padding: 1rem 0 3rem;
+    }
 }
 
 :root {
@@ -408,7 +412,7 @@ body {
     font-family: var(--font-content);
     margin: 2vw auto 0 auto;
     line-height: var(--line-height);
-    padding: 2rem 0 24rem;
+    padding: 2rem 0 6rem;
     overflow-x: hidden;
     font-size: 1.6rem;
     font-size: calc(1.4rem + 0.2vw);
