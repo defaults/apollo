@@ -41,4 +41,16 @@ document.addEventListener('DOMContentLoaded', function() {
             link.classList.add('text-blue-600', 'border-b-2', 'border-blue-600');
         }
     });
+
+    // Make external links (those with arrow icons) open in new tab
+    const externalLinks = document.querySelectorAll('article a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversefootnote)');
+    
+    externalLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        // Check if it's an external link (doesn't start with # or /)
+        if (href && !href.startsWith('#') && !href.startsWith('/')) {
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
+        }
+    });
 });
