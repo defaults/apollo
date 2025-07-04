@@ -3,6 +3,8 @@ name: Deploy to Google App Engine
 on:
   push:
     branches: [ master ]
+  pull_request:
+    branches: [ master ]
   workflow_dispatch:
 
 jobs:
@@ -21,14 +23,32 @@ jobs:
         
     - name: Build Jekyll site
       run: bundle exec jekyll build --verbose
+      
+    - name: Debug - List _site contents
+      run: |
+        echo "=== _site directory contents ==="
+        ls -la _site/
+        echo "=== All files in _site recursively ==="
+        find _site -type f | head -20
+        echo "=== Total files in _site ==="
+        find _site -type f | wc -l
         
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
-        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        credentials_json: ${{ secrets.GCP_SA_KEY }}
         
-    - name: Setup Google Cloud CLI
+    - name: Setup gcloud CLI
       uses: google-github-actions/setup-gcloud@v2
       
+    - name: Debug - Check what gcloud would upload
+      run: |
+        echo "=== Files that would be uploaded by gcloud ==="
+        gcloud meta list-files-for-upload . | head -20
+        echo "=== Total files to upload ==="
+        gcloud meta list-files-for-upload . | wc -l
+        echo "=== Check for _site files specifically ==="
+        gcloud meta list-files-for-upload . | grep "_site" | head -10
+        
     - name: Deploy to App Engine
       run: gcloud app deploy --quiet --promote
