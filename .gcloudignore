@@ -1,12 +1,39 @@
-# Ignore everything by default
-*
-.*
+# Ignore Jekyll source files - we only want the built _site directory
+_posts/
+_drafts/
+_data/
+_includes/
+_layouts/
+_plugins/
+_sass/
+content/
 
-# Whitelist the necessary files for App Engine
-!app.yaml
-!main.py
-!requirements.txt
+# Ignore development files
+.jekyll-cache/
+.sass-cache/
+vendor/
+node_modules/
+Gemfile
+Gemfile.lock
 
-# Whitelist the entire built site directory
-!_site/
-!_site/**
+# Ignore Git and GitHub files
+.git/
+.github/
+.gitignore
+README.md
+DEPLOYMENT.md
+
+# Ignore local development and scripts
+.bundle/
+*.log
+scripts/
+
+# Ignore backup and temporary files
+*~
+*.backup
+*.tmp
+
+# Keep only the built site and configuration
+# _site/ (this is what we want to deploy)
+# app.yaml (needed for App Engine)
+# main.py and requirements.txt (needed for Python runtime)
