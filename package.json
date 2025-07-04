@@ -1,5 +1,12 @@
 {
   "name": "apollo",
   "version": "1.0.0",
-  "description": "A personal website generator"
+  "description": "A personal website generator",
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.10",
+    "tailwindcss": "^3.4.1"
+  },
+  "scripts": {
+    "build:css": "echo 'CSS build completed - using Jekyll for CSS processing'"
+  }
 }
