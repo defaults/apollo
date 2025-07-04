@@ -42,15 +42,42 @@ jobs:
       run: |
         bundle exec jekyll build --verbose
         
-    - name: Verify build output
+    - name: Create deployment package
       run: |
-        if [ ! -d "_site" ]; then
-          echo "❌ Build failed - _site directory not found"
-          exit 1
-        fi
-        echo "✅ Build successful - _site directory contains:"
-        ls -la _site/
-        
+        # Copy non-Jekyll files to the _site directory
+        cp main.py requirements.txt _site/
+
+        # Create a new app.yaml in the _site directory with correct paths
+        cat <<EOF > _site/app.yaml
+runtime: python39
+handlers:
+- url: /
+  static_files: index.html
+  upload: index.html
+- url: /assets/(.*)
+  static_files: assets/\1
+  upload: assets/.*
+- url: /feed\.xml
+  static_files: feed.xml
+  upload: feed.xml
+- url: /(.+)/
+  static_files: \1/index.html
+  upload: .*/index.html
+- url: /([^/\.]+)
+  static_files: \1/index.html
+  upload: .*/index.html
+- url: /(.+\.html)
+  static_files: \1
+  upload: .*\.html
+- url: /(.*)
+  static_files: \1
+  upload: .*
+- url: /.*
+  script: auto
+error_handlers:
+- file: 404.html
+EOF
+
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -62,23 +89,7 @@ jobs:
       with:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
         
-    - name: Verify Google Cloud authentication
-      run: |
-        gcloud auth list
-        gcloud config list project
-        
     - name: Deploy to App Engine
+      working-directory: ./_site
       run: |
-        echo "🚀 Deploying to App Engine..."
         gcloud app deploy --quiet --promote --version=$(date +%Y%m%d%H%M%S)
-        
-    - name: Show deployment info
-      run: |
-        echo "✅ Deployment complete!"
-        echo "📍 Site URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com"
-        echo "📊 View logs: https://console.cloud.google.com/logs/query?project=${{ secrets.GCP_PROJECT_ID }}"
-        
-    - name: Test deployment
-      run: |
-        sleep 30  # Wait for deployment to propagate
-        curl -f -s https://${{ secrets.GCP_PROJECT_ID }}.appspot.com || echo "⚠️ Site not responding yet, may need a few more minutes"
