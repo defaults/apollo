@@ -3,21 +3,98 @@ name: Deploy to Google App Engine
 on:
   push:
     branches: [ master ]
+    paths-ignore:
+      - 'README.md'
+      - 'DEPLOYMENT.md'
+      - 'LICENSE'
   workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment'
+        required: false
+        default: 'false'
+        type: boolean
+  repository_dispatch:
+    types: [content-updated]
+  schedule:
+    # Check for external content updates every hour
+    - cron: '0 * * * *'
+
+env:
+  RUBY_VERSION: '3.2'
+  NODE_VERSION: '18'
 
 jobs:
+  check-content-updates:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    outputs:
+      should_deploy: ${{ steps.check.outputs.should_deploy }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        
+    - name: Check for external content updates
+      id: check
+      run: |
+        # Only check if using external content
+        CONTENT_SOURCE=$(grep -o 'source: "[^"]*"' _config.yml | cut -d'"' -f2)
+        if [ "$CONTENT_SOURCE" = "external" ]; then
+          echo "Checking external content repository for updates..."
+          
+          # Get content repository URL
+          CONTENT_REPO=$(grep -o 'repository: "[^"]*"' _config.yml | cut -d'"' -f2)
+          
+          if [ -n "$CONTENT_REPO" ] && [ -d "content-external" ]; then
+            cd content-external
+            git fetch origin
+            LOCAL_COMMIT=$(git rev-parse HEAD)
+            REMOTE_COMMIT=$(git rev-parse origin/main || git rev-parse origin/master)
+            
+            if [ "$LOCAL_COMMIT" != "$REMOTE_COMMIT" ]; then
+              echo "Content updates found!"
+              echo "should_deploy=true" >> $GITHUB_OUTPUT
+            else
+              echo "No content updates found."
+              echo "should_deploy=false" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "External content not properly configured."
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          fi
+        else
+          echo "Using local content, no external check needed."
+          echo "should_deploy=false" >> $GITHUB_OUTPUT
+        fi
+
   deploy:
     runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'push' || 
+      github.event_name == 'workflow_dispatch' || 
+      github.event_name == 'repository_dispatch'
     
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
-        ruby-version: '3.2'
+        ruby-version: ${{ env.RUBY_VERSION }}
         bundler-cache: false
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
         
     - name: Cache gems
       uses: actions/cache@v3
@@ -32,14 +109,68 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential
         
-    - name: Install Jekyll dependencies
+    - name: Install dependencies
       run: |
+        # Install Ruby gems
         bundle config path vendor/bundle
         bundle config set --local without 'development test'
         bundle install --jobs 4 --retry 3
         
+        # Install Node.js packages
+        npm ci
+        
+    - name: Sync external content
+      run: |
+        CONTENT_SOURCE=$(grep -o 'source: "[^"]*"' _config.yml | cut -d'"' -f2)
+        
+        if [ "$CONTENT_SOURCE" = "external" ]; then
+          echo "📡 Syncing external content..."
+          
+          # Get content repository URL
+          CONTENT_REPO=$(grep -o 'repository: "[^"]*"' _config.yml | cut -d'"' -f2)
+          
+          if [ -n "$CONTENT_REPO" ]; then
+            # Remove existing content directory and recreate
+            rm -rf content
+            mkdir -p content
+            
+            if [ -d "content-external" ]; then
+              echo "Using existing submodule..."
+              cd content-external
+              git pull origin main || git pull origin master
+              cd ..
+              cp -r content-external/* content/
+            else
+              echo "Cloning content repository..."
+              git clone "$CONTENT_REPO" temp-content
+              cp -r temp-content/* content/
+              rm -rf temp-content
+            fi
+            
+            echo "✅ External content synced!"
+            ls -la content/
+          else
+            echo "❌ External content repository not configured!"
+            exit 1
+          fi
+        else
+          echo "📁 Using local content..."
+          if [ ! -d "content" ] || [ ! -f "content/home/index.md" ]; then
+            echo "❌ Local content not found! Please run ./scripts/setup.sh"
+            exit 1
+          fi
+          echo "✅ Local content verified!"
+        fi
+        
+    - name: Build CSS
+      run: |
+        if [ -f "package.json" ]; then
+          npm run build:css || echo "No CSS build script found"
+        fi
+        
     - name: Build Jekyll site
       run: |
+        echo "🏗️ Building Jekyll site..."
         bundle exec jekyll build --verbose
         
     - name: Verify build output
@@ -48,19 +179,15 @@ jobs:
           echo "❌ Build failed - _site directory not found"
           exit 1
         fi
-        echo "✅ Build successful - _site directory contains:"
-        ls -la _site/
         
-    - name: Prepare deployment artifact
-      run: |
-        # Copy App Engine config into the built site directory
-        cp app.yaml main.py requirements.txt _site/
+        echo "✅ Build successful!"
+        echo "📊 Site statistics:"
+        echo "  Total files: $(find _site -type f | wc -l)"
+        echo "  Total size: $(du -sh _site | cut -f1)"
+        echo ""
+        echo "📁 Build output structure:"
+        find _site -name "*.html" | head -10
         
-        # Adjust paths in the copied app.yaml for the new root
-        sed -i 's|_site/||g' _site/app.yaml
-        echo "✅ Copied app.yaml:"
-        cat _site/app.yaml
-
     - name: Authenticate to Google Cloud
       uses: google-github-actions/auth@v2
       with:
@@ -74,22 +201,130 @@ jobs:
         
     - name: Verify Google Cloud authentication
       run: |
+        echo "🔐 Verifying Google Cloud authentication..."
         gcloud auth list
         gcloud config list project
+        echo "✅ Authentication verified!"
         
     - name: Deploy to App Engine
-      working-directory: ./_site
       run: |
-        echo "🚀 Deploying to App Engine from _site directory..."
-        gcloud app deploy app.yaml --quiet --promote --version=$(date +%Y%m%d%H%M%S)
+        echo "🚀 Deploying to App Engine..."
+        gcloud app deploy --quiet --promote --version="$(date +%Y%m%d%H%M%S)"
         
     - name: Show deployment info
       run: |
         echo "✅ Deployment complete!"
-        echo "📍 Site URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com"
-        echo "📊 View logs: https://console.cloud.google.com/logs/query?project=${{ secrets.GCP_PROJECT_ID }}"
+        echo ""
+        echo "🌐 Site URL: https://${{ secrets.GCP_PROJECT_ID }}.appspot.com"
+        echo "📊 Console: https://console.cloud.google.com/appengine?project=${{ secrets.GCP_PROJECT_ID }}"
+        echo "📋 Logs: https://console.cloud.google.com/logs/query?project=${{ secrets.GCP_PROJECT_ID }}"
+        echo ""
+        echo "🎯 Deployment trigger: ${{ github.event_name }}"
+        
+        if [ "${{ github.event_name }}" = "push" ]; then
+          echo "📝 Commit: ${{ github.sha }}"
+          echo "👤 Author: ${{ github.actor }}"
+        fi
         
     - name: Test deployment
       run: |
+        echo "🧪 Testing deployment..."
         sleep 30  # Wait for deployment to propagate
-        curl -f -s https://${{ secrets.GCP_PROJECT_ID }}.appspot.com || echo "⚠️ Site not responding yet, may need a few more minutes"
+        
+        RESPONSE=$(curl -s -o /dev/null -w "%{http_code}" https://${{ secrets.GCP_PROJECT_ID }}.appspot.com)
+        
+        if [ "$RESPONSE" = "200" ]; then
+          echo "✅ Site is responding correctly!"
+        else
+          echo "⚠️ Site returned status $RESPONSE, may need a few more minutes"
+        fi
+
+  # Separate job for scheduled content deployments
+  deploy-content-updates:
+    runs-on: ubuntu-latest
+    needs: [check-content-updates]
+    if: github.event_name == 'schedule' && needs.check-content-updates.outputs.should_deploy == 'true'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        submodules: recursive
+        fetch-depth: 0
+        
+    - name: Setup Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ env.RUBY_VERSION }}
+        bundler-cache: false
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: |
+        bundle config path vendor/bundle
+        bundle config set --local without 'development test'
+        bundle install --jobs 4 --retry 3
+        npm ci
+        
+    - name: Sync external content
+      run: |
+        echo "📡 Syncing updated external content..."
+        CONTENT_REPO=$(grep -o 'repository: "[^"]*"' _config.yml | cut -d'"' -f2)
+        
+        rm -rf content
+        mkdir -p content
+        
+        if [ -d "content-external" ]; then
+          cd content-external
+          git pull origin main || git pull origin master
+          cd ..
+          cp -r content-external/* content/
+        else
+          git clone "$CONTENT_REPO" temp-content
+          cp -r temp-content/* content/
+          rm -rf temp-content
+        fi
+        
+    - name: Build Jekyll site
+      run: |
+        echo "🏗️ Building Jekyll site with updated content..."
+        bundle exec jekyll build --verbose
+        
+    - name: Authenticate to Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        
+    - name: Setup Google Cloud CLI
+      uses: google-github-actions/setup-gcloud@v2
+      with:
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
+        
+    - name: Deploy to App Engine
+      run: |
+        echo "🚀 Deploying content updates to App Engine..."
+        gcloud app deploy --quiet --promote --version="content-$(date +%Y%m%d%H%M%S)"
+        
+    - name: Update submodule reference
+      if: success()
+      run: |
+        if [ -d "content-external" ]; then
+          cd content-external
+          git pull origin main || git pull origin master
+          cd ..
+          
+          if ! git diff --quiet content-external; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add content-external
+            git commit -m "Update content submodule reference [skip ci]"
+            git push
+            echo "✅ Submodule reference updated!"
+          fi
+        fi 
