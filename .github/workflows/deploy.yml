@@ -78,9 +78,10 @@ jobs:
         gcloud config list project
         
     - name: Deploy to App Engine
+      working-directory: ./_site
       run: |
         echo "🚀 Deploying to App Engine from _site directory..."
-        gcloud app deploy _site/app.yaml --quiet --promote --version=$(date +%Y%m%d%H%M%S)
+        gcloud app deploy app.yaml --quiet --promote --version=$(date +%Y%m%d%H%M%S)
         
     - name: Show deployment info
       run: |
