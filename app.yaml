@@ -4,53 +4,44 @@ runtime: python39
 # since all requests are handled by static file handlers
 
 handlers:
-# Handle assets with static_dir (more reliable for directories)
-- url: /assets
-  static_dir: _site/assets
-
-# Handle root index explicitly
+# Handle root index
 - url: /
   static_files: _site/index.html
-  upload: _site/index\.html
+  upload: _site/index.html
+
+# Handle assets
+- url: /assets/(.*)
+  static_files: _site/assets/\1
+  upload: _site/assets/.*
 
 # Handle feed
 - url: /feed\.xml
   static_files: _site/feed.xml
-  upload: _site/feed\.xml
-
-# Handle 404 page
-- url: /404\.html
-  static_files: _site/404.html
-  upload: _site/404\.html
-
-# Handle specific known paths first
-- url: /about/?
-  static_files: _site/about/index.html
-  upload: _site/about/index\.html
-
-- url: /essays/?
-  static_files: _site/essays/index.html
-  upload: _site/essays/index\.html
+  upload: _site/feed.xml
 
 # Handle Jekyll pretty URLs with trailing slash
-- url: /([^/.]+)/?$
+- url: /(.+)/$
   static_files: _site/\1/index.html
-  upload: _site/.*/index\.html
+  upload: _site/.*/index.html
 
-# Handle nested Jekyll pretty URLs
-- url: /([^/.]+)/([^/.]+)/?$
-  static_files: _site/\1/\2/index.html
-  upload: _site/.*/index\.html
+# Handle Jekyll pretty URLs without trailing slash
+- url: /([^/\.]+)$
+  static_files: _site/\1/index.html
+  upload: _site/.*/index.html
 
 # Handle HTML files directly
 - url: /(.+\.html)$
   static_files: _site/\1
-  upload: _site/.*\.html$
+  upload: _site/.*\.html
 
-# Catch-all for other static files
-- url: /(.+)$
+# Catch-all for other files
+- url: /(.*)
   static_files: _site/\1
   upload: _site/.*
+
+# Fallback to a basic Python app for any unmatched requests
+- url: /.*
+  script: auto
 
 error_handlers:
 - file: _site/404.html
