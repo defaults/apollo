@@ -1,10 +1,16 @@
-# Ignore everything by default
-*
-.*
+# This is a special file that tells gcloud to ignore certain files when
+# deploying. By default, gcloud will upload all files in the directory.
 
-# Whitelist the files and directories needed for deployment
+# Ignore everything by default.
+*
+
+# Then, whitelist the files and directories that are needed for the
+# deployment. This is a more robust approach than blacklisting files.
+
+# Whitelist the built site.
+!_site/
+
+# Whitelist the App Engine configuration files.
 !app.yaml
 !main.py
 !requirements.txt
-!_site/
-!_site/**

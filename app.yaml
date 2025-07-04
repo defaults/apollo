@@ -20,17 +20,17 @@ handlers:
   upload: _site/feed.xml
 
 # Handle Jekyll pretty URLs with trailing slash
-- url: /(.+)/$
+- url: /(.+)/
   static_files: _site/\1/index.html
   upload: _site/.*/index.html
 
 # Handle Jekyll pretty URLs without trailing slash
-- url: /([^/\.]+)$
+- url: /([^/\.]+)
   static_files: _site/\1/index.html
   upload: _site/.*/index.html
 
 # Handle HTML files directly
-- url: /(.+\.html)$
+- url: /(.+\.html)
   static_files: _site/\1
   upload: _site/.*\.html
 
