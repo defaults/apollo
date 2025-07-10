@@ -19,19 +19,16 @@ Previously, [previous experience]. [Additional background information].
 [Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID)
 {% endif %}
 
-## Essays
-
 {% assign essays = site.posts | limit: 5 %}
 {% if essays.size > 0 %}
+## Essays
+
 {% for post in essays %}
-- [{{ post.title }}]({{ post.url | relative_url }})
+[{{ post.title }}]({{ post.url | relative_url }})
+
 {% endfor %}
 
 [View all essays →](/essays/)
-{% else %}
-No essays published yet.
 {% endif %}
 
-## Contact
-
-Subscribe for email alerts about new posts. 
+## Contact 
