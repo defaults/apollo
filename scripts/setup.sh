@@ -216,11 +216,7 @@ Previously, [previous experience]. [Additional background information].
 
 ## Research
 
-{% if site.features.google_scholar.enabled %}
-[Google Scholar](https://scholar.google.com/citations?user={{ site.features.google_scholar.user_id }})
-{% else %}
-[Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID)
-{% endif %}
+[Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID){:target="_blank"}
 
 ## Essays
 
@@ -310,14 +306,7 @@ configure_site() {
     sed -i.bak "s/domain: \".*\"/domain: \"$user_domain\"/" _config.yml
     sed -i.bak "s/description: \".*\"/description: \"$user_description\"/" _config.yml
     
-    # Google Scholar (optional)
-    echo ""
-    read -p "Enable Google Scholar integration? (y/n): " enable_scholar
-    if [[ $enable_scholar =~ ^[Yy]$ ]]; then
-        read -p "Your Google Scholar user ID: " scholar_id
-        sed -i.bak "s/enabled: false/enabled: true/" _config.yml
-        sed -i.bak "s/user_id: \"\"/user_id: \"$scholar_id\"/" _config.yml
-    fi
+
     
     print_success "Site configuration updated!"
 }

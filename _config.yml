@@ -12,12 +12,6 @@ user:
   domain: ""
   description: "A personal website"
 
-# Optional Features
-features:
-  google_scholar:
-    enabled: false
-    user_id: ""
-
 # Jekyll Settings
 plugins:
   - jekyll-feed

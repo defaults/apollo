@@ -505,6 +505,11 @@ article a:not(.plain):not(.tag):not(.internal-link):not(.footnote):not(.reversef
     padding-right: 0.75em
 }
 
+/* Grey bullets for essay lists */
+article ul li::marker {
+    color: var(--color-tx-faint);
+}
+
 .muted {
     color: var(--color-tx-muted)
 }

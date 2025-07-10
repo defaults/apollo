@@ -163,11 +163,8 @@ content:
   source: "local"           # "local" or "external"
   repository: ""            # Git URL if external (e.g., "https://github.com/user/content.git")
 
-# Optional Features
-features:
-  google_scholar:
-    enabled: true
-    user_id: "your-scholar-id"
+# See content/home/index.md to customize research links
+# Example: [Google Scholar](URL){:target="_blank"}
 ```
 
 ## Deployment 🚀
