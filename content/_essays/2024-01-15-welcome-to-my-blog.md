@@ -22,6 +22,6 @@ I've kept the design minimal and focused on readability, drawing inspiration fro
 
 ## Getting Started
 
-Feel free to explore the different sections and subscribe for updates on new posts. I hope you find something interesting here.
+Feel free to explore the different sections and subscribe for updates on new essays. I hope you find something interesting here.
 
 Thanks for visiting! 

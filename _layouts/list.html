@@ -9,6 +9,8 @@ layout: default
 
   {% if page.collection == 'publications' %}
     {% assign items = site.publications | sort: 'date' | reverse %}
+  {% elsif page.collection == 'essays' %}
+    {% assign items = site.essays | sort: 'date' | reverse %}
   {% else %}
     {% assign items = site.posts | sort: 'date' | reverse %}
   {% endif %}

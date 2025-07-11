@@ -47,18 +47,18 @@ include:
   - content
 
 collections:
-  posts:
+  essays:
     output: true
     permalink: /essays/:slug/
 
-# Configure posts to be in content/essays
+# Configure collections to be in content/
 collections_dir: content
 
 defaults:
   -
     scope:
       path: ""
-      type: "posts"
+      type: "essays"
     values:
       layout: "essay"
   -

@@ -2,7 +2,7 @@
   <div style="display: flex; align-items: center; justify-content: space-between;">
     <div>
       <a href="/" class="plain">{{ site.title | default: "Apollo" }}</a>
-      {% if page.layout == 'list' and page.collection == 'posts' %}
+      {% if page.layout == 'list' and page.collection == 'essays' %}
         <span class="muted"> / Essays</span>
       {% elsif page.layout == 'essay' %}
         <span class="muted"> / </span>

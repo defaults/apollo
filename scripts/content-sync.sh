@@ -115,7 +115,7 @@ show_status() {
         echo "📁 Local content directory:"
         if [ -d "content" ]; then
             echo "  Files: $(find content -name "*.md" | wc -l) markdown files"
-            echo "  Blog posts: $(find content/blog -name "*.md" 2>/dev/null | wc -l || echo 0)"
+            echo "  Essays: $(find content/_essays -name "*.md" 2>/dev/null | wc -l || echo 0)"
         else
             print_warning "Local content directory not found!"
         fi
@@ -222,7 +222,7 @@ switch_content() {
             
             # Ensure content directory exists
             if [ ! -d "content" ]; then
-                mkdir -p content/home content/blog
+                mkdir -p content/home content/_essays
                 print_warning "Created empty content directory. Add your content files."
             fi
             

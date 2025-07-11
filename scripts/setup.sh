@@ -161,7 +161,7 @@ setup_local_content() {
     sed -i.bak 's/repository: ".*"/repository: ""/' _config.yml
     
     # Create content structure if it doesn't exist
-    mkdir -p content/home content/blog content/essays
+    mkdir -p content/home content/_essays
     
     # Check if content already exists
     if [ ! -f "content/home/index.md" ]; then
@@ -194,7 +194,7 @@ setup_external_content() {
     print_success "External content repository linked!"
     print_warning "Make sure your content repository follows the required structure:"
     echo "  home/index.md (required)"
-    echo "  blog/*.md (blog posts)"
+    echo "  _essays/*.md (essays)"
     echo "  about.md (recommended)"
 }
 
@@ -262,22 +262,22 @@ This website is powered by:
 Feel free to reach out through the links on the homepage.
 EOF
 
-    # Create sample blog post
+    # Create sample essay
     local today=$(date +%Y-%m-%d)
-    cat > "content/blog/${today}-welcome-to-apollo.md" << 'EOF'
+    cat > "content/_essays/${today}-welcome-to-apollo.md" << 'EOF'
 ---
-layout: post
+layout: essay
 title: "Welcome to Apollo"
 date: 2024-01-15
-type: post
-description: "Getting started with your new Apollo blog"
+type: essay
+description: "Getting started with your new Apollo site"
 ---
 
-Welcome to your new Apollo blog! This is your first blog post.
+Welcome to your new Apollo site! This is your first essay.
 
 ## Getting Started
 
-You can edit this post by modifying the file in `content/blog/`. To create new posts, simply add new markdown files with the naming convention `YYYY-MM-DD-title.md`.
+You can edit this essay by modifying the file in `content/_essays/`. To create new essays, simply add new markdown files with the naming convention `YYYY-MM-DD-title.md`.
 
 ## Features
 
