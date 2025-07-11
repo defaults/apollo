@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: essay
 title: "Welcome to Apollo"
 date: 2023-01-01
 description: "Introduction to the Apollo website template"

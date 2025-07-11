@@ -51,13 +51,16 @@ collections:
     output: true
     permalink: /essays/:slug/
 
+# Configure posts to be in content/essays
+collections_dir: content
+
 defaults:
   -
     scope:
       path: ""
       type: "posts"
     values:
-      layout: "post"
+      layout: "essay"
   -
     scope:
       path: ""

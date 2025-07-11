@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: essay
 title: "Thoughts on AI Safety"
 date: 2024-02-10
 description: "Reflections on the current state and future challenges of AI safety research."

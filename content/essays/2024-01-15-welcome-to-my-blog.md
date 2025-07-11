@@ -1,8 +1,8 @@
 ---
-layout: post
+layout: essay
 title: "Welcome to My Essays"
 date: 2024-01-15
-type: post
+type: essay
 description: "An introduction to this personal website and what you can expect to find here."
 ---
 
