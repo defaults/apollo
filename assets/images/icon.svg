@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" role="img" aria-label="Abstract icon">
+  <title>Abstract Icon</title>
+  <g clip-path="url(#r)">
+    <!-- Soft parchment canvas -->
+    <rect width="40" height="40" rx="20" fill="#FFE9D1"/>
+
+    <!-- Organic coral blotch -->
+    <path d="M9 16c1.8-3.6 7.6-4.8 10.1-2.9 1.7 1.3.8 4.6-1.4 6.2-2.8 2-8.9 2.1-10-1.5-.2-.6-.1-1.2.3-1.8Z" fill="#FF8A7A"/>
+
+    <!-- Teal pond -->
+    <path d="M25.5 28.2c3.4-.3 6.2-2.2 6.5-4.3.3-2.1-2-3.6-5.6-3.3-3 .3-6.3 2.3-6.6 4.4-.3 2 2.4 3.6 5.7 3.2Z" fill="#22D3B9"/>
+
+    <!-- Midnight sweep (bold gesture) -->
+    <path d="M5.5 23c8.2 2.8 15.3 2.4 22.8-3.1" fill="none" stroke="#0F172A" stroke-width="3.4" stroke-linecap="round"/>
+
+    <!-- Golden thread curve -->
+    <path d="M8 11c6-1.6 13.5-.8 18.8 1.7" fill="none" stroke="#FBBF24" stroke-width="1.4" stroke-linecap="round"/>
+
+    <!-- Small peppered specks -->
+    <circle cx="29.8" cy="10.6" r="1.2" fill="#0F172A"/>
+    <circle cx="12.5" cy="30.4" r="1.1" fill="#0F172A"/>
+    <circle cx="33.2" cy="26.9" r="0.9" fill="#0F172A"/>
+
+    <!-- Writing motif: paper corner and pen nib, using existing palette hues -->
+    <!-- Paper corner (subtle, behind strokes) -->
+    <path d="M26 10h6v6l-6-6Z" fill="#FFF5E9" opacity="0.8"/>
+    <!-- Pen nib (small accent aligned to golden curve) -->
+    <path d="M24.2 12.8l2.6-1.1 1.1 2.6-1.6.7a1.2 1.2 0 0 1-1.5-.7l-.6-1.5Z" fill="#0F172A"/>
+    <circle cx="26.2" cy="13.6" r="0.5" fill="#FBBF24"/>
+
+    <!-- Subtle vignette ring to help at small sizes -->
+    <rect x="0.5" y="0.5" width="39" height="39" rx="19.5" fill="none" stroke="#0F172A" stroke-opacity="0.08"/>
+  </g>
+  <defs>
+    <clipPath id="r">
+      <rect width="40" height="40" rx="20"/>
+    </clipPath>
+  </defs>
+</svg>

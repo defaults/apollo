@@ -4,7 +4,28 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>{% if page.title %}{{ page.title }} - {{ site.title }}{% else %}{{ site.title }}{% endif %}</title>
   <meta name="description" content="{% if page.description %}{{ page.description }}{% else %}{{ site.description }}{% endif %}">
-  
+  <meta name="author" content="{{ site.user.name | default: site.author.name | default: site.title }}">
+
   <link rel="stylesheet" href="{{ '/assets/css/styles.css' | relative_url }}">
+
+  <!-- Favicon & App Icons -->
+  <link rel="icon" href="{{ '/assets/images/icon.svg' | relative_url }}" type="image/svg+xml" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="{{ '/assets/images/favicon-32.png' | relative_url }}">
+  <link rel="icon" type="image/png" sizes="16x16" href="{{ '/assets/images/favicon-16.png' | relative_url }}">
+  <link rel="shortcut icon" href="{{ site.favicon_ico | default: '/favicon.ico' | relative_url }}">
+  <link rel="apple-touch-icon" sizes="180x180" href="{{ site.apple_touch_icon | default: '/apple-touch-icon.png' | relative_url }}">
+
+  {% feed_meta %}
   {% seo %}
+
+  {% if site.google_analytics %}
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);} 
+    gtag('js', new Date());
+    gtag('config', '{{ site.google_analytics }}');
+  </script>
+  {% endif %}
 </head> 

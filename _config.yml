@@ -12,6 +12,24 @@ user:
   domain: ""
   description: "A personal website"
 
+# SEO & Metadata
+url: "https://yourdomain.com"           # Replace with your production domain (no trailing slash)
+logo: "/assets/images/icon.svg"        # Default social/OG image
+
+author:
+  name: "Your Name"
+  twitter: "your_twitter"               # Without @
+
+twitter:
+  username: "your_twitter"              # Without @
+
+# Analytics
+google_analytics: "G-XXXXXXXXXX"        # GA4 Measurement ID (replace in production)
+
+# Icons
+favicon_ico: "/favicon.ico"
+apple_touch_icon: "/apple-touch-icon.png"
+
 # Jekyll Settings
 plugins:
   - jekyll-feed
