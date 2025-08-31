@@ -65,6 +65,16 @@ promote_root_content_pages() {
   shopt -u nullglob
 }
 
+# Remove duplicates that would conflict with promoted pages
+cleanup_promoted_content_pages() {
+  local content_dir="$1"
+  [[ ! -d "$content_dir" ]] && return 0
+  # Remove top-level markdown files we promoted (about.md, 404.md, essays.md, etc.)
+  rm -f "$content_dir"/*.md 2>/dev/null || true
+  # Remove home index to avoid duplicate index.html
+  rm -f "$content_dir/home/index.md" 2>/dev/null || true
+}
+
 compose_build() {
   local use_examples="${1:-0}"
   rm -rf "$BUILD_DIR"
@@ -85,9 +95,11 @@ compose_build() {
   if [[ "$use_examples" == "1" ]]; then
     copy_dir "$EXAMPLES_CONTENT_DIR" "$BUILD_DIR/content"
     promote_root_content_pages "$EXAMPLES_CONTENT_DIR" "$BUILD_DIR"
+    cleanup_promoted_content_pages "$BUILD_DIR/content"
   else
     copy_dir "${ROOT_DIR}/content" "$BUILD_DIR/content"
     promote_root_content_pages "${ROOT_DIR}/content" "$BUILD_DIR"
+    cleanup_promoted_content_pages "$BUILD_DIR/content"
   fi
 
   # Overrides from site repo overlay the theme
