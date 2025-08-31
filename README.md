@@ -214,8 +214,6 @@ git subtree pull --prefix=apollo apollo master --squash
 In CI, build with the theme Gemfile:
 
 ```bash
-BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
-  --source build/src \
-  --config build/src/_config.yml,build/src/_config.local.yml \
-  --destination _site
+cfg="build/src/_config.yml"; [ -f build/src/_config.local.yml ] && cfg="$cfg,build/src/_config.local.yml"
+BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build --source build/src --config "$cfg" --destination _site
 ```

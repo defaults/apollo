@@ -24,10 +24,15 @@ jobs:
         run: bash apollo/scripts/compose.sh build
 
       - name: Build Jekyll
+        shell: bash
         run: |
+          cfg="build/src/_config.yml"
+          if [ -f build/src/_config.local.yml ]; then
+            cfg="$cfg,build/src/_config.local.yml"
+          fi
           bundle exec jekyll build \
             --source build/src \
-            --config build/src/_config.yml,build/src/_config.local.yml \
+            --config "$cfg" \
             --destination _site
 
       - name: Authenticate to Google Cloud
