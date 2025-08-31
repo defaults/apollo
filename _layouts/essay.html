@@ -11,5 +11,11 @@ layout: default
   <p class="muted">{{ page.description }}</p>
   {% endif %}
 
+  {% if page.image %}
+  <figure class="post-hero">
+    <img src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
+  </figure>
+  {% endif %}
+
   {{ content }}
 </article> 

@@ -1,45 +1,42 @@
-title: Apollo
-description: A personal website generator
+title: "Apollo Theme"
+description: "Jekyll template defaults for subtree vendoring"
 
-# Content Settings
+# No site identity here; sites supply _config.local.yml
+url: ""        # left empty on purpose
+baseurl: ""    # left empty on purpose
+
+# Content
+collections_dir: content
+collections:
+  essays:
+    output: true
+    permalink: /essays/:slug/
 content:
-  source: "local"           # "local" for content/ directory, "external" for git submodule/repo
-  repository: ""            # Git URL if using external content
+  loader_enabled: false  # sites can set true in _config.local.yml to auto-load pages from content/
 
-# Site Settings  
-user:
-  name: "Your Name"
-  domain: ""
-  description: "A personal website"
+defaults:
+  - scope: { path: "", type: "essays" }
+    values:
+      layout: "essay"
+      excerpt_separator: "<!--more-->"
+  - scope: { path: "" }
+    values:
+      layout: "default"
 
-# SEO & Metadata
-url: "https://yourdomain.com"           # Replace with your production domain (no trailing slash)
-logo: "/assets/images/icon.svg"        # Default social/OG image
-
-author:
-  name: "Your Name"
-  twitter: "your_twitter"               # Without @
-
-twitter:
-  username: "your_twitter"              # Without @
-
-# Analytics
-google_analytics: "G-XXXXXXXXXX"        # GA4 Measurement ID (replace in production)
-
-# Icons
-favicon_ico: "/favicon.ico"
-apple_touch_icon: "/apple-touch-icon.png"
-
-# Jekyll Settings
+# Plugins
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+  - jekyll-sitemap
 
+# SEO & assets (placeholders only)
+logo: "/assets/images/icon.svg"
+
+# Exclude dev and site-local files if present in downstream repos
 exclude:
   - .sass-cache/
   - .jekyll-cache/
   - gemfiles/
-  - Gemfile
   - Gemfile.lock
   - node_modules/
   - vendor/
@@ -60,27 +57,6 @@ exclude:
   - scripts/
   - main.py
   - requirements.txt
-
-include:
-  - content
-
-collections:
-  essays:
-    output: true
-    permalink: /essays/:slug/
-
-# Configure collections to be in content/
-collections_dir: content
-
-defaults:
-  -
-    scope:
-      path: ""
-      type: "essays"
-    values:
-      layout: "essay"
-  -
-    scope:
-      path: ""
-    values:
-      layout: "default"
+  - _config.local.yml         # ensure site config is ignored if present
+  - examples/
+  - templates/
