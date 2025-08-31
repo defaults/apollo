@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Bootstrap a personal site repo that vendors this theme via git subtree.
 # Run from YOUR SITE REPO root:
-#   bash theme/scripts/setup-site.sh
+#   bash apollo/scripts/setup-site.sh
 
 # Resolve paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -107,11 +107,11 @@ jobs:
           bundler-cache: true
 
       - name: Compose build
-        run: bash theme/scripts/compose.sh build
+        run: bash apollo/scripts/compose.sh build
 
       - name: Build Jekyll
         run: |
-          BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
+          BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
             --source build/src \
             --config build/src/_config.yml,build/src/_config.local.yml \
             --destination _site
@@ -158,7 +158,7 @@ Done. Next steps:
 - Add content under content/ and optional HTML overrides under overrides/
 - Edit _config.local.yml for site identity, analytics, and social handles
 - Try local preview:
-    bash theme/scripts/compose.sh serve
+    bash apollo/scripts/compose.sh serve
   (If Ruby 3: run `bundle add webrick` in your site repo if serve errors)
 - Commit and push to trigger deployment
 
@@ -167,6 +167,6 @@ Done. Next steps:
 
 Update theme later:
   git fetch apollo-tpl
-  git subtree pull --prefix=theme apollo-tpl master --squash
+  git subtree pull --prefix=apollo apollo-tpl master --squash
 
 NEXT

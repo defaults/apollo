@@ -10,7 +10,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      BUNDLE_GEMFILE: theme/Gemfile
+      BUNDLE_GEMFILE: apollo/Gemfile
     steps:
       - uses: actions/checkout@v4
 
@@ -21,7 +21,7 @@ jobs:
           bundler-cache: true
 
       - name: Compose build
-        run: bash theme/scripts/compose.sh build
+        run: bash apollo/scripts/compose.sh build
 
       - name: Build Jekyll
         run: |

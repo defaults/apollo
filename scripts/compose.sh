@@ -3,20 +3,21 @@ set -euo pipefail
 
 # Compose a buildable Jekyll source tree from a vendored theme
 # Usage (from site repo root):
-#   bash theme/scripts/compose.sh init     # seed content from theme examples (if empty)
-#   bash theme/scripts/compose.sh build    # create build/src from theme + content + overrides
-#   bash theme/scripts/compose.sh serve    # build then serve with livereload
-#   bash theme/scripts/compose.sh clean    # remove build/src
+#   bash apollo/scripts/compose.sh init     # seed content from theme examples (if empty)
+#   bash apollo/scripts/compose.sh build    # create build/src from theme + content + overrides
+#   bash apollo/scripts/compose.sh serve    # build then serve with livereload
+#   bash apollo/scripts/compose.sh clean    # remove build/src
 #
 # In the template repository itself, you can build the demo site:
 #   bash scripts/compose.sh demo
 
 ROOT_DIR="$(pwd)"
 
-# If running in a consumer site, theme lives in ./theme; otherwise in this repo it is .
-THEME_DIR_DEFAULT="theme"
-if [[ -d "${THEME_DIR_DEFAULT}" ]]; then
-  THEME_DIR="${THEME_DIR_DEFAULT}"
+# If running in a consumer site, prefer ./apollo (new default), fallback to ./theme; otherwise in this repo it is .
+if [[ -d "apollo" ]]; then
+  THEME_DIR="apollo"
+elif [[ -d "theme" ]]; then
+  THEME_DIR="theme"
 else
   THEME_DIR="."
 fi

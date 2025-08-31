@@ -18,7 +18,7 @@ Recommended for personal sites. Keep your content separate and pull theme update
 Site structure:
 
 ```
-├─ theme/                  # subtree of this repo
+├─ apollo/                 # subtree of this repo
 ├─ content/                # your markdown only
 ├─ overrides/              # optional overrides (mirrors theme paths)
 ├─ _config.local.yml       # site identity only
@@ -28,22 +28,22 @@ Site structure:
 Bootstrap your site (run in your site repo):
 
 ```bash
-git remote add apollo-tpl git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
-git fetch apollo-tpl
-git subtree add --prefix=theme apollo-tpl master --squash
+git remote add apollo git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git fetch apollo
+git subtree add --prefix=apollo apollo master --squash
 
 # Create content/, overrides/, site CI, and app.yaml
-bash theme/scripts/setup-site.sh
+bash apollo/scripts/setup-site.sh
 
 # Local preview (Ruby 3 users may need: bundle add webrick)
-bash theme/scripts/compose.sh serve
+bash apollo/scripts/compose.sh serve
 ```
 
 CI builds (generated workflow uses this under the hood):
 
 ```bash
-bash theme/scripts/compose.sh build
-BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
+bash apollo/scripts/compose.sh build
+BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
   --source build/src \
   --config build/src/_config.yml,build/src/_config.local.yml \
   --destination _site
@@ -52,8 +52,8 @@ BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
 Update theme later:
 
 ```bash
-git fetch apollo-tpl
-git subtree pull --prefix=theme apollo-tpl master --squash
+git fetch apollo
+git subtree pull --prefix=apollo apollo master --squash
 ```
 
 ## Quick Start 🏃‍♂️
@@ -348,22 +348,22 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 In your site repo (not here):
 
 ```bash
-git remote add apollo-tpl git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
-git fetch apollo-tpl
-git subtree add --prefix=theme apollo-tpl master --squash
+git remote add apollo git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git fetch apollo
+git subtree add --prefix=apollo apollo master --squash
 ```
 
 Keep your content in content/, optional overrides in overrides/, and per-site config in _config.local.yml. To pull template updates:
 
 ```bash
-git fetch apollo-tpl
-git subtree pull --prefix=theme apollo-tpl master --squash
+git fetch apollo
+git subtree pull --prefix=apollo apollo master --squash
 ```
 
 In CI, build with the theme Gemfile:
 
 ```bash
-BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
+BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
   --source build/src \
   --config build/src/_config.yml,build/src/_config.local.yml \
   --destination _site
