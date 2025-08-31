@@ -28,7 +28,7 @@ Site structure:
 Bootstrap your site (run in your site repo):
 
 ```bash
-git remote add apollo git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git remote add apollo git@github.com:defaults/apollo.git
 git fetch apollo
 git subtree add --prefix=apollo apollo master --squash
 
@@ -348,7 +348,7 @@ For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 In your site repo (not here):
 
 ```bash
-git remote add apollo git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git remote add apollo git@github.com:defaults/apollo.git
 git fetch apollo
 git subtree add --prefix=apollo apollo master --squash
 ```
