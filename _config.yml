@@ -1,7 +1,7 @@
 title: "Apollo Theme"
 description: "Jekyll template defaults for subtree vendoring"
 
-# No site identity here; sites supply _config.local.yml
+# No site identity here; sites supply _config.yml
 url: ""        # left empty on purpose
 baseurl: ""    # left empty on purpose
 
@@ -12,7 +12,7 @@ collections:
     output: true
     permalink: /essays/:slug/
 content:
-  loader_enabled: false  # sites can set true in _config.local.yml to auto-load pages from content/
+  loader_enabled: false  # sites can set true in their _config.yml to auto-load pages from content/
 
 defaults:
   - scope: { path: "", type: "essays" }
@@ -57,6 +57,5 @@ exclude:
   - scripts/
   - main.py
   - requirements.txt
-  - _config.local.yml         # ensure site config is ignored if present
   - examples/
   - templates/

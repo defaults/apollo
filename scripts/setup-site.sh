@@ -42,44 +42,48 @@ if [[ -z "$(ls -A "$ROOT_DIR/content" 2>/dev/null || true)" ]] && [[ -d "$THEME_
   copy_dir "$THEME_DIR/examples/content" "$ROOT_DIR/content"
 fi
 
-# 3) Create site-local config if missing (copy from theme template)
-CFG_LOCAL="$ROOT_DIR/_config.local.yml"
-if [[ ! -f "$CFG_LOCAL" ]]; then
-  # If a misplaced overrides/_config.local.yml exists, move it to root
-  if [[ -f "$ROOT_DIR/overrides/_config.local.yml" ]]; then
-    mv "$ROOT_DIR/overrides/_config.local.yml" "$CFG_LOCAL"
-    echo "Moved overrides/_config.local.yml to _config.local.yml"
-  fi
-  if [[ -f "$THEME_DIR/templates/site/_config.local.yml" ]]; then
-    cp "$THEME_DIR/templates/site/_config.local.yml" "$CFG_LOCAL"
+# 3) Ensure a single site config at repo root (_config.yml)
+CFG_USER="$ROOT_DIR/_config.yml"
+if [[ ! -f "$CFG_USER" ]]; then
+  # Migrate from old locations if present
+  if [[ -f "$ROOT_DIR/_config.local.yml" ]]; then
+    mv "$ROOT_DIR/_config.local.yml" "$CFG_USER"
+    echo "Renamed _config.local.yml -> _config.yml"
+  elif [[ -f "$ROOT_DIR/overrides/_config.local.yml" ]]; then
+    mv "$ROOT_DIR/overrides/_config.local.yml" "$CFG_USER"
+    echo "Moved overrides/_config.local.yml -> _config.yml"
+  elif [[ -f "$THEME_DIR/templates/site/_config.yml.example" ]]; then
+    cp "$THEME_DIR/templates/site/_config.yml.example" "$CFG_USER"
+    echo "Created _config.yml from template"
   else
-    echo "Warning: theme templates missing; writing default _config.local.yml"
-    cat > "$CFG_LOCAL" <<'YAML'
-# Site identity and per-site settings
+    # Fallback minimal
+    cat > "$CFG_USER" <<'YAML'
 title: "Your Site Title"
 description: "Short description of your site"
-
-# Domain settings (optional)
-url: ""        # e.g., https://example.com
-baseurl: ""    # e.g., /blog
-
-# Author and social
+url: ""
+baseurl: ""
 author:
   name: "Your Name"
-  twitter: "your_twitter"
-
-twitter:
-  username: "your_twitter"
-
-# Analytics (optional)
-google_analytics: ""  # e.g., G-XXXXXXXXXX
-
-# Optional: let the bundled loader import pages from content/
-content:
-  loader_enabled: false
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+collections_dir: content
+collections:
+  essays:
+    output: true
+    permalink: /essays/:slug/
+defaults:
+  - scope: { path: "", type: "essays" }
+    values:
+      layout: "essay"
+      excerpt_separator: "<!--more-->"
+  - scope: { path: "" }
+    values:
+      layout: "default"
 YAML
+    echo "Wrote minimal _config.yml"
   fi
-  echo "Created _config.local.yml"
 fi
 
 # 4) Create site deploy workflow if missing (copy from theme template)
@@ -118,7 +122,7 @@ jobs:
         run: |
           BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
             --source build/src \
-            --config build/src/_config.yml,build/src/_config.local.yml \
+            --config build/src/_config.yml \
             --destination _site
 
       - name: Authenticate to Google Cloud
@@ -161,7 +165,7 @@ cat <<'NEXT'
 
 Done. Next steps:
 - Add content under content/ and optional HTML overrides under overrides/
-- Edit _config.local.yml for site identity, analytics, and social handles
+- Edit _config.yml for site identity, analytics, and social handles
 - Try local preview:
     bash apollo/scripts/compose.sh serve
   (If Ruby 3: run `bundle add webrick` in your site repo if serve errors)

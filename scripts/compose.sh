@@ -82,7 +82,18 @@ compose_build() {
   mkdir -p "$BUILD_DIR"
 
   # Base config and theme assets
-  copy_file "$THEME_DIR/_config.yml" "$BUILD_DIR/_config.yml"
+  # Choose config: demo uses theme/_config.yml; site builds prefer repo _config.yml
+  if [[ "$use_examples" == "1" ]]; then
+    copy_file "$THEME_DIR/_config.yml" "$BUILD_DIR/_config.yml"
+  else
+    if [[ -f "${ROOT_DIR}/_config.yml" ]]; then
+      copy_file "${ROOT_DIR}/_config.yml" "$BUILD_DIR/_config.yml"
+    elif [[ -f "$THEME_DIR/templates/site/_config.yml.example" ]]; then
+      copy_file "$THEME_DIR/templates/site/_config.yml.example" "$BUILD_DIR/_config.yml"
+    else
+      copy_file "$THEME_DIR/_config.yml" "$BUILD_DIR/_config.yml"
+    fi
+  fi
   copy_dir "$THEME_DIR/_layouts" "$BUILD_DIR/_layouts"
   copy_dir "$THEME_DIR/_includes" "$BUILD_DIR/_includes"
   copy_dir "$THEME_DIR/_plugins" "$BUILD_DIR/_plugins"
@@ -106,16 +117,12 @@ compose_build() {
   # Overrides from site repo overlay the theme
   copy_dir "${ROOT_DIR}/overrides" "$BUILD_DIR"
 
-  # Site-local config overlays theme config if present
-  copy_file "${ROOT_DIR}/_config.local.yml" "$BUILD_DIR/_config.local.yml"
+  # Single config model: no secondary config file
 }
 
 compose_serve() {
   compose_build "${1:-0}"
   local cfgs=("$BUILD_DIR/_config.yml")
-  if [[ -f "$BUILD_DIR/_config.local.yml" ]]; then
-    cfgs+=("$BUILD_DIR/_config.local.yml")
-  fi
   # Serve using the theme Gemfile when vendored; otherwise local Gemfile
   local gemfile_path
   if [[ -f "$THEME_DIR/Gemfile" ]]; then gemfile_path="$THEME_DIR/Gemfile"; else gemfile_path="Gemfile"; fi

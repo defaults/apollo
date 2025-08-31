@@ -1,0 +1,43 @@
+title: "Your Site Title"
+description: "Short description of your site"
+
+# Domain settings (optional)
+url: ""        # e.g., https://example.com
+baseurl: ""    # e.g., /blog
+
+# Author and social
+author:
+  name: "Your Name"
+  twitter: "your_twitter"
+
+twitter:
+  username: "your_twitter"
+
+# Analytics (optional)
+google_analytics: ""  # e.g., G-XXXXXXXXXX
+
+# Content
+collections_dir: content
+collections:
+  essays:
+    output: true
+    permalink: /essays/:slug/
+
+defaults:
+  - scope: { path: "", type: "essays" }
+    values:
+      layout: "essay"
+      excerpt_separator: "<!--more-->"
+  - scope: { path: "" }
+    values:
+      layout: "default"
+
+# Plugins
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
+  - jekyll-sitemap
+
+# SEO & assets
+logo: "/assets/images/icon.svg"
+

@@ -21,7 +21,7 @@ Site structure:
 ├─ apollo/                 # subtree of this repo
 ├─ content/                # your markdown only
 ├─ overrides/              # optional overrides (mirrors theme paths)
-├─ _config.local.yml       # site identity only
+├─ _config.yml             # site identity + settings (single file)
 └─ .github/workflows/deploy.yml   # site’s own CI
 ```
 
@@ -45,7 +45,7 @@ CI builds (generated workflow uses this under the hood):
 bash apollo/scripts/compose.sh build
 BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
   --source build/src \
-  --config build/src/_config.yml,build/src/_config.local.yml \
+  --config build/src/_config.yml \
   --destination _site
 ```
 
@@ -128,7 +128,7 @@ apollo/                   # vendored theme subtree
 content/                  # your markdown content
 overrides/                # optional template overrides
 .github/workflows/deploy.yml  # generated site workflow
-_config.local.yml         # site identity (title, url, analytics)
+_config.yml               # site identity (title, url, analytics)
 app.yaml                  # App Engine config
 main.py                   # App Engine fallback (unused for static)
 .gcloudignore             # exclude dev files from deploy
@@ -204,7 +204,7 @@ git fetch apollo
 git subtree add --prefix=apollo apollo master --squash
 ```
 
-Keep your content in content/, optional overrides in overrides/, and per-site config in _config.local.yml. To pull template updates:
+Keep your content in content/, optional overrides in overrides/, and per-site config in _config.yml. To pull template updates:
 
 ```bash
 git fetch apollo
@@ -214,6 +214,5 @@ git subtree pull --prefix=apollo apollo master --squash
 In CI, build with the theme Gemfile:
 
 ```bash
-cfg="build/src/_config.yml"; [ -f build/src/_config.local.yml ] && cfg="$cfg,build/src/_config.local.yml"
-BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build --source build/src --config "$cfg" --destination _site
+BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build --source build/src --config build/src/_config.yml --destination _site
 ```
