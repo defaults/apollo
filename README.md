@@ -11,6 +11,51 @@ A flexible Jekyll-based personal website generator with automated deployment to 
 - **Google Cloud Integration**: Automated deployment to App Engine
 - **Easy Updates**: Pull theme updates without losing your content
 
+## Vendored Theme (git subtree)
+
+Recommended for personal sites. Keep your content separate and pull theme updates safely.
+
+Site structure:
+
+```
+├─ theme/                  # subtree of this repo
+├─ content/                # your markdown only
+├─ overrides/              # optional overrides (mirrors theme paths)
+├─ _config.local.yml       # site identity only
+└─ .github/workflows/deploy.yml   # site’s own CI
+```
+
+Bootstrap your site (run in your site repo):
+
+```bash
+git remote add apollo-tpl git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git fetch apollo-tpl
+git subtree add --prefix=theme apollo-tpl master --squash
+
+# Create content/, overrides/, site CI, and app.yaml
+bash theme/scripts/setup-site.sh
+
+# Local preview (Ruby 3 users may need: bundle add webrick)
+bash theme/scripts/compose.sh serve
+```
+
+CI builds (generated workflow uses this under the hood):
+
+```bash
+bash theme/scripts/compose.sh build
+BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
+  --source build/src \
+  --config build/src/_config.yml,build/src/_config.local.yml \
+  --destination _site
+```
+
+Update theme later:
+
+```bash
+git fetch apollo-tpl
+git subtree pull --prefix=theme apollo-tpl master --squash
+```
+
 ## Quick Start 🏃‍♂️
 
 ### 1. Fork and Clone
@@ -76,17 +121,15 @@ Your page content here...
 
 ### 4. Setup and Configuration
 
-Run the setup script:
+Use the compose workflow:
 
 ```bash
-./scripts/setup.sh
+# Demo build in this repo
+bash scripts/compose.sh demo
+bundle exec jekyll build --source build/src --config build/src/_config.yml --destination _site
 ```
 
-This script will:
-- Install dependencies (Ruby, Jekyll, Node.js packages)
-- Guide you through content setup (local vs external)
-- Configure Google Cloud deployment
-- Set up GitHub Actions secrets
+For site repos that vendor this theme, see “Use as a vendored theme” below.
 
 ### 5. Local Development
 
@@ -243,7 +286,6 @@ apollo/
 **Build fails locally:**
 ```bash
 bundle install
-npm install
 bundle exec jekyll build --verbose
 ```
 
@@ -255,7 +297,7 @@ bundle exec jekyll build --verbose
 **Deployment fails:**
 - Check GitHub Actions logs
 - Verify Google Cloud secrets are set correctly
-- Run `./scripts/setup.sh` again if needed
+
 
 **External content not syncing:**
 - Verify submodule is properly configured
@@ -301,3 +343,28 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
 # Site is now working ✅
+## Use as a vendored theme (recommended for blogs)
+
+In your site repo (not here):
+
+```bash
+git remote add apollo-tpl git@github.com:YOUR_USER/YOUR_TEMPLATE_REPO.git
+git fetch apollo-tpl
+git subtree add --prefix=theme apollo-tpl master --squash
+```
+
+Keep your content in content/, optional overrides in overrides/, and per-site config in _config.local.yml. To pull template updates:
+
+```bash
+git fetch apollo-tpl
+git subtree pull --prefix=theme apollo-tpl master --squash
+```
+
+In CI, build with the theme Gemfile:
+
+```bash
+BUNDLE_GEMFILE=theme/Gemfile bundle exec jekyll build \
+  --source build/src \
+  --config build/src/_config.yml,build/src/_config.local.yml \
+  --destination _site
+```
