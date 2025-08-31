@@ -86,7 +86,7 @@ YAML
   fi
 fi
 
-# 4) Create site deploy workflow if missing (copy from theme template)
+# 4) Create site deploy workflow (copy from theme template)
 SITE_WF="$ROOT_DIR/.github/workflows/deploy.yml"
 if [[ ! -f "$SITE_WF" ]]; then
   if [[ -f "$THEME_DIR/templates/site/workflows/deploy.yml" ]]; then

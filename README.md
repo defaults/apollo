@@ -39,6 +39,15 @@ bash apollo/scripts/setup-site.sh
 bash apollo/scripts/compose.sh serve
 ```
 
+To reset scaffolding later, delete the generated files you want to regenerate
+and re-run `bash apollo/scripts/setup-site.sh`. For example, to reset your
+workflow:
+
+```bash
+rm -f .github/workflows/deploy.yml
+bash apollo/scripts/setup-site.sh
+```
+
 CI builds (generated workflow uses this under the hood):
 
 ```bash
