@@ -56,168 +56,28 @@ git fetch apollo
 git subtree pull --prefix=apollo apollo master --squash
 ```
 
-## Quick Start 🏃‍♂️
+## GCP Setup (required for deploys)
 
-### 1. Fork and Clone
+In your site repo on GitHub, add a secret used by the deploy workflow:
 
-```bash
-# Fork this repository on GitHub first, then:
-git clone https://github.com/YOUR_USERNAME/apollo.git
-cd apollo
-```
+1) Create a service account and key (one time)
+- Roles: App Engine Admin, Service Account User, Storage Admin
+- Create JSON key; copy its full contents
 
-### 2. Choose Your Content Strategy
+2) Add repository secret
+- GitHub → Settings → Secrets and variables → Actions → New repository secret
+- Name: `GCP_SERVICE_ACCOUNT_KEY`
+- Value: paste the JSON from step 1
 
-You have two options for managing your content:
+Now pushes to `master` will build and deploy via the generated workflow.
 
-#### Option A: Local Content (Simpler)
-Keep your content in the `content/` directory of this repository.
-
-#### Option B: External Content Repository (Recommended for collaboration)
-Create a separate repository for your content and link it as a submodule.
-
-### 3. Content Format Requirements
-
-Your content must follow this structure (whether local or external):
-
-```
-content/                  # or your-content-repo/
-├── home/
-│   └── index.md         # Homepage content (required)
-├── blog/                # Blog posts directory
-│   ├── 2024-01-15-my-first-post.md
-│   ├── 2024-02-01-another-post.md
-│   └── ...
-├── about.md             # About page (recommended)
-├── 404.md               # 404 error page (recommended)
-└── essays/              # Optional: custom collections
-    └── index.md
-```
-
-#### Blog Post Format
-```markdown
----
-layout: post
-title: "Your Post Title"
-date: 2024-01-15
-type: post
-description: "Brief description of your post"
----
-
-Your content here using Markdown...
-```
-
-#### Page Format
-```markdown
----
-layout: default
-title: "Page Title"
-description: "Page description"
-permalink: /your-url/
----
-
-Your page content here...
-```
-
-### 4. Setup and Configuration
-
-Use the compose workflow:
+## Local Demo (this repo)
 
 ```bash
-# Demo build in this repo
 bash scripts/compose.sh demo
 bundle exec jekyll build --source build/src --config build/src/_config.yml --destination _site
+bundle exec jekyll serve --source build/src --config build/src/_config.yml --destination _site --livereload
 ```
-
-For site repos that vendor this theme, see “Use as a vendored theme” below.
-
-### 5. Local Development
-
-```bash
-# Start local development server
-bundle exec jekyll serve --livereload
-
-# Visit http://localhost:4000 to preview your site
-```
-
-### 6. Deploy to Google Cloud
-
-After setup, deployment is automatic:
-
-```bash
-git add .
-git commit -m "Initial setup"
-git push origin master
-```
-
-Your site will be deployed to: `https://YOUR_GCP_PROJECT_ID.appspot.com`
-
-## Content Management Options 📝
-
-### Option A: Local Content Management
-
-Keep all content in the `content/` directory:
-
-1. **Add new blog posts**: Create files in `content/blog/` with format `YYYY-MM-DD-title.md`
-2. **Edit pages**: Modify files in `content/` directly
-3. **Deploy**: Push changes to trigger automatic deployment
-
-### Option B: External Content Repository
-
-Perfect for separating content from theme:
-
-1. **Create content repository**:
-   ```bash
-   # Create a new repository for your content
-   git clone https://github.com/YOUR_USERNAME/my-blog-content.git
-   cd my-blog-content
-   
-   # Copy the required structure
-   mkdir -p home blog
-   # Add your content files following the format above
-   ```
-
-2. **Link to Apollo**:
-   ```bash
-   # In your Apollo repository
-   git submodule add https://github.com/YOUR_USERNAME/my-blog-content.git content-external
-   
-   # Update _config.yml
-   # content:
-   #   source: "external"
-   #   repository: "https://github.com/YOUR_USERNAME/my-blog-content.git"
-   ```
-
-3. **Deploy on content changes**: The GitHub Actions workflow will automatically deploy when either repository changes.
-
-## Configuration ⚙️
-
-Edit `_config.yml` to customize your site:
-
-```yaml
-# Site Settings  
-user:
-  name: "Your Name"
-  domain: "yourdomain.com"
-  description: "Your bio or description"
-
-# Content Settings
-content:
-  source: "local"           # "local" or "external"
-  repository: ""            # Git URL if external (e.g., "https://github.com/user/content.git")
-
-# See content/home/index.md to customize research links
-# Example: [Google Scholar](URL){:target="_blank"}
-```
-
-## Deployment 🚀
-
-### Automatic Deployment Triggers
-
-The site deploys automatically when:
-
-1. **Main repository changes** (theme updates, configuration changes)
-2. **Content changes** (either in `content/` folder or external content repository)
 
 ### Manual Deployment
 
@@ -254,29 +114,25 @@ git merge upstream/master
 git push origin master
 ```
 
-### For External Content Users
+### Updating Theme in your site repo
 
 ```bash
-# Simply pull updates - your content is safe in external repo
-git pull upstream master
-git push origin master
+git fetch apollo
+git subtree pull --prefix=apollo apollo master --squash
 ```
 
 ## Project Structure 📁
 
 ```
-apollo/
-├── content/              # Local content (or empty if using external)
-├── content-external/     # External content submodule (if used)
-├── _layouts/             # Jekyll templates
-├── _includes/            # Reusable components  
-├── _plugins/             # Content loading logic
-├── assets/               # CSS, JS, images
-├── scripts/              # Setup and utility scripts
-├── .github/workflows/    # Auto-deployment workflows
-├── _config.yml           # Site configuration
-├── app.yaml              # Google Cloud App Engine config
-└── DEPLOYMENT.md         # Detailed deployment guide
+apollo/                   # vendored theme subtree
+content/                  # your markdown content
+overrides/                # optional template overrides
+.github/workflows/deploy.yml  # generated site workflow
+_config.local.yml         # site identity (title, url, analytics)
+app.yaml                  # App Engine config
+main.py                   # App Engine fallback (unused for static)
+.gcloudignore             # exclude dev files from deploy
+.gitignore                # ignore local artifacts
 ```
 
 ## Troubleshooting 🔧
@@ -299,10 +155,8 @@ bundle exec jekyll build --verbose
 - Verify Google Cloud secrets are set correctly
 
 
-**External content not syncing:**
-- Verify submodule is properly configured
-- Check content repository URL in `_config.yml`
-- Ensure content repository follows required structure
+**Pages conflicting (multiple sources):**
+- If you see build conflicts for 404/about/index, run: `bash apollo/scripts/compose.sh build` (it removes duplicates after promotion)
 
 ### Useful Commands
 
@@ -312,9 +166,6 @@ bundle exec jekyll serve --livereload
 
 # Build for production
 bundle exec jekyll build
-
-# Update external content
-git submodule update --remote
 
 # View deployment logs
 gcloud app logs tail -s default

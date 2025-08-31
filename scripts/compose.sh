@@ -137,7 +137,7 @@ Commands:
   clean    Remove build/src
 
 Environment:
-  THEME_DIR   Path to theme directory (default: ./theme if present, else .)
+  THEME_DIR   Path to theme directory (default: ./apollo if present, else ./theme, else .)
 EOF
 }
 

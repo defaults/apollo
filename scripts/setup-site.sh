@@ -45,6 +45,11 @@ fi
 # 3) Create site-local config if missing (copy from theme template)
 CFG_LOCAL="$ROOT_DIR/_config.local.yml"
 if [[ ! -f "$CFG_LOCAL" ]]; then
+  # If a misplaced overrides/_config.local.yml exists, move it to root
+  if [[ -f "$ROOT_DIR/overrides/_config.local.yml" ]]; then
+    mv "$ROOT_DIR/overrides/_config.local.yml" "$CFG_LOCAL"
+    echo "Moved overrides/_config.local.yml to _config.local.yml"
+  fi
   if [[ -f "$THEME_DIR/templates/site/_config.local.yml" ]]; then
     cp "$THEME_DIR/templates/site/_config.local.yml" "$CFG_LOCAL"
   else
@@ -166,7 +171,7 @@ Done. Next steps:
     GCP_SERVICE_ACCOUNT_KEY (JSON from your GCP service account)
 
 Update theme later:
-  git fetch apollo-tpl
-  git subtree pull --prefix=apollo apollo-tpl master --squash
+  git fetch apollo
+  git subtree pull --prefix=apollo apollo master --squash
 
 NEXT
