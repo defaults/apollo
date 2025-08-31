@@ -9,9 +9,13 @@ _site/
 .jekyll-metadata
 .bundle/
 
+# Lockfile (do not commit for vendored theme builds)
+Gemfile.lock
+
 # User configuration (should not be committed)
 user-config.yml
 _site-config.yml
+_config.local.yml
 
 # OS files
 .DS_Store
