@@ -131,10 +131,25 @@ YML
   echo "Created .github/workflows/deploy.yml"
 fi
 
-# 5) Create app.yaml if missing (for App Engine static hosting)
+# 5) Copy deployment/runtime scaffolding if missing
 if [[ ! -f "$ROOT_DIR/app.yaml" ]]; then
   copy_file "$THEME_DIR/app.yaml" "$ROOT_DIR/app.yaml"
   echo "Created app.yaml"
+fi
+
+if [[ ! -f "$ROOT_DIR/main.py" ]]; then
+  copy_file "$THEME_DIR/main.py" "$ROOT_DIR/main.py"
+  echo "Created main.py"
+fi
+
+if [[ ! -f "$ROOT_DIR/.gcloudignore" ]]; then
+  copy_file "$THEME_DIR/.gcloudignore" "$ROOT_DIR/.gcloudignore"
+  echo "Created .gcloudignore"
+fi
+
+if [[ ! -f "$ROOT_DIR/.gitignore" ]]; then
+  copy_file "$THEME_DIR/.gitignore" "$ROOT_DIR/.gitignore"
+  echo "Created .gitignore"
 fi
 
 cat <<'NEXT'
