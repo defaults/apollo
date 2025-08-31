@@ -4,13 +4,15 @@ module Jekyll
     priority :high
 
     def generate(site)
+      # Opt-in via _config.yml: content.loader_enabled: true
+      return unless site.config.dig('content', 'loader_enabled') == true
+
       content_dir = File.join(site.source, 'content')
       
       # Only load from content directory if it exists
       if Dir.exist?(content_dir)
-        # Clear existing posts and pages to avoid duplicates
+        # Clear existing posts to avoid duplicates. Preserve existing pages (e.g., root-level pages like robots.txt).
         site.posts.docs.clear
-        site.pages.clear
         
         load_content_from_directory(site, content_dir)
       end
