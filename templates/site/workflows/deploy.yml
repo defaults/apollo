@@ -1,0 +1,42 @@
+name: Build and Deploy Site
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: theme/Gemfile
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+          bundler-cache: true
+
+      - name: Compose build
+        run: bash theme/scripts/compose.sh build
+
+      - name: Build Jekyll
+        run: |
+          bundle exec jekyll build \
+            --source build/src \
+            --config build/src/_config.yml,build/src/_config.local.yml \
+            --destination _site
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Setup gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
+      - name: Deploy to App Engine
+        run: gcloud app deploy --quiet --promote
