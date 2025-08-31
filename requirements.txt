@@ -1,2 +1,0 @@
-# No Python dependencies required
-# App Engine serves static files only 
