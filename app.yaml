@@ -1,4 +1,4 @@
-runtime: python39
+runtime: python311
 
 # This is a placeholder main.py that will never be called
 # since all requests are handled by static file handlers
