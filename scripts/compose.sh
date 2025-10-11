@@ -2,18 +2,18 @@
 set -euo pipefail
 
 # Compose a buildable Jekyll source tree from a vendored theme
-# Usage (from site repo root):
-#   bash apollo/scripts/compose.sh init     # seed content from theme examples (if empty)
-#   bash apollo/scripts/compose.sh build    # create build/src from theme + content + overrides
-#   bash apollo/scripts/compose.sh serve    # build then serve with livereload
-#   bash apollo/scripts/compose.sh clean    # remove build/src
+# Usage from a site repo:
+#   bash scripts/compose.sh init     # seed content from theme examples (if empty)
+#   bash scripts/compose.sh build    # create build/src from theme + content + overrides
+#   bash scripts/compose.sh serve    # build then serve with livereload
+#   bash scripts/compose.sh clean    # remove build/src
 #
 # In the template repository itself, you can build the demo site:
 #   bash scripts/compose.sh demo
 
 ROOT_DIR="$(pwd)"
 
-# If running in a consumer site, prefer ./apollo (new default), fallback to ./theme; otherwise in this repo it is .
+# If running in a consumer site, prefer ./apollo (default subtree name), fallback to ./theme; otherwise in this repo it is .
 if [[ -d "apollo" ]]; then
   THEME_DIR="apollo"
 elif [[ -d "theme" ]]; then
@@ -28,14 +28,23 @@ EXAMPLES_CONTENT_DIR="${THEME_DIR}/examples/content"
 has_cmd() { command -v "$1" >/dev/null 2>&1; }
 
 copy_dir() {
-  local src="$1" dst="$2"
+  local src="$1" dst="$2" mode="${3:-sync}"
   [[ ! -d "$src" ]] && return 0
   mkdir -p "$dst"
   if has_cmd rsync; then
-    rsync -a --delete "$src"/ "$dst"/
+    if [[ "$mode" == "overlay" ]]; then
+      rsync -a "$src"/ "$dst"/
+    else
+      rsync -a --delete "$src"/ "$dst"/
+    fi
   else
-    # Fallback to cp -R (no delete)
-    cp -R "$src"/. "$dst"/
+    if [[ "$mode" == "overlay" ]]; then
+      cp -R "$src"/. "$dst"/
+    else
+      rm -rf "$dst"
+      mkdir -p "$dst"
+      cp -R "$src"/. "$dst"/
+    fi
   fi
 }
 
@@ -82,18 +91,31 @@ compose_build() {
   mkdir -p "$BUILD_DIR"
 
   # Base config and theme assets
-  # Choose config: demo uses theme/_config.yml; site builds prefer repo _config.yml
+  local base_config_src=""
   if [[ "$use_examples" == "1" ]]; then
-    copy_file "$THEME_DIR/_config.yml" "$BUILD_DIR/_config.yml"
+    base_config_src="$THEME_DIR/_config.yml"
   else
-    if [[ -f "${ROOT_DIR}/_config.yml" ]]; then
-      copy_file "${ROOT_DIR}/_config.yml" "$BUILD_DIR/_config.yml"
+    if [[ -f "$THEME_DIR/_config.yml" ]]; then
+      base_config_src="$THEME_DIR/_config.yml"
+    elif [[ -f "${ROOT_DIR}/_config.yml" ]]; then
+      base_config_src="${ROOT_DIR}/_config.yml"
     elif [[ -f "$THEME_DIR/templates/site/_config.yml.example" ]]; then
-      copy_file "$THEME_DIR/templates/site/_config.yml.example" "$BUILD_DIR/_config.yml"
-    else
-      copy_file "$THEME_DIR/_config.yml" "$BUILD_DIR/_config.yml"
+      base_config_src="$THEME_DIR/templates/site/_config.yml.example"
     fi
   fi
+  if [[ -n "$base_config_src" ]]; then
+    copy_file "$base_config_src" "$BUILD_DIR/_config.yml"
+  fi
+
+  rm -f "$BUILD_DIR/_config.local.yml"
+  if [[ "$use_examples" != "1" ]]; then
+    if [[ -f "${ROOT_DIR}/_config.local.yml" ]]; then
+      copy_file "${ROOT_DIR}/_config.local.yml" "$BUILD_DIR/_config.local.yml"
+    elif [[ -f "${ROOT_DIR}/_config.yml" && "$ROOT_DIR" != "$THEME_DIR" ]]; then
+      copy_file "${ROOT_DIR}/_config.yml" "$BUILD_DIR/_config.local.yml"
+    fi
+  fi
+
   copy_dir "$THEME_DIR/_layouts" "$BUILD_DIR/_layouts"
   copy_dir "$THEME_DIR/_includes" "$BUILD_DIR/_includes"
   copy_dir "$THEME_DIR/_plugins" "$BUILD_DIR/_plugins"
@@ -115,7 +137,7 @@ compose_build() {
   fi
 
   # Overrides from site repo overlay the theme
-  copy_dir "${ROOT_DIR}/overrides" "$BUILD_DIR"
+  copy_dir "${ROOT_DIR}/overrides" "$BUILD_DIR" overlay
 
   # Single config model: no secondary config file
 }
@@ -123,12 +145,22 @@ compose_build() {
 compose_serve() {
   compose_build "${1:-0}"
   local cfgs=("$BUILD_DIR/_config.yml")
+  if [[ -f "$BUILD_DIR/_config.local.yml" ]]; then
+    cfgs+=("$BUILD_DIR/_config.local.yml")
+  fi
+  local cfg_arg
+  if [[ ${#cfgs[@]} -gt 1 ]]; then
+    local IFS=,
+    cfg_arg="${cfgs[*]}"
+  else
+    cfg_arg="${cfgs[0]}"
+  fi
   # Serve using the theme Gemfile when vendored; otherwise local Gemfile
   local gemfile_path
   if [[ -f "$THEME_DIR/Gemfile" ]]; then gemfile_path="$THEME_DIR/Gemfile"; else gemfile_path="Gemfile"; fi
   BUNDLE_GEMFILE="$gemfile_path" bundle exec jekyll serve \
     --source "$BUILD_DIR" \
-    --config "${cfgs[*]}" \
+    --config "$cfg_arg" \
     --livereload
 }
 

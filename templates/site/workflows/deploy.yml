@@ -21,13 +21,13 @@ jobs:
           bundler-cache: true
 
       - name: Compose build
-        run: bash apollo/scripts/compose.sh build
+        run: bash scripts/compose.sh build
 
       - name: Build Jekyll
         run: |
           bundle exec jekyll build \
             --source build/src \
-            --config build/src/_config.yml \
+            --config build/src/_config.yml,build/src/_config.local.yml \
             --destination _site
 
       - name: Authenticate to Google Cloud

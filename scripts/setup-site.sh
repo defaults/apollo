@@ -34,7 +34,7 @@ copy_file() {
 }
 
 # 1) Ensure basic structure
-mkdir -p "$ROOT_DIR/content" "$ROOT_DIR/overrides" "$ROOT_DIR/.github/workflows"
+mkdir -p "$ROOT_DIR/content" "$ROOT_DIR/overrides" "$ROOT_DIR/.github/workflows" "$ROOT_DIR/scripts"
 
 # 2) Seed example content if content/ is empty and examples exist
 if [[ -z "$(ls -A "$ROOT_DIR/content" 2>/dev/null || true)" ]] && [[ -d "$THEME_DIR/examples/content" ]]; then
@@ -42,22 +42,17 @@ if [[ -z "$(ls -A "$ROOT_DIR/content" 2>/dev/null || true)" ]] && [[ -d "$THEME_
   copy_dir "$THEME_DIR/examples/content" "$ROOT_DIR/content"
 fi
 
-# 3) Ensure a single site config at repo root (_config.yml)
-CFG_USER="$ROOT_DIR/_config.yml"
-if [[ ! -f "$CFG_USER" ]]; then
-  # Migrate from old locations if present
-  if [[ -f "$ROOT_DIR/_config.local.yml" ]]; then
-    mv "$ROOT_DIR/_config.local.yml" "$CFG_USER"
-    echo "Renamed _config.local.yml -> _config.yml"
-  elif [[ -f "$ROOT_DIR/overrides/_config.local.yml" ]]; then
-    mv "$ROOT_DIR/overrides/_config.local.yml" "$CFG_USER"
-    echo "Moved overrides/_config.local.yml -> _config.yml"
+# 3) Ensure per-site config (_config.local.yml)
+CFG_LOCAL="$ROOT_DIR/_config.local.yml"
+if [[ ! -f "$CFG_LOCAL" ]]; then
+  if [[ -f "$ROOT_DIR/_config.yml" && "$ROOT_DIR/_config.yml" != "$THEME_DIR/_config.yml" ]]; then
+    mv "$ROOT_DIR/_config.yml" "$CFG_LOCAL"
+    echo "Renamed _config.yml -> _config.local.yml"
   elif [[ -f "$THEME_DIR/templates/site/_config.yml.example" ]]; then
-    cp "$THEME_DIR/templates/site/_config.yml.example" "$CFG_USER"
-    echo "Created _config.yml from template"
+    cp "$THEME_DIR/templates/site/_config.yml.example" "$CFG_LOCAL"
+    echo "Created _config.local.yml from template"
   else
-    # Fallback minimal
-    cat > "$CFG_USER" <<'YAML'
+    cat > "$CFG_LOCAL" <<'YAML'
 title: "Your Site Title"
 description: "Short description of your site"
 url: ""
@@ -82,11 +77,29 @@ defaults:
     values:
       layout: "default"
 YAML
-    echo "Wrote minimal _config.yml"
+    echo "Wrote minimal _config.local.yml"
   fi
 fi
 
-# 4) Create site deploy workflow (copy from theme template)
+# 4) Create compose wrapper that defers to vendored theme script
+COMPOSE_WRAPPER="$ROOT_DIR/scripts/compose.sh"
+if [[ ! -f "$COMPOSE_WRAPPER" ]]; then
+  cat > "$COMPOSE_WRAPPER" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+THEME_COMPOSE="$SCRIPT_DIR/../apollo/scripts/compose.sh"
+if [[ ! -f "$THEME_COMPOSE" ]]; then
+  echo "Error: theme compose script not found at $THEME_COMPOSE" >&2
+  exit 1
+fi
+exec bash "$THEME_COMPOSE" "$@"
+SH
+  chmod +x "$COMPOSE_WRAPPER"
+  echo "Created scripts/compose.sh wrapper"
+fi
+
+# 5) Create site deploy workflow (copy from theme template)
 SITE_WF="$ROOT_DIR/.github/workflows/deploy.yml"
 if [[ ! -f "$SITE_WF" ]]; then
   if [[ -f "$THEME_DIR/templates/site/workflows/deploy.yml" ]]; then
@@ -106,6 +119,8 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_GEMFILE: theme/Gemfile
     steps:
       - uses: actions/checkout@v4
 
@@ -116,13 +131,13 @@ jobs:
           bundler-cache: true
 
       - name: Compose build
-        run: bash apollo/scripts/compose.sh build
+        run: bash scripts/compose.sh build
 
       - name: Build Jekyll
         run: |
-          BUNDLE_GEMFILE=apollo/Gemfile bundle exec jekyll build \
+          bundle exec jekyll build \
             --source build/src \
-            --config build/src/_config.yml \
+            --config build/src/_config.yml,build/src/_config.local.yml \
             --destination _site
 
       - name: Authenticate to Google Cloud
@@ -140,7 +155,7 @@ YML
   echo "Created .github/workflows/deploy.yml"
 fi
 
-# 5) Copy deployment/runtime scaffolding if missing
+# 6) Copy deployment/runtime scaffolding if missing
 if [[ ! -f "$ROOT_DIR/app.yaml" ]]; then
   copy_file "$THEME_DIR/app.yaml" "$ROOT_DIR/app.yaml"
   echo "Created app.yaml"
@@ -165,9 +180,9 @@ cat <<'NEXT'
 
 Done. Next steps:
 - Add content under content/ and optional HTML overrides under overrides/
-- Edit _config.yml for site identity, analytics, and social handles
+- Edit _config.local.yml for site identity, analytics, and social handles
 - Try local preview:
-    bash apollo/scripts/compose.sh serve
+    bash scripts/compose.sh serve
   (If Ruby 3: run `bundle add webrick` in your site repo if serve errors)
 - Commit and push to trigger deployment
 
