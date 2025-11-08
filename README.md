@@ -35,19 +35,19 @@ git fetch apollo
 git subtree add --prefix=apollo apollo master --squash
 
 # Create content/, overrides/, site CI, and app.yaml
-bash apollo/scripts/setup-site.sh
+bash apollo/setup.sh
 
 # Local preview (Ruby 3 users may need: bundle add webrick)
 bash scripts/compose.sh serve
 ```
 
 To reset scaffolding later, delete the generated files you want to regenerate
-and re-run `bash apollo/scripts/setup-site.sh`. For example, to reset your
+and re-run `bash apollo/setup.sh`. For example, to reset your
 workflow:
 
 ```bash
 rm -f .github/workflows/deploy.yml
-bash apollo/scripts/setup-site.sh
+bash apollo/setup.sh
 ```
 
 CI builds (generated workflow uses this under the hood):
@@ -167,7 +167,7 @@ bundle exec jekyll build --verbose
 
 
 **Pages conflicting (multiple sources):**
-- If you see build conflicts for 404/about/index, run: `bash apollo/scripts/compose.sh build` (it removes duplicates after promotion)
+- If you see build conflicts for 404/about/index, run: `bash scripts/compose.sh build` (it removes duplicates after promotion)
 
 ### Useful Commands
 

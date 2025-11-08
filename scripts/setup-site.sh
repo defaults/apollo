@@ -2,8 +2,10 @@
 set -euo pipefail
 
 # Bootstrap a personal site repo that vendors this theme via git subtree.
-# Run from YOUR SITE REPO root:
+# Run from YOUR SITE REPO root (after adding this repo under apollo/):
 #   bash apollo/scripts/setup-site.sh
+# or simply:
+#   bash apollo/setup.sh
 
 # Resolve paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -12,6 +14,28 @@ ROOT_DIR="$(pwd)"
 
 echo "Theme directory: $THEME_DIR"
 echo "Site root:       $ROOT_DIR"
+
+if [[ "$THEME_DIR" == "$ROOT_DIR" ]]; then
+  cat <<'ERR' >&2
+Error: setup script must be run from your site repository root with this theme vendored (expected apollo/ directory).
+Run from the parent repo, e.g.:
+  bash apollo/setup.sh
+ERR
+  exit 1
+fi
+
+REL_THEME_SUBPATH="${THEME_DIR#$ROOT_DIR/}"
+if [[ "$REL_THEME_SUBPATH" == "$THEME_DIR" || -z "$REL_THEME_SUBPATH" ]]; then
+  REL_THEME_SUBPATH="."
+fi
+
+if [[ "$REL_THEME_SUBPATH" == "." ]]; then
+  cat <<'ERR' >&2
+Error: could not determine theme subdirectory relative to site root.
+Ensure the theme is vendored inside your site repo (e.g. site/apollo).
+ERR
+  exit 1
+fi
 
 has_cmd() { command -v "$1" >/dev/null 2>&1; }
 
@@ -84,16 +108,16 @@ fi
 # 4) Create compose wrapper that defers to vendored theme script
 COMPOSE_WRAPPER="$ROOT_DIR/scripts/compose.sh"
 if [[ ! -f "$COMPOSE_WRAPPER" ]]; then
-  cat > "$COMPOSE_WRAPPER" <<'SH'
+  cat > "$COMPOSE_WRAPPER" <<SH
 #!/usr/bin/env bash
 set -euo pipefail
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-THEME_COMPOSE="$SCRIPT_DIR/../apollo/scripts/compose.sh"
-if [[ ! -f "$THEME_COMPOSE" ]]; then
-  echo "Error: theme compose script not found at $THEME_COMPOSE" >&2
+SCRIPT_DIR="\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
+THEME_COMPOSE="\$SCRIPT_DIR/../${REL_THEME_SUBPATH}/scripts/compose.sh"
+if [[ ! -f "\$THEME_COMPOSE" ]]; then
+  echo "Error: theme compose script not found at \$THEME_COMPOSE" >&2
   exit 1
 fi
-exec bash "$THEME_COMPOSE" "$@"
+exec bash "\$THEME_COMPOSE" "\$@"
 SH
   chmod +x "$COMPOSE_WRAPPER"
   echo "Created scripts/compose.sh wrapper"
@@ -120,7 +144,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     env:
-      BUNDLE_GEMFILE: theme/Gemfile
+      BUNDLE_GEMFILE: apollo/Gemfile
     steps:
       - uses: actions/checkout@v4
 
