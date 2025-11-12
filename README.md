@@ -37,6 +37,12 @@ git subtree add --prefix=apollo apollo master --squash
 # Create content/, overrides/, site CI, and app.yaml
 bash apollo/setup.sh
 
+# Install Ruby gems once for local preview
+BUNDLE_GEMFILE=apollo/Gemfile bundle install
+
+# Commit _config.local.yml (required for CI/CD)
+git add _config.local.yml && git commit -m "Configure site"
+
 # Local preview (Ruby 3 users may need: bundle add webrick)
 bash scripts/compose.sh serve
 ```

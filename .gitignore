@@ -12,10 +12,9 @@ _site/
 # Lockfile (do not commit for vendored theme builds)
 Gemfile.lock
 
-# User configuration (should not be committed)
+# User configuration samples
 user-config.yml
 _site-config.yml
-_config.local.yml
 
 # OS files
 .DS_Store

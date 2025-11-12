@@ -205,6 +205,9 @@ cat <<'NEXT'
 Done. Next steps:
 - Add content under content/ and optional HTML overrides under overrides/
 - Edit _config.local.yml for site identity, analytics, and social handles
+- Install Ruby deps for local preview (once):
+    BUNDLE_GEMFILE=apollo/Gemfile bundle install
+- Commit _config.local.yml so CI/CD picks it up
 - Try local preview:
     bash scripts/compose.sh serve
   (If Ruby 3: run `bundle add webrick` in your site repo if serve errors)
