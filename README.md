@@ -1,222 +1,71 @@
-# Apollo Blog 🚀
+# Apollo
 
-A flexible Jekyll-based personal website generator with automated deployment to Google Cloud App Engine. Supports both local content management and external content repositories.
+Jekyll theme for personal websites.
 
-## Features ✨
+## Prerequisites
 
-- **File-based Content Structure**: URLs match your file organization
-- **Flexible Content Sources**: Local `content/` directory or external Git repository
-- **Auto-deployment**: Deploys on changes to main repo OR content changes
-- **Clean Design**: Minimal, readable design with dark/light mode support
-- **Google Cloud Integration**: Automated deployment to App Engine
-- **Easy Updates**: Pull theme updates without losing your content
-
-## Vendored Theme (git subtree)
-
-Recommended for personal sites. Keep your content separate and pull theme updates safely.
-
-Site structure:
-
-```
-├─ apollo/                # subtree of this repo
-├─ content/               # your markdown only
-├─ overrides/             # optional overrides (mirrors theme paths)
-├─ _config.local.yml      # per-site settings
-├─ scripts/compose.sh     # wrapper that calls theme compose
-├─ app.yaml               # deployment config
-└─ .github/workflows/deploy.yml   # site’s own CI
-```
-
-Bootstrap your site (run in your site repo):
+This project uses [asdf](https://asdf-vm.com/) for version management. Install asdf first, then:
 
 ```bash
+# Install Ruby plugin and version
+asdf plugin add ruby
+asdf install
+
+# Verify Ruby version
+ruby --version  # Should show 3.3.6
+```
+
+> **Note:** If `ruby --version` shows a different version, ensure asdf is properly configured in your shell. Add this to your `~/.zshrc` or `~/.bashrc`:
+> ```bash
+> . "$HOME/.asdf/asdf.sh"
+> ```
+
+## Develop the Theme
+
+```bash
+# Install dependencies
+bundle install
+
+# Serve locally with live reload
+bundle exec jekyll serve --livereload
+```
+
+Or use the compose script:
+```bash
+bash scripts/compose.sh demo    # Build and serve examples
+bash scripts/compose.sh serve   # Build and serve your content
+```
+
+Edit files in `_layouts/`, `_includes/`, `_plugins/`, `assets/`, and `examples/content/`.
+
+## Use as Your Site
+
+In your site repo:
+
+```bash
+# Add Apollo as subtree (once)
 git remote add apollo git@github.com:defaults/apollo.git
 git fetch apollo
 git subtree add --prefix=apollo apollo master --squash
 
-# Create content/, overrides/, site CI, and app.yaml
+# Setup site structure
 bash apollo/setup.sh
 
-# Install Ruby gems once for local preview
+# Install dependencies
 BUNDLE_GEMFILE=apollo/Gemfile bundle install
 
-# Commit _config.local.yml (required for CI/CD)
-git add _config.local.yml && git commit -m "Configure site"
-
-# Local preview (Ruby 3 users may need: bundle add webrick)
+# Run locally
 bash scripts/compose.sh serve
 ```
 
-To reset scaffolding later, delete the generated files you want to regenerate
-and re-run `bash apollo/setup.sh`. For example, to reset your
-workflow:
-
-```bash
-rm -f .github/workflows/deploy.yml
-bash apollo/setup.sh
-```
-
-CI builds (generated workflow uses this under the hood):
-
-```bash
-bash scripts/compose.sh build
-bundle exec jekyll build \
-  --source build/src \
-  --config build/src/_config.yml,build/src/_config.local.yml \
-  --destination _site
-```
+Edit your site:
+- `_config.local.yml` — title, description, author
+- `content/` — your markdown files
+- `overrides/` — optional theme overrides
 
 Update theme later:
 
 ```bash
 git fetch apollo
 git subtree pull --prefix=apollo apollo master --squash
-```
-
-## GCP Setup (required for deploys)
-
-In your site repo on GitHub, add a secret used by the deploy workflow:
-
-1) Create a service account and key (one time)
-- Roles: App Engine Admin, Service Account User, Storage Admin
-- Create JSON key; copy its full contents
-
-2) Add repository secret
-- GitHub → Settings → Secrets and variables → Actions → New repository secret
-- Name: `GCP_SERVICE_ACCOUNT_KEY`
-- Value: paste the JSON from step 1
-
-Now pushes to `master` will build and deploy via the generated workflow.
-
-## Local Demo (this repo)
-
-```bash
-bash scripts/compose.sh demo
-bundle exec jekyll build --source build/src --config build/src/_config.yml --destination _site
-bundle exec jekyll serve --source build/src --config build/src/_config.yml --destination _site --livereload
-```
-
-### Manual Deployment
-
-```bash
-# Build locally
-bundle exec jekyll build
-
-# Deploy to Google Cloud
-gcloud app deploy
-```
-
-### Monitoring Deployments
-
-- **GitHub Actions**: Check the Actions tab in your GitHub repository
-- **Google Cloud Console**: Visit App Engine section for logs and metrics
-- **Site Status**: Visit your deployed URL
-
-## Updating Apollo Theme 🔄
-
-To get theme updates without losing your content:
-
-### For Local Content Users
-
-```bash
-# Add this repo as upstream (one-time setup)
-git remote add upstream https://github.com/ORIGINAL_AUTHOR/apollo.git
-
-# Get updates
-git fetch upstream
-git merge upstream/master
-
-# Your content in content/ directory is preserved
-# Resolve any conflicts if needed
-git push origin master
-```
-
-### Updating Theme in your site repo
-
-```bash
-git fetch apollo
-git subtree pull --prefix=apollo apollo master --squash
-```
-
-## Project Structure 📁
-
-```
-apollo/                   # vendored theme subtree
-content/                  # your markdown content
-overrides/                # optional template overrides
-.github/workflows/deploy.yml  # generated site workflow
-_config.yml               # site identity (title, url, analytics)
-app.yaml                  # App Engine config
-main.py                   # App Engine fallback (unused for static)
-.gcloudignore             # exclude dev files from deploy
-.gitignore                # ignore local artifacts
-```
-
-## Troubleshooting 🔧
-
-### Common Issues
-
-**Build fails locally:**
-```bash
-bundle install
-bundle exec jekyll build --verbose
-```
-
-**Content not showing:**
-- Check file format matches requirements
-- Verify front matter syntax
-- Ensure dates are in YYYY-MM-DD format for blog posts
-
-**Deployment fails:**
-- Check GitHub Actions logs
-- Verify Google Cloud secrets are set correctly
-
-
-**Pages conflicting (multiple sources):**
-- If you see build conflicts for 404/about/index, run: `bash scripts/compose.sh build` (it removes duplicates after promotion)
-
-### Useful Commands
-
-```bash
-# Check site locally
-bundle exec jekyll serve --livereload
-
-# Build for production
-bundle exec jekyll build
-
-# View deployment logs
-gcloud app logs tail -s default
-```
-
-## Security & Best Practices 🔒
-
-- **Never commit sensitive keys**: Use GitHub secrets for deployment credentials
-- **Regular updates**: Keep dependencies updated with `bundle update`
-- **Content backup**: External content repos provide natural backup
-- **Test locally**: Always test changes locally before pushing
-
-## Support & Contributing 🤝
-
-- **Issues**: [GitHub Issues](https://github.com/your-username/apollo/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/apollo/discussions)
-- **Contributing**: Fork, create feature branch, submit PR
-
-## License 📄
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
----
-
-**Happy blogging!** 🎉
-
-For detailed deployment instructions, see [DEPLOYMENT.md](DEPLOYMENT.md).
-# Site is now working ✅
-## Use as a vendored theme (recommended for blogs)
-
-In your site repo (not here):
-
-```bash
-git remote add apollo git@github.com:defaults/apollo.git
-git fetch apollo
-git subtree add --prefix=apollo apollo master --squash
 ```
