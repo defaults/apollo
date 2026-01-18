@@ -19,8 +19,8 @@ jobs:
           ruby-version: 3.2
           bundler-cache: true
 
-      - name: Compose example site
-        run: bash scripts/compose.sh demo
+      - name: Compose site
+        run: bash scripts/compose.sh build
 
       - name: Build Jekyll site
         run: bundle exec jekyll build --verbose --source build/src --config build/src/_config.yml --destination _site
