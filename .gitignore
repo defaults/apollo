@@ -32,9 +32,6 @@ Thumbs.db
 *.swo
 *.code-workspace
 
-# Local content (downstream sites only)
-/content/
-
 # Logs
 *.log
 
