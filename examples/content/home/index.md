@@ -13,7 +13,7 @@ Previously, [previous experience]. [Additional background information].
 
 ## Research
 
-[Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID){:target="_blank"}
+[Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID)
 
 
 {% assign essays = site.essays | limit: 5 %}
