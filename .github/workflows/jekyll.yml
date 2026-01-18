@@ -22,8 +22,8 @@ jobs:
     - name: Install dependencies
       run: bundle install
 
-    - name: Compose Demo Site
-      run: bash scripts/compose.sh demo
+    - name: Compose Site
+      run: bash scripts/compose.sh build
 
     - name: Build Jekyll Site
       run: bundle exec jekyll build --source build/src --destination _site
