@@ -119,6 +119,7 @@ compose_build() {
   copy_dir "$THEME_DIR/_layouts" "$BUILD_DIR/_layouts"
   copy_dir "$THEME_DIR/_includes" "$BUILD_DIR/_includes"
   copy_dir "$THEME_DIR/_plugins" "$BUILD_DIR/_plugins"
+  copy_dir "$THEME_DIR/_sass" "$BUILD_DIR/_sass"
   copy_dir "$THEME_DIR/assets" "$BUILD_DIR/assets"
   # Common root-level static files from theme
   for f in robots.txt favicon.ico apple-touch-icon.png; do

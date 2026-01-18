@@ -30,6 +30,10 @@ Thumbs.db
 .idea/
 *.swp
 *.swo
+*.code-workspace
+
+# Local content (downstream sites only)
+/content/
 
 # Logs
 *.log
