@@ -1,12 +1,11 @@
 ---
 ---
-// Note: Using @import for Jekyll compatibility. Deprecation warnings are expected.
-// See: https://sass-lang.com/d/import
-@import "base/variables";
-@import "normalize";
-@import "base/reset";
-@import "base/typography";
-@import "layout/layout";
-@import "components/components";
-@import "components/utilities";
-@import "syntax";
+// Modern Dart Sass syntax - using @use instead of deprecated @import
+@use "base/variables";
+@use "normalize";
+@use "base/reset";
+@use "base/typography";
+@use "layout/layout";
+@use "components/components";
+@use "components/utilities";
+@use "syntax";
