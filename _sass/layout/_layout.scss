@@ -1,0 +1,39 @@
+*,
+*:before,
+*:after {
+    box-sizing: inherit;
+}
+
+::selection {
+    background: var(--color-selection);
+}
+
+::-moz-selection {
+    background: var(--color-selection);
+}
+
+html {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    font-size: 62.5%;
+}
+
+body {
+    background-color: var(--color-bg-primary);
+    margin: 2vw auto 0 auto;
+    padding: 2rem 0 24rem;
+    overflow-x: hidden;
+}
+
+footer {
+    margin: 2em auto;
+    max-width: var(--wrap-wide);
+    width: var(--wrap-normal);
+    padding-top: 1em;
+}
+
+iframe,
+video {
+    max-width: 100%;
+}

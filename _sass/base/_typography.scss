@@ -1,0 +1,40 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+body {
+    color-scheme: light dark;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-family: var(--font-content);
+    line-height: var(--line-height);
+    font-size: 1.8rem;
+    font-size: calc(1.5rem + 0.25vw);
+    color: var(--color-tx-normal);
+}
+
+small,
+.small {
+    font-size: var(--font-small);
+    line-height: 1.4;
+}
+
+.smaller {
+    font-size: var(--font-smaller);
+    line-height: 1.4;
+}
+
+.font-ui {
+    font-family: var(--font-ui);
+}
+
+.font-content {
+    font-family: var(--font-content);
+}
+
+.font-mono {
+    font-family: var(--font-mono);
+}
+
+mark {
+    background-color: var(--color-highlight);
+    color: var(--color-tx-normal);
+}
