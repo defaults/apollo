@@ -1,71 +1,128 @@
 # Apollo
 
-Jekyll theme for personal websites.
+A minimal Jekyll theme for personal websites and blogs.
 
-## Prerequisites
+## Quick Start
 
-This project uses [asdf](https://asdf-vm.com/) for version management. Install asdf first, then:
+### Prerequisites
 
-```bash
-# Install Ruby plugin and version
-asdf plugin add ruby
-asdf install
+1. **Ruby 3.2+** (via [asdf](https://asdf-vm.com/)):
+   ```bash
+   asdf plugin add ruby
+   asdf install
+   ```
 
-# Verify Ruby version
-ruby --version  # Should show 3.3.6
-```
+2. **fswatch** (for live source watching):
+   ```bash
+   brew install fswatch
+   ```
 
-> **Note:** If `ruby --version` shows a different version, ensure asdf is properly configured in your shell. Add this to your `~/.zshrc` or `~/.bashrc`:
-> ```bash
-> . "$HOME/.asdf/asdf.sh"
-> ```
+3. **Install dependencies**:
+   ```bash
+   bundle install
+   ```
 
-## Develop the Theme
-
-```bash
-# Install dependencies
-bundle install
-
-# Serve locally with live reload
-bundle exec jekyll serve --livereload
-```
-
-Or use the compose script:
-```bash
-bash scripts/compose.sh demo    # Build and serve examples
-bash scripts/compose.sh serve   # Build and serve your content
-```
-
-Edit files in `_layouts/`, `_includes/`, `_plugins/`, `assets/`, and `examples/content/`.
-
-## Use as Your Site
-
-In your site repo:
+### Run Locally
 
 ```bash
-# Add Apollo as subtree (once)
-git remote add apollo git@github.com:defaults/apollo.git
-git fetch apollo
-git subtree add --prefix=apollo apollo master --squash
-
-# Setup site structure
-bash apollo/setup.sh
-
-# Install dependencies
-BUNDLE_GEMFILE=apollo/Gemfile bundle install
-
-# Run locally
 bash scripts/compose.sh serve
 ```
 
-Edit your site:
-- `_config.local.yml` — title, description, author
-- `content/` — your markdown files
-- `overrides/` — optional theme overrides
+This will:
+- Build the site from `examples/content/`
+- Start a server at http://localhost:4000
+- Watch source files (`_sass/`, `_layouts/`, etc.) for changes
+- Auto-rebuild and refresh browser on save
 
-Update theme later:
+---
+
+## Use Apollo for Your Site
+
+### 1. Add as subtree
+
+```bash
+# In your site repo
+git remote add apollo git@github.com:defaults/apollo.git
+git fetch apollo
+git subtree add --prefix=apollo apollo master --squash
+```
+
+### 2. Set up site structure
+
+```bash
+bash apollo/scripts/setup-site.sh
+```
+
+This creates:
+```
+your-site/
+├── apollo/           # Theme (git subtree)
+├── content/          # Your markdown files
+├── overrides/        # Optional theme overrides
+├── _config.local.yml # Your site config
+└── scripts/
+    └── compose.sh    # Build script (copied)
+```
+
+### 3. Add your content
+
+Edit files in `content/`:
+- `content/_essays/` - Blog posts
+- `content/home/index.md` - Homepage
+- `content/about.md` - About page
+
+### 4. Run locally
+
+```bash
+bundle install
+bash scripts/compose.sh serve
+```
+
+### 5. Customize (optional)
+
+- **Config**: Edit `_config.local.yml` for title, author, etc.
+- **Overrides**: Copy any theme file to `overrides/` and modify it
+
+### 6. Update theme later
 
 ```bash
 git fetch apollo
 git subtree pull --prefix=apollo apollo master --squash
 ```
+
+---
+
+## Project Structure
+
+| Directory | Purpose |
+|-----------|---------|
+| `_layouts/` | Page templates |
+| `_includes/` | Reusable components |
+| `_sass/` | Modular SCSS styles |
+| `assets/` | CSS, JS, images |
+| `examples/content/` | Demo content (template repo only) |
+
+---
+
+## Development
+
+### Commands
+
+| Command | Description |
+|---------|-------------|
+| `bash scripts/compose.sh serve` | Build and serve with live reload |
+| `bash scripts/compose.sh build` | Build only (for CI) |
+| `bash scripts/compose.sh clean` | Remove build directory |
+
+### How it works
+
+1. `compose.sh` merges theme + content + overrides into `build/src/`
+2. Jekyll builds from `build/src/` to `_site/`
+3. `fswatch` monitors source files and triggers rebuild on changes
+4. LiveReload refreshes browser automatically
+
+---
+
+## License
+
+MIT

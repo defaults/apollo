@@ -123,13 +123,53 @@ do_serve() {
   [[ -f "$BUILD_DIR/_config.local.yml" ]] && cfgs="$cfgs,$BUILD_DIR/_config.local.yml"
 
   echo "Starting Jekyll server..."
-  # Use BUNDLE_GEMFILE to ensure we use the correct gems
   export BUNDLE_GEMFILE="$GEMFILE_PATH"
-  
+
+  # Determine which directories to watch for source changes
+  local watch_dirs=("$THEME_DIR/_layouts" "$THEME_DIR/_includes" "$THEME_DIR/_sass" "$THEME_DIR/assets" "$THEME_DIR/_plugins")
+  if [[ "$use_examples" == "1" ]]; then
+    watch_dirs+=("$EXAMPLES_DIR")
+  else
+    watch_dirs+=("${ROOT_DIR}/content" "${ROOT_DIR}/overrides")
+  fi
+
+  # Start Jekyll in background
   bundle exec jekyll serve \
     --source "$BUILD_DIR" \
     --config "$cfgs" \
-    --livereload
+    --livereload &
+  local jekyll_pid=$!
+
+  # If fswatch is available, watch source directories for changes
+  if has_cmd fswatch; then
+    echo ""
+    echo "Watching source files for changes..."
+    echo "  Edit files in: ${watch_dirs[*]}"
+    echo "  Press Ctrl+C to stop."
+    echo ""
+
+    # Watch for changes and rebuild
+    fswatch -o "${watch_dirs[@]}" 2>/dev/null | while read -r _; do
+      echo ""
+      echo "Source files changed, rebuilding..."
+      do_build "$use_examples"
+      echo "Rebuild complete. Browser will refresh."
+    done &
+    local fswatch_pid=$!
+
+    # Wait for Jekyll to exit, then cleanup
+    trap "kill $jekyll_pid $fswatch_pid 2>/dev/null; exit 0" INT TERM
+    wait $jekyll_pid
+    kill $fswatch_pid 2>/dev/null || true
+  else
+    echo ""
+    echo "Note: Install 'fswatch' for automatic source file watching."
+    echo "  brew install fswatch"
+    echo ""
+    echo "Without fswatch, restart the server after editing source files."
+    echo ""
+    wait $jekyll_pid
+  fi
 }
 
 # Determine if we're in the template repo or a consumer site
