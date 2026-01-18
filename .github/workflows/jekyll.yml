@@ -1,0 +1,37 @@
+name: Jekyll Build
+
+on:
+  push:
+    branches: [ "master", "main" ]
+  pull_request:
+    branches: [ "master", "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.1'
+        bundler-cache: true
+        
+    - name: Install dependencies
+      run: bundle install
+
+    - name: Compose Demo Site
+      run: bash scripts/compose.sh demo
+
+    - name: Build Jekyll Site
+      run: bundle exec jekyll build --source build/src --destination _site
+      
+    - name: Verify CSS Generation
+      run: |
+        if [ ! -f "_site/assets/css/styles.css" ]; then
+          echo "Error: styles.css was not generated!"
+          exit 1
+        fi
+        echo "styles.css generated successfully."
