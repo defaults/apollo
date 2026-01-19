@@ -200,6 +200,14 @@ if [[ ! -f "$ROOT_DIR/.gitignore" ]]; then
   echo "Created .gitignore"
 fi
 
+# 7) Create .tool-versions for asdf (if using asdf)
+if [[ ! -f "$ROOT_DIR/.tool-versions" ]]; then
+  if [[ -f "$THEME_DIR/.tool-versions" ]]; then
+    copy_file "$THEME_DIR/.tool-versions" "$ROOT_DIR/.tool-versions"
+    echo "Created .tool-versions (asdf)"
+  fi
+fi
+
 cat <<'NEXT'
 
 Done. Next steps:
