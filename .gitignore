@@ -51,8 +51,14 @@ Thumbs.db
 # NPM
 package-lock.json
 
-# Overrides (exclude from git)
-override/
+# Overrides
+overrides/
+
+# Local config
+_config.local.yml
+
+# Temporary
+tmp/
 
 # Go
 /bin/
