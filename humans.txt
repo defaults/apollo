@@ -1,0 +1,10 @@
+/* TEAM */
+  Creator: Vikash Kumar with Antigravity
+  Twitter: @vikashkumar
+  Location: San Francisco, CA
+
+/* SITE */
+  Last update: 2026-01-18
+  Standards: HTML5, CSS3
+  Components: Jekyll, Newsreader Font, Flexoki Theme
+  Software: VS Code

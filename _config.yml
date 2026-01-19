@@ -29,8 +29,20 @@ plugins:
   - jekyll-seo-tag
   - jekyll-sitemap
 
-# SEO & assets (placeholders only)
-logo: "/assets/images/icon.svg"
+# SEO & Social
+# These settings are used by jekyll-seo-tag
+logo: "/assets/images/icon.svg"  # Default social image
+twitter:
+  username: "vikashkumar"        # Twitter handle without @
+  card: summary_large_image      # Card type
+social:
+  name: "Vikash Kumar"           # Your name / Brand name
+  links:                         # Social links (for JSON-LD)
+    - https://twitter.com/vikashkumar
+    - https://github.com/vikashkumar
+author:
+  name: "Vikash Kumar"
+  twitter: "vikashkumar"
 
 # Exclude dev and site-local files if present in downstream repos
 exclude:

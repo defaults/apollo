@@ -95,9 +95,22 @@ description: "Your tagline"
 url: "https://yoursite.com"
 author:
   name: "Your Name"
+
+# SEO & Social
+twitter:
+  username: "yourhandle"
+social:
+  links:
+    - https://twitter.com/yourhandle
+    - https://github.com/yourhandle
 ```
 
-### Step 5: Add Your Content
+### Step 5: SEO & LLM Optimization
+
+- **SEO**: Handled automatically by `jekyll-seo-tag`. Ensure `title`, `description`, `url`, and `logo` are set in `_config.local.yml`.
+- **LLM SEO**: A `/llms.txt` file is automatically generated for AI indexing.
+
+### Step 6: Add Your Content
 
 Edit files in `content/`:
 
@@ -111,7 +124,7 @@ date: 2024-01-01
 Write your content here in markdown.
 ```
 
-### Step 6: Run Locally
+### Step 7: Run Locally
 
 ```bash
 # Install dependencies (once)
@@ -124,7 +137,7 @@ bash scripts/compose.sh serve
 
 Open http://localhost:4000
 
-### Step 7: Deploy
+### Step 8: Deploy
 
 Push to GitHub. The included workflow deploys to GCP App Engine.
 
