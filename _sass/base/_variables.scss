@@ -1,5 +1,5 @@
 // Base Variables - Layout, Typography, and Sizing
-// Matched exactly to darioamodei.com - Converted to REM
+// Optimized for readability and elegance
 
 :root {
     // Typography - Newsreader serif
@@ -7,7 +7,7 @@
     --font-ui: var(--font-content);
     --font-mono: ui-monospace, SFMono-Regular, "Cascadia Code", "IBM Plex Mono", Menlo, Monaco, monospace;
 
-    // Font sizes - Desktop (matched to Dario)
+    // Font sizes - Desktop
     --font-size-base: 1.25rem; // 20px
     --font-size-small: 1.125rem; // 18px
     --font-size-smaller: 1rem; // 16px
@@ -37,7 +37,7 @@
     --nav-margin-bottom: 2.5rem;
 }
 
-// Mobile overrides - matched exactly to Dario's mobile
+// Mobile overrides
 @media (max-width: 768px) {
     :root {
         --wrap-normal: 100%;
