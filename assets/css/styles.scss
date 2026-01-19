@@ -1,9 +1,14 @@
----
----
-// Apollo Styles
+--- --- // Apollo Styles
 // Import base variables and theme
 @use "base/variables";
-@use "themes/paper";  // Default theme - use "themes/flexoki" for original
+
+// Theme Selection
+// Default: Paper (Ivory/Slate)
+@use "themes/paper";
+
+// Alternative: Flexoki (Warm/Earthy)
+// Uncomment the line below and comment out "themes/paper" to use Flexoki
+// @use "themes/flexoki";
 
 // Normalize and base styles
 @use "normalize";

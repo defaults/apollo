@@ -1,16 +1,30 @@
 # Apollo
 
-A minimal Jekyll theme for personal websites and blogs. Inspired by [stephango.com](https://stephango.com) and [darioamodei.com](https://www.darioamodei.com/).
+A minimal, high-performance Jekyll theme for personal websites and blogs. Designed for readability and elegance.
 
 ## Features
 
-- 🎨 Clean, minimal design with Flexoki color palette
-- 📱 Responsive layout
-- 🌙 Dark mode support
-- ✍️ Markdown-based content
-- 🖼️ Image captions and external link indicators
-- 🎯 Code syntax highlighting
-- 🔍 SEO optimized
+- 🎨 **Two Beautiful Themes**: Choose between **Paper** (Clean Ivory/Slate) and **Flexoki** (Warm Earthy).
+- 📱 **Responsive & Mobile-First**: Optimized layout for all devices.
+- 🌙 **Dark Mode Support**: Automatic and manual toggle.
+- ✍️ **Typography Focused**: Optimized for long-form reading.
+- 🎯 **Syntax Highlighting**: Beautiful code blocks with language support.
+- 🔍 **SEO Optimized**: Built-in metadata and social tags.
+
+---
+
+## Themes
+
+Apollo comes with two pre-configured color themes. The default is **Paper**.
+
+### Switching Themes
+
+To switch to **Flexoki**, edit `assets/css/styles.scss`:
+
+```scss
+// @use "themes/paper";      <-- Comment this out
+@use "themes/flexoki";    // <-- Uncomment this
+```
 
 ---
 
@@ -21,7 +35,6 @@ For working on Apollo itself:
 ```bash
 # Prerequisites
 brew install fswatch           # File watcher for live reload
-asdf install                   # Ruby 3.3.6 (from .tool-versions)
 bundle install                 # Ruby dependencies
 
 # Run locally
