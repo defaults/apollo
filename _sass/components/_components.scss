@@ -1,3 +1,79 @@
+// Import additional component styles
+@use "toc";
+@use "back-to-top";
+
+// Navigation component styles
+.nav-left {
+    display: flex;
+    align-items: center;
+    gap: 0.25em;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.site-name {
+    font-size: var(--font-size-nav);
+    font-weight: var(--weight-semibold);
+    color: var(--color-tx-normal);
+    text-decoration: none !important;
+
+    &:hover,
+    &:active,
+    &:focus {
+        text-decoration: none !important;
+        color: var(--color-tx-normal);
+    }
+}
+
+.nav-separator {
+    color: var(--color-tx-muted);
+    font-size: var(--font-size-nav-secondary);
+}
+
+.nav-current {
+    color: var(--color-tx-muted);
+    font-size: var(--font-size-nav-secondary);
+}
+
+.nav-link {
+    color: var(--color-tx-muted);
+    font-size: var(--font-size-nav-secondary);
+    text-decoration: none !important;
+
+    &:hover {
+        text-decoration: none !important;
+        color: var(--color-tx-normal);
+    }
+
+    &:active {
+        text-decoration: none !important;
+        color: var(--color-tx-link-active);
+    }
+}
+
+// Theme toggle button
+#theme-toggle {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-tx-normal);
+    padding: 0;
+
+    svg {
+        width: 20px;
+        height: 20px;
+    }
+}
+
 blockquote {
     padding-left: 1.5em;
     margin: 1.5em 0;
@@ -20,24 +96,11 @@ main>hr {
     margin: 4em 0
 }
 
-heading {
-    display: block;
-    max-width: var(--wrap-wide);
-    width: var(--wrap-normal);
-    margin-left: auto;
-    margin-right: auto
-}
-
-article {
-    display: block;
-    max-width: var(--wrap-wide);
-    width: var(--wrap-normal);
-    margin-left: auto;
-    margin-right: auto
-}
-
+// Images in articles
 article img {
-    margin-bottom: 0.5em
+    margin-bottom: 0.5em;
+    max-width: 100%;
+    height: auto;
 }
 
 article .wide {
@@ -100,12 +163,6 @@ article hr:before {
     color: var(--color-tx-faint);
     position: relative;
     top: -0.75em
-}
-
-nav {
-    margin: 0 auto 3em;
-    width: var(--wrap-normal);
-    max-width: var(--wrap-wide)
 }
 
 .backlinks {

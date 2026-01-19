@@ -1,10 +1,16 @@
 ---
 ---
-// Modern Dart Sass syntax - using @use instead of deprecated @import
+// Apollo Styles
+// Import base variables and theme
 @use "base/variables";
+@use "themes/paper";  // Default theme - use "themes/flexoki" for original
+
+// Normalize and base styles
 @use "normalize";
 @use "base/reset";
 @use "base/typography";
+
+// Layout and components
 @use "layout/layout";
 @use "components/components";
 @use "components/utilities";

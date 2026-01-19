@@ -1,3 +1,5 @@
+// Layout - Core page structure matching Dario's layout
+
 *,
 *:before,
 *:after {
@@ -16,24 +18,59 @@ html {
     box-sizing: border-box;
     width: 100%;
     height: 100%;
-    font-size: 62.5%;
+    font-size: 100%; // Keep browser default (16px base)
+    scrollbar-gutter: stable; // Prevent layout shift from scrollbar
 }
 
 body {
     background-color: var(--color-bg-primary);
-    margin: 2vw auto 0 auto;
-    padding: 2rem 0 24rem;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
     overflow-x: hidden;
 }
 
+// Main wrapper - centers all content including nav
+.site-wrapper {
+    width: 100%;
+    max-width: var(--wrap-normal);
+    margin: 0 auto;
+    padding: 40px var(--content-padding) 100px;
+}
+
+// Navigation - matches Dario's header layout
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: var(--nav-content-gap);
+}
+
+// Main content area
+main {
+    width: 100%;
+}
+
+// Article - essay/post content
+article {
+    width: 100%;
+}
+
 footer {
-    margin: 2em auto;
-    max-width: var(--wrap-wide);
-    width: var(--wrap-normal);
-    padding-top: 1em;
+    width: 100%;
+    margin: 4rem auto 2rem;
+    padding: 1em 0;
 }
 
 iframe,
 video {
     max-width: 100%;
+}
+
+// Mobile adjustments
+@media (max-width: 768px) {
+    .site-wrapper {
+        padding: 20px var(--content-padding) 80px;
+    }
 }

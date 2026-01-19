@@ -2,14 +2,18 @@
 layout: default
 ---
 
-<article>
-  <h1>{{ page.title }}</h1>
-  
-  {% include post-metadata.html %}
-  
-  {% if page.description %}
-  <p class="muted">{{ page.description }}</p>
-  {% endif %}
+<article class="essay">
+  <header class="essay-header">
+    <h1>{{ page.title }}</h1>
+
+    {% if page.date %}
+    <p class="date">{{ page.date | date: "%B %Y" }}</p>
+    {% endif %}
+
+    {% if page.description %}
+    <p class="description muted">{{ page.description }}</p>
+    {% endif %}
+  </header>
 
   {% if page.image %}
   <figure class="post-hero">
@@ -17,5 +21,9 @@ layout: default
   </figure>
   {% endif %}
 
-  {{ content }}
-</article> 
+  <div class="essay-body">
+    {{ content }}
+  </div>
+</article>
+
+{% include back-to-top.html %}

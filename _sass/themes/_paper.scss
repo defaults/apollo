@@ -1,0 +1,76 @@
+// Paper Theme - Minimalist ivory/slate color scheme
+// Inspired by darioamodei.com
+
+// Base palette
+$paper-ivory: #f0eee6;
+$paper-ivory-dark: #e8e6dc;
+$paper-slate: #1f1e1d;
+$paper-slate-light: #5e5d59;
+$paper-slate-medium: #3d3d3a;
+$paper-cloud: #b0aea5;
+$paper-input-border: #d1cfc5;
+
+// Light mode
+:root,
+.theme-light {
+    --color-bg-primary: #{$paper-ivory};
+    --color-bg-primary-rgb: 240, 238, 230;
+    --color-bg-secondary: #{$paper-ivory-dark};
+    --color-tx-normal: #{$paper-slate};
+    --color-tx-normal-rgb: 31, 30, 29;
+    --color-tx-muted: #{$paper-slate-light};
+    --color-tx-faint: #{$paper-cloud};
+    --color-ui-normal: #{$paper-ivory-dark};
+    --color-ui-hover: #{$paper-input-border};
+    --color-ui-active: darken($paper-ivory-dark, 5%);
+    --color-highlight: rgba(0, 0, 0, 0.08);
+    --color-action: #{$paper-slate};
+    --color-bg-hover: rgba(0, 0, 0, 0.05);
+    --color-selection: rgba(31, 30, 29, 0.15);
+
+    // Link colors
+    --color-tx-link: #{$paper-slate};
+    --color-tx-link-active: #66800b; // Green for active/clicked links
+
+    // Accent colors (for syntax highlighting, etc.)
+    --color-re: #c03e35;
+    --color-or: #bc5215;
+    --color-ye: #ad8301;
+    --color-gr: #66800b;
+    --color-cy: #24837b;
+    --color-bl: #205ea6;
+    --color-pu: #5e409d;
+    --color-ma: #a02f6f;
+}
+
+// Dark mode
+.theme-dark {
+    --color-bg-primary: #{$paper-slate};
+    --color-bg-primary-rgb: 31, 30, 29;
+    --color-bg-secondary: #{$paper-slate-medium};
+    --color-tx-normal: #{$paper-ivory};
+    --color-tx-normal-rgb: 240, 238, 230;
+    --color-tx-muted: #{$paper-cloud};
+    --color-tx-faint: #{$paper-slate-light};
+    --color-ui-normal: #{$paper-slate-medium};
+    --color-ui-hover: #{$paper-slate-light};
+    --color-ui-active: lighten($paper-slate-medium, 5%);
+    --color-highlight: rgba(255, 255, 255, 0.15);
+    --color-action: #{$paper-ivory};
+    --color-bg-hover: rgba(255, 255, 255, 0.1);
+    --color-selection: rgba(240, 238, 230, 0.2);
+
+    // Link colors
+    --color-tx-link: #{$paper-ivory};
+    --color-tx-link-active: #879a39; // Green for active/clicked links
+
+    // Accent colors (lighter for dark mode)
+    --color-re: #d14d41;
+    --color-or: #da702c;
+    --color-ye: #d0a215;
+    --color-gr: #879a39;
+    --color-cy: #3aa99f;
+    --color-bl: #4385be;
+    --color-pu: #8b7ec8;
+    --color-ma: #ce5d97;
+}
