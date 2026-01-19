@@ -44,7 +44,8 @@ nav {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-bottom: var(--nav-content-gap);
+    margin-top: var(--nav-margin-top);
+    margin-bottom: var(--nav-margin-bottom);
 }
 
 // Main content area

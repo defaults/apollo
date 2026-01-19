@@ -33,7 +33,8 @@
     --image-radius: 6px;
     --input-width: 20em;
     --content-padding: 1.5rem; // 24px
-    --nav-content-gap: 2.5rem;
+    --nav-margin-top: 1.5rem;
+    --nav-margin-bottom: 2.5rem;
 }
 
 // Mobile overrides - matched exactly to Dario's mobile
@@ -51,6 +52,7 @@
         --font-size-nav-secondary: 1.375rem; // 22px
 
         --content-padding: 1.25rem; // 20px
-        --nav-content-gap: 2rem;
+        --nav-margin-top: 1rem;
+        --nav-margin-bottom: 2rem;
     }
 }
