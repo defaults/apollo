@@ -137,3 +137,25 @@ pre {
         padding: 0;
     }
 }
+
+// External links - add icon
+a[target="_blank"]:not(.no-icon) {
+    &::after {
+        content: "";
+        display: inline-block;
+        width: 1em; // Scale with font size
+        height: 1em;
+        margin-left: 0.15em;
+        background-image: url('../images/external-link.svg');
+        background-size: 0.7em;
+        background-position: center;
+        background-repeat: no-repeat;
+        vertical-align: middle;
+        opacity: 0.6;
+    }
+
+    // Invert for dark mode if using white text
+    .theme-dark &::after {
+        filter: invert(1);
+    }
+}

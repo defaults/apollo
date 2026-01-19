@@ -1,5 +1,5 @@
 // Base Variables - Layout, Typography, and Sizing
-// Matched exactly to darioamodei.com
+// Matched exactly to darioamodei.com - Converted to REM
 
 :root {
     // Typography - Newsreader serif
@@ -8,31 +8,31 @@
     --font-mono: ui-monospace, SFMono-Regular, "Cascadia Code", "IBM Plex Mono", Menlo, Monaco, monospace;
 
     // Font sizes - Desktop (matched to Dario)
-    --font-size-base: 20px;
-    --font-size-small: 18px;
-    --font-size-smaller: 16px;
-    --font-size-h1: 50px; // Essay title - Dario uses large serif ~52px
-    --font-size-h2: 28px;
-    --font-size-h3: 22px;
-    --font-size-nav: 30px; // "Dario Amodei" / "Apollo"
-    --font-size-nav-secondary: 24px; // "Essays" etc
+    --font-size-base: 1.25rem; // 20px
+    --font-size-small: 1.125rem; // 18px
+    --font-size-smaller: 1rem; // 16px
+    --font-size-h1: 3.125rem; // 50px
+    --font-size-h2: 1.75rem; // 28px
+    --font-size-h3: 1.375rem; // 22px
+    --font-size-nav: 1.875rem; // 30px
+    --font-size-nav-secondary: 1.5rem; // 24px
 
-    // Font weights - Dario uses heavier weights
+    // Font weights
     --weight-normal: 400;
     --weight-medium: 500;
     --weight-semibold: 600;
     --weight-bold: 700;
 
     // Layout
-    --wrap-wide: 1000px;
-    --wrap-normal: 850px;
+    --wrap-wide: 800px;
+    --wrap-normal: 800px;
     --line-height: 1.6;
 
-    // Spacing - more generous padding like Dario
+    // Spacing
     --border-radius: 4px;
     --image-radius: 6px;
     --input-width: 20em;
-    --content-padding: 24px; // Dario uses more side padding
+    --content-padding: 1.5rem; // 24px
     --nav-content-gap: 2.5rem;
 }
 
@@ -42,13 +42,15 @@
         --wrap-normal: 100%;
         --wrap-wide: 100%;
         --input-width: 100%;
-        --font-size-base: 20px;
-        --font-size-h1: 40px; // Dario mobile title ~42px
-        --font-size-h2: 24px;
-        --font-size-h3: 20px;
-        --font-size-nav: 28px;
-        --font-size-nav-secondary: 22px;
-        --content-padding: 20px; // Mobile side padding
+
+        --font-size-base: 1.25rem; // 20px
+        --font-size-h1: 2.5rem; // 40px
+        --font-size-h2: 1.5rem; // 24px
+        --font-size-h3: 1.25rem; // 20px
+        --font-size-nav: 1.75rem; // 28px
+        --font-size-nav-secondary: 1.375rem; // 22px
+
+        --content-padding: 1.25rem; // 20px
         --nav-content-gap: 2rem;
     }
 }
