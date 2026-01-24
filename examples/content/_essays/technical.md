@@ -1,8 +1,9 @@
 ---
 layout: essay
-title: Technical Demo
-description: Demonstrating code highlighting, math, and formatting capabilities.
-date: 2024-02-28
+title: "Technical Demo"
+date: 2024-01-20
+description: "Showcasing code highlighting and advanced typography features."
+image: /assets/images/og/technical-demo.png
 ---
 
 This post demonstrates the technical capabilities of the Apollo theme, including syntax highlighting for various languages and mathematical rendering.
