@@ -77,6 +77,7 @@ cleanup_promoted() {
 
 do_build() {
   local use_examples="${1:-0}"
+  local skip_generation="${2:-0}"  # Skip OG/favicon generation on watch rebuilds
   rm -rf "$BUILD_DIR"
   mkdir -p "$BUILD_DIR"
 
@@ -109,10 +110,30 @@ do_build() {
   promote_pages "$content_src" "$BUILD_DIR"
   cleanup_promoted "$BUILD_DIR/content"
 
-  # Overrides (consumer repos only)
-  if [[ "$use_examples" != "1" ]]; then
-    copy_dir "${ROOT_DIR}/overrides" "$BUILD_DIR" overlay
+  # Overrides
+  if [[ "$use_examples" == "0" ]] && [[ -d "${ROOT_DIR}/overrides" ]]; then
+    cp -r "${ROOT_DIR}/overrides/"* "$BUILD_DIR/" 2>/dev/null || true
   fi
+
+  # Generate OG images and favicon (only on initial build, not on watch rebuilds)
+  if [[ "$skip_generation" == "0" ]]; then
+    # Read author name from config
+    local author_name="Apollo"
+    if [[ -f "$BUILD_DIR/_config.yml" ]]; then
+      author_name=$(grep -A1 "^author:" "$BUILD_DIR/_config.yml" | grep "name:" | sed -E 's/.*name:\s*"?([^"]+)"?.*/\1/' || echo "Apollo")
+    fi
+    if [[ -f "$BUILD_DIR/_config.local.yml" ]]; then
+      local local_author=$(grep -A1 "^author:" "$BUILD_DIR/_config.local.yml" | grep "name:" | sed -E 's/.*name:\s*"?([^"]+)"?.*/\1/' || echo "")
+      [[ -n "$local_author" ]] && author_name="$local_author"
+    fi
+
+    # Generate dynamic favicon
+    if [[ -f "$THEME_DIR/scripts/generate-favicon.rb" ]]; then
+      ruby "$THEME_DIR/scripts/generate-favicon.rb" "$author_name" 2>/dev/null || true
+    fi
+  fi
+
+  echo "Built $BUILD_DIR/src"
 }
 
 do_serve() {
@@ -152,7 +173,7 @@ do_serve() {
     fswatch -o "${watch_dirs[@]}" 2>/dev/null | while read -r _; do
       echo ""
       echo "Source files changed, rebuilding..."
-      do_build "$use_examples"
+      do_build "$use_examples" 1  # Skip OG/favicon generation on watch rebuilds
       echo "Rebuild complete. Browser will refresh."
     done &
     local fswatch_pid=$!

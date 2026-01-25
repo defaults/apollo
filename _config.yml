@@ -28,6 +28,7 @@ plugins:
   - jekyll-feed
   - jekyll-seo-tag
   - jekyll-sitemap
+  - jekyll-og-image
 
 # SEO & Social
 # These settings are used by jekyll-seo-tag
@@ -43,6 +44,22 @@ social:
 author:
   name: "Apollo"
   twitter: "apollo_theme"
+
+# OpenGraph Image Generation
+og_image:
+  collections: ["essays"]
+  output_dir: "assets/images/og"
+  verbose: true
+  canvas:
+    width: 1200
+    height: 630
+    background_color: "#f0eee6"  # Paper ivory
+  header:
+    font_family: "Newsreader"
+    color: "#1f1e1d"  # Paper slate
+  content:
+    font_family: "Newsreader"
+    color: "#1f1e1d"
 
 
 # Exclude dev and site-local files if present in downstream repos
