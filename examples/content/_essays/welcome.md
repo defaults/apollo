@@ -2,8 +2,9 @@
 layout: essay
 title: Welcome to Apollo
 description: A classic, beautiful theme for personal websites and portfolios.
-date: 2024-01-10
+date: 2024-03-01
 ---
+
 
 Apollo is a minimalist yet powerful theme designed for writers, researchers, and developers. It's built with Jekyll and focuses on typography, readability, and a clean aesthetic inspired by modern reading experiences.
 
@@ -26,8 +27,9 @@ Headers are bold and distinct, while body text is set at a comfortable size with
 
 Images expand to fill the available width, maintaining a visual balance with the text.
 
-![Example Image](/assets/images/icon.svg)
+![A minimalist abstract composition](/assets/images/essays/welcome-demo.png)
 *Captions are centered and styled discreetly.*
+
 
 ## Next Steps
 

@@ -5,6 +5,7 @@ date: 2024-01-20
 description: "Showcasing code highlighting and advanced typography features."
 ---
 
+
 This post demonstrates the technical capabilities of the Apollo theme, including syntax highlighting for various languages and mathematical rendering.
 
 ## Syntax Highlighting

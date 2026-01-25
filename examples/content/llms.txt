@@ -1,0 +1,23 @@
+---
+permalink: /llms.txt
+layout: null
+---
+# {{ site.title }} - Content Index
+
+{% if site.description %}
+> {{ site.description }}
+{% endif %}
+
+## Essays
+{% assign essays = site.essays | sort: 'date' | reverse %}
+{% for essay in essays %}
+- [{{ essay.title }}]({{ essay.url | absolute_url }})
+  {% if essay.description %}- {{ essay.description }}{% endif %}
+{% endfor %}
+
+## Pages
+{% for page in site.pages %}
+{% if page.title and page.title != "404" %}
+- [{{ page.title }}]({{ page.url | absolute_url }})
+{% endif %}
+{% endfor %}
