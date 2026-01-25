@@ -2,8 +2,9 @@ title: "Apollo"
 description: "Jekyll template defaults for subtree vendoring"
 
 # No site identity here; sites supply _config.yml
-url: ""        # left empty on purpose
+url: "https://apollo.vikash.me"  # Demo deployment URL
 baseurl: ""    # left empty on purpose
+
 
 # Content
 collections_dir: content
