@@ -117,18 +117,20 @@ do_build() {
 
   # Generate OG images and favicon (only on initial build, not on watch rebuilds)
   if [[ "$skip_generation" == "0" ]]; then
-    # Read author name from config
-    local author_name="Apollo"
-    if [[ -f "$BUILD_DIR/_config.yml" ]]; then
-      author_name=$(grep -A1 "^author:" "$BUILD_DIR/_config.yml" | grep "name:" | sed -E 's/.*name:\s*"?([^"]+)"?.*/\1/' || echo "Apollo")
-    fi
-    if [[ -f "$BUILD_DIR/_config.local.yml" ]]; then
-      local local_author=$(grep -A1 "^author:" "$BUILD_DIR/_config.local.yml" | grep "name:" | sed -E 's/.*name:\s*"?([^"]+)"?.*/\1/' || echo "")
-      [[ -n "$local_author" ]] && author_name="$local_author"
-    fi
-
-    # Generate dynamic favicon
+    # Generate dynamic favicon with author name
     if [[ -f "$THEME_DIR/scripts/generate-favicon.rb" ]]; then
+      local author_name="Apollo"
+      # Try local config first
+      if [[ -f "$BUILD_DIR/_config.local.yml" ]]; then
+        local extracted=$(grep -A1 "^author:" "$BUILD_DIR/_config.local.yml" | grep "name:" | sed -E 's/.*name:[[:space:]]*"?([^"]+)"?.*/\1/' | head -1 | xargs)
+        [[ -n "$extracted" ]] && author_name="$extracted"
+      fi
+      # Fallback to theme config
+      if [[ "$author_name" == "Apollo" && -f "$BUILD_DIR/_config.yml" ]]; then
+        local extracted=$(grep -A1 "^author:" "$BUILD_DIR/_config.yml" | grep "name:" | sed -E 's/.*name:[[:space:]]*"?([^"]+)"?.*/\1/' | head -1 | xargs)
+        [[ -n "$extracted" ]] && author_name="$extracted"
+      fi
+      
       ruby "$THEME_DIR/scripts/generate-favicon.rb" "$author_name" 2>/dev/null || true
     fi
   fi
