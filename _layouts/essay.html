@@ -15,7 +15,8 @@ layout: default
     {% endif %}
   </header>
 
-  {% if page.image %}
+  {% assign image_type = page.image | type %}
+  {% if page.image and image_type == "string" %}
   <figure class="post-hero">
     <img src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
   </figure>

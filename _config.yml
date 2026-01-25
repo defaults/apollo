@@ -45,6 +45,11 @@ author:
   name: "Apollo"
   twitter: "apollo_theme"
 
+# Google Analytics
+# Uncomment and add your GA4 measurement ID to enable tracking
+# google_analytics: "G-XXXXXXXXXX"
+
+
 # OpenGraph Image Generation
 og_image:
   collections: ["essays"]

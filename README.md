@@ -35,6 +35,7 @@ For working on Apollo itself:
 ```bash
 # Prerequisites
 brew install fswatch           # File watcher for live reload
+brew install vips              # Image processing for OG images
 bundle install                 # Ruby dependencies
 
 # Run locally
