@@ -198,6 +198,15 @@ if [[ ! -f "$ROOT_DIR/.gcloudignore" ]]; then
   echo "Created .gcloudignore"
 fi
 
+# Ensure apollo/ is ignored in .gcloudignore
+if grep -q "apollo/" "$ROOT_DIR/.gcloudignore"; then
+  :
+else
+  echo "" >> "$ROOT_DIR/.gcloudignore"
+  echo "apollo/" >> "$ROOT_DIR/.gcloudignore"
+  echo "Added apollo/ to .gcloudignore"
+fi
+
 if [[ ! -f "$ROOT_DIR/.gitignore" ]]; then
   copy_file "$THEME_DIR/.gitignore" "$ROOT_DIR/.gitignore"
   echo "Created .gitignore"
