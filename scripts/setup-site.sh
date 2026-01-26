@@ -105,10 +105,10 @@ YAML
   fi
 fi
 
-# 4) Create compose wrapper that defers to vendored theme script
+# 4) Create/Update compose wrapper
 COMPOSE_WRAPPER="$ROOT_DIR/scripts/compose.sh"
-if [[ ! -f "$COMPOSE_WRAPPER" ]]; then
-  cat > "$COMPOSE_WRAPPER" <<SH
+# Always overwrite to ensure latest logic
+cat > "$COMPOSE_WRAPPER" <<SH
 #!/usr/bin/env bash
 set -euo pipefail
 SCRIPT_DIR="\$(cd "\$(dirname "\${BASH_SOURCE[0]}")" && pwd)"
@@ -119,19 +119,18 @@ if [[ ! -f "\$THEME_COMPOSE" ]]; then
 fi
 exec bash "\$THEME_COMPOSE" "\$@"
 SH
-  chmod +x "$COMPOSE_WRAPPER"
-  echo "Created scripts/compose.sh wrapper"
-fi
+chmod +x "$COMPOSE_WRAPPER"
+echo "Updated scripts/compose.sh wrapper"
 
-# 5) Create site deploy workflow (copy from theme template)
+# 5) Create/Update site deploy workflow
 SITE_WF="$ROOT_DIR/.github/workflows/deploy.yml"
-if [[ ! -f "$SITE_WF" ]]; then
-  if [[ -f "$THEME_DIR/templates/site/workflows/deploy.yml" ]]; then
-    mkdir -p "$ROOT_DIR/.github/workflows"
-    cp "$THEME_DIR/templates/site/workflows/deploy.yml" "$SITE_WF"
-  else
-    echo "Warning: theme templates missing; writing default workflow"
-    cat > "$SITE_WF" <<'YML'
+# Always overwrite to ensure CI/CD fixes (like libvips) are applied
+if [[ -f "$THEME_DIR/templates/site/workflows/deploy.yml" ]]; then
+  mkdir -p "$ROOT_DIR/.github/workflows"
+  cp "$THEME_DIR/templates/site/workflows/deploy.yml" "$SITE_WF"
+else
+  echo "Warning: theme templates missing; writing default workflow"
+  cat > "$SITE_WF" <<'YML'
 name: Build and Deploy Site
 
 on:
@@ -147,6 +146,11 @@ jobs:
       BUNDLE_GEMFILE: apollo/Gemfile
     steps:
       - uses: actions/checkout@v4
+
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
@@ -175,9 +179,8 @@ jobs:
       - name: Deploy to App Engine
         run: gcloud app deploy --quiet --promote
 YML
-  fi
-  echo "Created .github/workflows/deploy.yml"
 fi
+echo "Updated .github/workflows/deploy.yml"
 
 # 6) Copy deployment/runtime scaffolding if missing
 if [[ ! -f "$ROOT_DIR/app.yaml" ]]; then
