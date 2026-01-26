@@ -140,6 +140,8 @@ pre {
 
 // External links - add icon
 a[target="_blank"]:not(.no-icon) {
+    white-space: nowrap;
+
     &::after {
         content: "";
         display: inline-block;
