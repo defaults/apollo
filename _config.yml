@@ -14,6 +14,10 @@ collections:
     permalink: /essays/:slug/
 content:
   loader_enabled: false  # sites can set true in their _config.yml to auto-load pages from content/
+feed:
+  collections:
+    essays:
+      path: /essays/feed.xml
 
 defaults:
   - scope: { path: "", type: "essays" }

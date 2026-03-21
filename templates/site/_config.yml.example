@@ -22,6 +22,10 @@ collections:
   essays:
     output: true
     permalink: /essays/:slug/
+feed:
+  collections:
+    essays:
+      path: /essays/feed.xml
 
 defaults:
   - scope: { path: "", type: "essays" }
@@ -40,4 +44,3 @@ plugins:
 
 # SEO & assets
 logo: "/assets/images/icon.svg"
-

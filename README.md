@@ -10,6 +10,7 @@ A minimal, high-performance Jekyll theme for personal websites and blogs. Design
 - ✍️ **Typography Focused**: Optimized for long-form reading.
 - 🎯 **Syntax Highlighting**: Beautiful code blocks with language support.
 - 🔍 **SEO Optimized**: Built-in metadata and social tags.
+- 📡 **Atom Feed Support**: Ships with collection feeds plus an aggregate root feed.
 
 ---
 
@@ -109,6 +110,7 @@ social:
 ### Step 5: SEO & LLM Optimization
 
 - **SEO**: Handled automatically by `jekyll-seo-tag`. Ensure `title`, `description`, `url`, and `logo` are set in `_config.local.yml`.
+- **Feeds**: `/feed.xml` is the aggregate Atom feed. Collection feeds are configured under `feed.collections` and default to `/essays/feed.xml`.
 - **LLM SEO**: A `/llms.txt` file is automatically generated for AI indexing.
 
 ### Step 6: Add Your Content
