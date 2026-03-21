@@ -92,6 +92,10 @@ collections:
   essays:
     output: true
     permalink: /essays/:slug/
+feed:
+  collections:
+    essays:
+      path: /essays/feed.xml
 defaults:
   - scope: { path: "", type: "essays" }
     values:

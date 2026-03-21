@@ -98,6 +98,7 @@ do_build() {
   for f in robots.txt favicon.ico apple-touch-icon.png; do
     copy_file "$THEME_DIR/$f" "$BUILD_DIR/$f"
   done
+  copy_file "$THEME_DIR/feed.xml" "$BUILD_DIR/feed.xml"
 
   # Content
   local content_src
