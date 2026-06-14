@@ -83,6 +83,11 @@ url: ""
 baseurl: ""
 author:
   name: "Your Name"
+apollo:
+  math: false
+  mermaid: false
+  mathjax_url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+  mermaid_url: "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
@@ -92,6 +97,14 @@ collections:
   essays:
     output: true
     permalink: /essays/:slug/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
 feed:
   collections:
     essays:

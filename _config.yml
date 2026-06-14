@@ -12,6 +12,14 @@ collections:
   essays:
     output: true
     permalink: /essays/:slug/
+markdown: kramdown
+highlighter: rouge
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
+  syntax_highlighter_opts:
+    block:
+      line_numbers: false
 content:
   loader_enabled: false  # sites can set true in their _config.yml to auto-load pages from content/
 feed:
@@ -54,6 +62,11 @@ author:
 # Uncomment and add your GA4 measurement ID to enable tracking
 # google_analytics: "G-XXXXXXXXXX"
 
+apollo:
+  math: false
+  mermaid: false
+  mathjax_url: "https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"
+  mermaid_url: "https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs"
 
 # OpenGraph Image Generation
 og_image:
