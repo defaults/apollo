@@ -1,18 +1,94 @@
+.code-block {
+    margin: 1.5rem 0;
+    border: 1px solid var(--color-ui-normal);
+    border-radius: var(--border-radius);
+    background: var(--color-bg-secondary);
+    overflow: hidden;
+}
+
+.code-block-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--color-ui-normal);
+    color: var(--color-tx-muted);
+    font-family: var(--font-mono);
+    font-size: var(--font-size-smaller);
+    line-height: 1.2;
+}
+
+.code-block-language {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.code-copy-button {
+    border: 1px solid var(--color-ui-normal);
+    border-radius: var(--border-radius);
+    background: transparent;
+    color: var(--color-tx-muted);
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    line-height: 1;
+    padding: 0.35rem 0.5rem;
+}
+
+.code-copy-button:hover,
+.code-copy-button.copied {
+    border-color: var(--color-ui-hover);
+    background: var(--color-bg-primary);
+    color: var(--color-tx-normal);
+}
+
+.code-block .highlight,
 .highlight {
     background: var(--color-bg-secondary);
     color: var(--color-tx-normal);
-    border-radius: var(--border-radius);
+    border-radius: 0;
     padding: 1.25rem;
     overflow-x: auto;
     font-family: var(--font-mono);
     font-size: 0.9em;
     line-height: 1.5;
-    margin: 1.5rem 0;
-    border: 1px solid var(--color-ui-normal);
+    margin: 0;
 }
 
 .highlight pre {
     margin: 0;
+    padding: 0;
+    border: 0;
+    white-space: pre;
+    overflow: visible;
+}
+
+.highlight code {
+    white-space: pre;
+}
+
+pre.mermaid {
+    margin: 1.5rem 0;
+    padding: 1rem;
+    overflow-x: auto;
+    border: 1px solid var(--color-ui-normal);
+    border-radius: var(--border-radius);
+    background: var(--color-bg-secondary);
+    text-align: center;
+}
+
+.highlight .gd {
+    display: inline-block;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-re) 12%, transparent);
+}
+
+.highlight .gi {
+    display: inline-block;
+    width: 100%;
+    background: color-mix(in srgb, var(--color-gr) 12%, transparent);
 }
 
 // Comments
