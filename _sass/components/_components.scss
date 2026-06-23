@@ -100,6 +100,7 @@ article img {
     margin-bottom: 0.5em;
     max-width: 100%;
     height: auto;
+    border-radius: var(--image-radius);
 }
 
 article .wide {
@@ -115,11 +116,42 @@ figure {
     text-align: center
 }
 
+.apollo-figure,
+.post-hero {
+    margin: 2rem 0;
+}
+
+.apollo-figure img,
+.post-hero img {
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.apollo-figure.wide,
+.post-hero.wide {
+    max-width: Min(100vw, var(--wrap-wide));
+    width: Min(100vw, var(--wrap-wide));
+    margin-left: calc((Min(100vw, var(--wrap-wide)) - 100%)/-2);
+}
+
+.apollo-figure.full {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc((100vw - 100%) / -2);
+}
+
 figcaption {
     font-size: var(--font-smaller);
     line-height: 1.4;
     color: var(--color-tx-muted);
     padding: 1em
+}
+
+.figure-credit {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--color-tx-faint);
 }
 
 figcaption a {

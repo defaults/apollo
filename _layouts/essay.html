@@ -15,10 +15,44 @@ layout: default
     {% endif %}
   </header>
 
-  {% assign image_type = page.image | type %}
-  {% if page.image and image_type == "string" %}
+  {% assign hero_image = nil %}
+  {% assign hero_caption = nil %}
+  {% assign hero_alt = page.title %}
+  {% assign hero_loading = "eager" %}
+
+  {% if page.hero.image %}
+    {% assign hero_image = page.hero.image %}
+    {% assign hero_caption = page.hero.caption %}
+    {% assign hero_alt = page.hero.alt | default: page.title %}
+  {% elsif page.hero %}
+    {% assign hero_type = page.hero | type %}
+    {% if hero_type == "string" %}
+      {% assign hero_image = page.hero %}
+    {% endif %}
+  {% elsif page.image and page.social_image == nil %}
+    {% assign image_type = page.image | type %}
+    {% if image_type == "string" %}
+      {% unless page.image contains "/assets/images/og/" %}
+        {% assign hero_image = page.image %}
+      {% endunless %}
+    {% elsif page.image.path %}
+      {% unless page.image.path contains "/assets/images/og/" %}
+        {% assign hero_image = page.image.path %}
+        {% assign hero_alt = page.image.alt | default: page.title %}
+      {% endunless %}
+    {% endif %}
+  {% endif %}
+
+  {% if hero_image %}
+  {% assign hero_remote = false %}
+  {% if hero_image contains "://" or hero_image contains "data:" %}
+    {% assign hero_remote = true %}
+  {% endif %}
   <figure class="post-hero">
-    <img src="{{ page.image | relative_url }}" alt="{{ page.title | escape }}">
+    <img src="{% if hero_remote %}{{ hero_image }}{% else %}{{ hero_image | relative_url }}{% endif %}" alt="{{ hero_alt | escape }}" loading="{{ hero_loading }}" decoding="async">
+    {% if hero_caption %}
+    <figcaption>{{ hero_caption | markdownify | strip | remove: "<p>" | remove: "</p>" }}</figcaption>
+    {% endif %}
   </figure>
   {% endif %}
 

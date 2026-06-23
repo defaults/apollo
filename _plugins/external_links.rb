@@ -5,7 +5,7 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
   next unless page.output_ext == '.html'
   next unless page.output
   
-  doc = Nokogiri::HTML(page.output)
+  doc = Nokogiri.const_defined?(:HTML5) ? Nokogiri::HTML5(page.output) : Nokogiri::HTML(page.output)
   modified = false
 
   # Find all links except those in nav/header

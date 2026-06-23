@@ -1,0 +1,30 @@
+{% assign figure_src = include.src | default: include.path %}
+{% assign figure_alt = include.alt | default: include.caption | strip_html | default: "" %}
+{% assign figure_layout = include.layout | default: include.class %}
+{% assign figure_loading = include.loading | default: "lazy" %}
+{% assign figure_decoding = include.decoding | default: "async" %}
+{% assign figure_remote = false %}
+{% if figure_src contains "://" or figure_src contains "data:" %}
+  {% assign figure_remote = true %}
+{% endif %}
+
+{% if figure_src %}
+<figure class="apollo-figure{% if figure_layout %} {{ figure_layout }}{% endif %}">
+  <img
+    src="{% if figure_remote %}{{ figure_src }}{% else %}{{ figure_src | relative_url }}{% endif %}"
+    alt="{{ figure_alt | escape }}"
+    loading="{{ figure_loading }}"
+    decoding="{{ figure_decoding }}"
+    {% if include.width %}width="{{ include.width }}"{% endif %}
+    {% if include.height %}height="{{ include.height }}"{% endif %}
+    {% if include.srcset %}srcset="{{ include.srcset }}"{% endif %}
+    {% if include.sizes %}sizes="{{ include.sizes }}"{% endif %}
+  >
+  {% if include.caption or include.credit %}
+  <figcaption>
+    {% if include.caption %}{{ include.caption | markdownify | strip | remove: "<p>" | remove: "</p>" }}{% endif %}
+    {% if include.credit %}<span class="figure-credit">{{ include.credit | markdownify | strip | remove: "<p>" | remove: "</p>" }}</span>{% endif %}
+  </figcaption>
+  {% endif %}
+</figure>
+{% endif %}

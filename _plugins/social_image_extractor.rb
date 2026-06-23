@@ -6,7 +6,9 @@ module Jekyll
     def generate(site)
       default_image = site.config["logo"]
 
-      process_docs(site.posts.docs, site, default_image)
+      site.collections.each_value do |collection|
+        process_docs(collection.docs, site, default_image)
+      end
       process_docs(site.pages, site, default_image)
     end
 
@@ -16,12 +18,27 @@ module Jekyll
       Array(docs).each do |doc|
         next if doc.data.key?("image") && doc.data["image"]
 
+        social_image = doc.data["social_image"]
+        hero_image = extract_hero_image(doc.data["hero"])
         image_from_content = extract_first_image(doc.content)
-        if image_from_content
+        if social_image
+          doc.data["image"] = social_image
+        elsif hero_image
+          doc.data["image"] = hero_image
+        elsif image_from_content
           doc.data["image"] = image_from_content
         elsif default_image
           doc.data["image"] = default_image
         end
+      end
+    end
+
+    def extract_hero_image(hero)
+      case hero
+      when String
+        hero
+      when Hash
+        hero["image"] || hero[:image]
       end
     end
 
@@ -41,6 +58,5 @@ module Jekyll
     end
   end
 end
-
 
 
