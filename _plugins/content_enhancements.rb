@@ -45,6 +45,10 @@ module Apollo
     def language_label(language)
       LANGUAGE_LABELS.fetch(language, language.to_s.split(/[-_]/).map(&:capitalize).join(' '))
     end
+
+    def class_xpath(class_name)
+      "contains(concat(' ', normalize-space(@class), ' '), ' #{class_name} ')"
+    end
   end
 end
 
@@ -57,11 +61,11 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
   doc = Nokogiri.const_defined?(:HTML5) ? Nokogiri::HTML5(page.output) : Nokogiri::HTML(page.output)
   modified = false
 
-  doc.css('div.highlighter-rouge').each do |block|
+  doc.xpath("//*[local-name()='div' and #{Apollo::ContentEnhancements.class_xpath('highlighter-rouge')}]").each do |block|
     language = Apollo::ContentEnhancements.language_from_class(block['class'])
     next unless language
 
-    code_node = block.at_css('pre code')
+    code_node = block.at_xpath(".//*[local-name()='pre']/*[local-name()='code']")
     next unless code_node
 
     if language == 'mermaid' && mermaid_enabled
@@ -98,7 +102,7 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
   end
 
   if mermaid_enabled
-    doc.css('pre > code.language-mermaid').each do |code_node|
+    doc.xpath("//*[local-name()='pre']/*[local-name()='code' and #{Apollo::ContentEnhancements.class_xpath('language-mermaid')}]").each do |code_node|
       pre_node = code_node.parent
       mermaid_node = Nokogiri::XML::Node.new('pre', doc)
       mermaid_node['class'] = 'mermaid'
