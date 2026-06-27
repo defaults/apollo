@@ -8,7 +8,9 @@ A minimal, high-performance Jekyll theme for personal websites and blogs. Design
 - 📱 **Responsive & Mobile-First**: Optimized layout for all devices.
 - 🌙 **Dark Mode Support**: Automatic and manual toggle.
 - ✍️ **Typography Focused**: Optimized for long-form reading.
-- 🎯 **Syntax Highlighting**: Beautiful code blocks with language support.
+- 🎯 **Code Block UX**: Rouge highlighting, language labels, diff styling, and copy buttons.
+- 🖼️ **Figure Helpers**: Captioned images with lazy loading, wide layouts, and SEO-aware hero/social image metadata.
+- 🧮 **Opt-in Math & Diagrams**: Per-page MathJax and Mermaid support.
 - 🔍 **SEO Optimized**: Built-in metadata and social tags.
 - 📡 **Atom Feed Support**: Ships with collection feeds plus an aggregate root feed.
 
@@ -126,6 +128,76 @@ date: 2024-01-01
 
 Write your content here in markdown.
 ```
+
+### Rich Markdown Helpers
+
+Apollo keeps normal Markdown as the default, then adds a few optional helpers for technical writing.
+
+#### Code Blocks
+
+Fenced code blocks are enhanced automatically with a language label and copy button:
+
+````markdown
+```typescript
+const message = "hello";
+```
+````
+
+Diff blocks receive inserted/deleted line styling:
+
+````markdown
+```diff
+- const theme = "light";
++ const theme = userPreference ?? "light";
+```
+````
+
+#### Figures
+
+Use the figure include when you want captions, dimensions, or wide/full layouts:
+
+```liquid
+{% include figure.html
+  src="/assets/images/example.png"
+  alt="A readable description"
+  caption="A short caption."
+  layout="wide"
+  width="1200"
+  height="800"
+%}
+```
+
+For post hero images, use `hero` in front matter:
+
+```yaml
+hero:
+  image: /assets/images/example.png
+  alt: A readable description
+  caption: Optional hero caption.
+social_image: /assets/images/og/example.png
+```
+
+`social_image` is used for SEO/share metadata. If it is omitted, Apollo falls back to the hero image, then the first image in the page, then `logo`.
+
+#### Math and Mermaid
+
+Enable math or diagrams per page:
+
+```yaml
+math: true
+mermaid: true
+```
+
+Then write regular display math or Mermaid fences:
+
+````markdown
+$$ E = mc^2 $$
+
+```mermaid
+flowchart LR
+  Draft --> Preview --> Publish
+```
+````
 
 ### Step 7: Run Locally
 

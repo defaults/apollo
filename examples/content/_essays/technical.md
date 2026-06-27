@@ -3,6 +3,8 @@ layout: essay
 title: "Technical Demo"
 date: 2024-01-20
 description: "Showcasing code highlighting and advanced typography features."
+math: true
+mermaid: true
 ---
 
 
@@ -54,9 +56,24 @@ fn main() {
 }
 ```
 
+### Diff
+
+```diff
+- const theme = "light";
++ const theme = userPreference ?? "light";
+```
+
+## Diagrams
+
+```mermaid
+flowchart LR
+  Draft[Draft] --> Preview[Preview]
+  Preview --> Publish[Publish]
+```
+
 ## Mathematical Notation
 
-You can include math equations using LaTeX syntax if enabled (requires MathJax or similar plugin, or client-side script).
+You can include math equations using LaTeX syntax by setting `math: true` in front matter.
 
 $$ E = mc^2 $$
 

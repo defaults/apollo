@@ -3,6 +3,10 @@ layout: essay
 title: Welcome to Apollo
 description: A classic, beautiful theme for personal websites and portfolios.
 date: 2024-03-01
+hero:
+  image: /assets/images/essays/welcome-demo.png
+  alt: A minimalist abstract composition
+  caption: Captions can be attached to hero images or inline figures.
 ---
 
 
@@ -27,10 +31,9 @@ Headers are bold and distinct, while body text is set at a comfortable size with
 
 Images expand to fill the available width, maintaining a visual balance with the text.
 
-![A minimalist abstract composition](/assets/images/essays/welcome-demo.png)
-*Captions are centered and styled discreetly.*
+{% include figure.html src="/assets/images/essays/welcome-demo.png" alt="A minimalist abstract composition" caption="Inline figures support captions, lazy loading, dimensions, and wide layouts." layout="wide" %}
 
 
 ## Next Steps
 
-Check out the [Technical Demo](/essays/technical-demo/) to see code highlighting and advanced formatting in action, or read [Thoughts on AI Safety](/essays/thoughts-on-ai-safety/) for a long-form content example.
+Check out the [Technical Demo](/essays/technical/) to see code highlighting and advanced formatting in action, or read [Thoughts on AI Safety](/essays/thoughts-on-ai-safety/) for a long-form content example.
