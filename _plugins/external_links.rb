@@ -8,10 +8,10 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
   doc = Nokogiri.const_defined?(:HTML5) ? Nokogiri::HTML5(page.output) : Nokogiri::HTML(page.output)
   modified = false
 
-  # Find all links except those in nav/header
-  doc.css('a').each do |link|
+  # Find all links except those in nav/header.
+  doc.xpath("//*[local-name()='a']").each do |link|
     # Skip if link is in nav or header
-    next if link.ancestors('nav').any? || link.ancestors('header').any?
+    next if link.xpath("ancestor::*[local-name()='nav' or local-name()='header']").any?
     
     href = link['href']
     next unless href
