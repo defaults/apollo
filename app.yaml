@@ -9,15 +9,34 @@ handlers:
   static_files: _site/index.html
   upload: _site/index.html
 
-# Handle assets
-- url: /assets/(.*)
-  static_files: _site/assets/\1
-  upload: _site/assets/.*
-
 # Handle feed
 - url: /feed\.xml
   static_files: _site/feed.xml
   upload: _site/feed.xml
+  expiration: "5m"
+
+# Handle feed stylesheet
+- url: /feed\.xslt\.xml
+  static_files: _site/feed.xslt.xml
+  upload: _site/feed.xslt.xml
+  expiration: "1d"
+
+# Handle publishing metadata
+- url: /(robots|sitemap|llms)\.txt
+  static_files: _site/\1.txt
+  upload: _site/.*\.txt
+  expiration: "5m"
+
+- url: /sitemap\.xml
+  static_files: _site/sitemap.xml
+  upload: _site/sitemap.xml
+  expiration: "5m"
+
+# Handle assets
+- url: /assets/(.*)
+  static_files: _site/assets/\1
+  upload: _site/assets/.*
+  expiration: "30d"
 
 # Handle Jekyll pretty URLs with trailing slash
 - url: /(.+)/

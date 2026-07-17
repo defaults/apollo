@@ -66,6 +66,24 @@ The GitHub Action will:
 2. Deploy to Google App Engine
 3. Your site will be available at `https://YOUR_PROJECT_ID.appspot.com`
 
+## Publishing Checks
+
+Before deploying, verify that feeds and share metadata render from the generated site:
+
+```bash
+bash scripts/validate-publishing.sh
+```
+
+If Apollo is vendored as a subtree under `apollo/`, run:
+
+```bash
+bash apollo/scripts/validate-publishing.sh
+```
+
+Make sure `_config.local.yml` sets `url` to the production origin. Social platforms require absolute canonical and image URLs, and Apollo derives those from `url`.
+
+After deployment, inspect a representative essay URL in the X/Twitter, Facebook, and LinkedIn sharing debuggers, then subscribe to `/feed.xml` in an RSS reader.
+
 ## Automatic Deployment
 
 Once the secrets are configured, any push to the `master` branch will automatically trigger a deployment.
@@ -96,6 +114,8 @@ To use a custom domain:
 1. **Build fails**: Check the GitHub Actions logs for Ruby/Jekyll errors
 2. **Deployment fails**: Verify your service account has the correct permissions
 3. **Site not loading**: Check App Engine logs in the Google Cloud Console
+4. **Social card image missing**: Confirm `url` is set and the page has `social_image`, `hero.image`, a first content image, or site `logo`
+5. **RSS reader cannot subscribe**: Confirm `/feed.xml` and the relevant collection feed, such as `/essays/feed.xml`, are present in the deployed `_site`
 
 ### Useful Commands
 
@@ -127,4 +147,4 @@ gcloud app versions list
 - `app.yaml`: App Engine configuration
 - `.github/workflows/deploy.yml`: GitHub Actions workflow
 - `.gcloudignore`: Files to exclude from deployment
-- `scripts/setup-gcp.sh`: Setup automation script 
+- `scripts/setup-gcp.sh`: Setup automation script

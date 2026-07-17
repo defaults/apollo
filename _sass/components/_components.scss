@@ -54,6 +54,30 @@
     }
 }
 
+.list-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    h1 {
+        margin-top: 0;
+    }
+}
+
+.feed-link {
+    flex: 0 0 auto;
+    color: var(--color-tx-muted);
+    font-size: var(--font-size-nav-secondary);
+    text-decoration: none !important;
+
+    &:hover {
+        color: var(--color-tx-normal);
+        text-decoration: none !important;
+    }
+}
+
 // Theme toggle button
 #theme-toggle {
     width: 40px;

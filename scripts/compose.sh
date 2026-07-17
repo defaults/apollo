@@ -95,7 +95,7 @@ do_build() {
   copy_dir "$THEME_DIR/_plugins" "$BUILD_DIR/_plugins"
   copy_dir "$THEME_DIR/_sass" "$BUILD_DIR/_sass"
   copy_dir "$THEME_DIR/assets" "$BUILD_DIR/assets"
-  for f in robots.txt favicon.ico apple-touch-icon.png; do
+  for f in robots.txt humans.txt favicon.ico apple-touch-icon.png feed.xslt.xml; do
     copy_file "$THEME_DIR/$f" "$BUILD_DIR/$f"
   done
   copy_file "$THEME_DIR/feed.xml" "$BUILD_DIR/feed.xml"
