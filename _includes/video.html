@@ -1,0 +1,14 @@
+{% assign video_src = include.src | default: include.url %}
+{% assign video_title = include.title | default: include.caption | default: "Video" %}
+{% assign video_layout = include.layout | default: include.class %}
+
+{% if video_src %}
+<div
+  class="apollo-video{% if video_layout %} {{ video_layout }}{% endif %}"
+  data-video-src="{{ video_src | escape }}"
+  data-video-title="{{ video_title | escape }}"
+  {% if include.caption %}data-video-caption="{{ include.caption | markdownify | strip | escape }}"{% endif %}
+  {% if include.credit %}data-video-credit="{{ include.credit | markdownify | strip | escape }}"{% endif %}
+  {% if video_layout %}data-video-layout="{{ video_layout | escape }}"{% endif %}
+></div>
+{% endif %}

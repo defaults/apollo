@@ -182,6 +182,29 @@ social_image: /assets/images/og/example.png
 
 `social_image` is used for SEO/share metadata. Use a `1200x630` image for the most reliable large-card rendering on social sites. If `social_image` is omitted, Apollo falls back to the hero image, then the first image in the page, then `logo`.
 
+#### Videos
+
+Apollo renders YouTube, Vimeo, and direct video files (`.m4v`, `.mov`, `.mp4`, `.ogg`, `.webm`) as responsive players. For captioned embeds, use the video include:
+
+```liquid
+{% include video.html
+  src="https://www.youtube.com/watch?v=M7lc1UVf-VE"
+  caption="A short caption for the video."
+%}
+```
+
+Standalone video URLs in essay Markdown are also converted into players. Use `layout="wide"` or `layout="full"` on the include when the video should break out from the text column.
+
+#### Reader features
+
+Essay indexes are grouped by year and show optional descriptions and tags. Individual essays include estimated reading time, optional topic tags, and older/newer navigation. Existing front matter remains valid; add tags only when useful:
+
+```yaml
+tags:
+  - Design
+  - Writing
+```
+
 ### Publishing Validation
 
 Run the publishing check before deploying or after changing metadata/feed behavior:

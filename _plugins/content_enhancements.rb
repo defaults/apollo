@@ -1,7 +1,10 @@
 require 'nokogiri'
+require 'uri'
 
 module Apollo
   module ContentEnhancements
+    DIRECT_VIDEO_EXTENSIONS = %w[.m4v .mov .mp4 .ogg .webm].freeze
+
     LANGUAGE_LABELS = {
       'bash' => 'Bash',
       'console' => 'Console',
@@ -48,6 +51,129 @@ module Apollo
 
     def class_xpath(class_name)
       "contains(concat(' ', normalize-space(@class), ' '), ' #{class_name} ')"
+    end
+
+    def supported_host?(host, domain)
+      host == domain || host.end_with?(".#{domain}")
+    end
+
+    def direct_video_path?(path)
+      DIRECT_VIDEO_EXTENSIONS.any? { |extension| path.to_s.downcase.end_with?(extension) }
+    end
+
+    def video_embed(url)
+      value = url.to_s.strip
+      return nil if value.empty?
+
+      uri = URI.parse(value)
+      if uri.scheme.nil? && uri.host.nil?
+        return nil unless direct_video_path?(uri.path)
+
+        return { type: 'video', src: value, title: 'Video' }
+      end
+
+      return nil unless %w[http https].include?(uri.scheme&.downcase)
+
+      host = uri.host.to_s.downcase.sub(/^www\./, '')
+      path = uri.path.to_s
+      youtube_id =
+        if host == 'youtu.be'
+          path.split('/')[1]
+        elsif supported_host?(host, 'youtube.com')
+          if path.start_with?('/embed/', '/shorts/')
+            path.split('/')[2]
+          elsif path == '/watch'
+            URI.decode_www_form(uri.query.to_s).to_h['v']
+          end
+        end
+
+      if youtube_id&.match?(/\A[A-Za-z0-9_-]{6,64}\z/)
+        return {
+          type: 'iframe',
+          src: "https://www.youtube-nocookie.com/embed/#{youtube_id}",
+          title: 'YouTube video'
+        }
+      end
+
+      vimeo_id =
+        if host == 'vimeo.com' && path.match?(%r{\A/\d+/?\z})
+          path.delete_prefix('/').delete_suffix('/')
+        elsif host == 'player.vimeo.com' && path.match?(%r{\A/video/\d+/?\z})
+          path.split('/')[2]
+        end
+
+      if vimeo_id
+        return {
+          type: 'iframe',
+          src: "https://player.vimeo.com/video/#{vimeo_id}",
+          title: 'Vimeo video'
+        }
+      end
+
+      return { type: 'video', src: value, title: 'Video' } if direct_video_path?(path)
+
+      nil
+    rescue ArgumentError, URI::InvalidURIError
+      nil
+    end
+
+    def replace_video_placeholder(node, doc)
+      embed = video_embed(node['data-video-src'])
+      return false unless embed
+
+      title = node['data-video-title'].to_s.empty? ? embed[:title] : node['data-video-title']
+      caption = node['data-video-caption']
+      credit = node['data-video-credit']
+      layout = node['data-video-layout']
+
+      figure = Nokogiri::XML::Node.new('figure', doc)
+      figure['class'] = ['apollo-video', layout].compact.reject(&:empty?).join(' ')
+
+      frame = Nokogiri::XML::Node.new('div', doc)
+      frame['class'] = 'apollo-video-frame'
+
+      if embed[:type] == 'iframe'
+        iframe = Nokogiri::XML::Node.new('iframe', doc)
+        iframe['src'] = embed[:src]
+        iframe['title'] = title
+        iframe['loading'] = 'lazy'
+        iframe['referrerpolicy'] = 'strict-origin-when-cross-origin'
+        iframe['allow'] = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share'
+        iframe['allowfullscreen'] = 'allowfullscreen'
+        frame.add_child(iframe)
+      else
+        video = Nokogiri::XML::Node.new('video', doc)
+        video['src'] = embed[:src]
+        video['controls'] = 'controls'
+        video['preload'] = 'metadata'
+        video['title'] = title
+        frame.add_child(video)
+      end
+
+      figure.add_child(frame)
+      if caption || credit
+        figcaption = Nokogiri::XML::Node.new('figcaption', doc)
+        figcaption.add_child(Nokogiri::HTML.fragment(caption.to_s)) if caption
+        if credit
+          credit_node = Nokogiri::XML::Node.new('span', doc)
+          credit_node['class'] = 'figure-credit'
+          credit_node.add_child(Nokogiri::HTML.fragment(credit))
+          figcaption.add_child(credit_node)
+        end
+        figure.add_child(figcaption)
+      end
+
+      node.replace(figure)
+      true
+    end
+
+    def standalone_video_url(paragraph)
+      children = paragraph.children.reject { |child| child.text? && child.text.strip.empty? }
+      return nil unless children.size == 1
+
+      child = children.first
+      value = child.element? && child.name == 'a' ? child['href'] : child.text
+      value if video_embed(value)
     end
   end
 end
@@ -110,6 +236,22 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
       pre_node.replace(mermaid_node)
       modified = true
     end
+  end
+
+  doc.css('.apollo-video[data-video-src]').each do |node|
+    modified = true if Apollo::ContentEnhancements.replace_video_placeholder(node, doc)
+  end
+
+  doc.css('article p').each do |paragraph|
+    video_url = Apollo::ContentEnhancements.standalone_video_url(paragraph)
+    next unless video_url
+
+    placeholder = Nokogiri::XML::Node.new('div', doc)
+    placeholder['class'] = 'apollo-video'
+    placeholder['data-video-src'] = video_url
+    paragraph.add_next_sibling(placeholder)
+    modified = true if Apollo::ContentEnhancements.replace_video_placeholder(placeholder, doc)
+    paragraph.remove
   end
 
   page.output = doc.to_html if modified

@@ -3,6 +3,9 @@ layout: essay
 title: "Technical Demo"
 date: 2024-01-20
 description: "Showcasing code highlighting and advanced typography features."
+tags:
+  - Code
+  - Jekyll
 math: true
 mermaid: true
 ---

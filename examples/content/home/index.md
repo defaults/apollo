@@ -16,14 +16,11 @@ Previously, [previous experience]. [Additional background information].
 [Google Scholar](https://scholar.google.com/citations?user=YOUR_GOOGLE_SCHOLAR_ID)
 
 
-{% assign essays = site.essays | limit: 5 %}
+{% assign essays = site.essays | sort: "date" | reverse %}
 {% if essays.size > 0 %}
 ## Essays
 
-{% for essay in essays %}
-* [{{ essay.title }}]({{ essay.url | relative_url }})
-{% endfor %}
+{% include essay-list.html items=essays limit=5 %}
 
 [View all essays →](/essays/)
 {% endif %}
-

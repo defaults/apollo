@@ -1,0 +1,24 @@
+{% assign essay_items = include.items | sort: "date" | reverse %}
+
+{% if include.group_by_year %}
+  {% assign essay_groups = essay_items | group_by_exp: "item", "item.date | date: '%Y'" %}
+  <div class="essay-index">
+    {% for group in essay_groups %}
+    <section class="essay-year-group" aria-labelledby="essays-{{ group.name }}">
+      <h2 class="essay-year-heading" id="essays-{{ group.name }}">{{ group.name }}</h2>
+      <ol class="essay-list">
+        {% for item in group.items %}
+          {% include essay-row.html item=item date_format="%b %-d" %}
+        {% endfor %}
+      </ol>
+    </section>
+    {% endfor %}
+  </div>
+{% else %}
+  {% assign item_limit = include.limit | default: essay_items.size %}
+  <ol class="essay-list essay-list-compact">
+    {% for item in essay_items limit: item_limit %}
+      {% include essay-row.html item=item date_format="%b %Y" %}
+    {% endfor %}
+  </ol>
+{% endif %}

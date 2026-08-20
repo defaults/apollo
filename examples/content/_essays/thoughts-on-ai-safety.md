@@ -3,6 +3,9 @@ layout: essay
 title: "Thoughts on AI Safety"
 date: 2024-02-10
 description: "Reflections on the current state and future challenges of AI safety research."
+tags:
+  - AI
+  - Safety
 ---
 
 As we stand at the threshold of increasingly powerful AI systems, the question of safety becomes more pressing than ever. This essay explores some key considerations in AI safety research.
@@ -32,4 +35,3 @@ The path forward in AI safety is not without obstacles. Some of the most signifi
 Effective AI safety requires collaboration between researchers, policymakers, and industry leaders. We need robust testing frameworks, transparent research practices, and continued investment in fundamental safety research.
 
 The stakes are high, but so is the potential for positive impact. By prioritizing safety alongside capability, we can work toward AI systems that benefit humanity while minimizing risks.
-

@@ -2,7 +2,7 @@
 layout: essay
 title: "Rich Content Demo"
 date: 2024-04-05
-description: "A single sample essay for testing Apollo's figures, hero images, code blocks, math, and Mermaid diagrams."
+description: "A single sample essay for testing Apollo's figures, video players, code blocks, math, and Mermaid diagrams."
 math: true
 mermaid: true
 hero:
@@ -41,6 +41,28 @@ The same include can opt into a wide layout when an image benefits from more hor
   width="1200"
   height="800"
 %}
+
+## Video
+
+Apollo can turn a YouTube, Vimeo, or direct video URL into a responsive player. Use the include when you want a caption:
+
+```liquid
+{% raw %}
+{% include video.html
+  src="https://www.youtube.com/watch?v=M7lc1UVf-VE"
+  caption="Embedded video players keep the same rhythm as figures."
+%}
+{% endraw %}
+```
+
+{% include video.html
+  src="https://www.youtube.com/watch?v=M7lc1UVf-VE"
+  caption="Embedded video players keep the same rhythm as figures."
+%}
+
+Standalone video links also become players:
+
+https://vimeo.com/76979871
 
 ## Code Blocks
 
@@ -96,4 +118,4 @@ $$
 
 ## Expected Result
 
-When this page is built locally, it should show a hero image with a caption, two captioned figures, copyable code blocks with labels, highlighted diff lines, a rendered Mermaid diagram, and rendered math.
+When this page is built locally, it should show a hero image with a caption, two captioned figures, responsive video players, copyable code blocks with labels, highlighted diff lines, a rendered Mermaid diagram, and rendered math.

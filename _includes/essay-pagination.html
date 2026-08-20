@@ -1,0 +1,38 @@
+{% if page.collection and site[page.collection] %}
+{% assign ordered_essays = site[page.collection] | sort: "date" %}
+{% assign older_essay = nil %}
+{% assign newer_essay = nil %}
+{% assign previous_candidate = nil %}
+{% assign found_current = false %}
+
+{% for candidate in ordered_essays %}
+  {% if candidate.url == page.url %}
+    {% assign older_essay = previous_candidate %}
+    {% assign found_current = true %}
+  {% elsif found_current and newer_essay == nil %}
+    {% assign newer_essay = candidate %}
+  {% endif %}
+  {% assign previous_candidate = candidate %}
+{% endfor %}
+
+{% if older_essay or newer_essay %}
+<nav class="essay-pagination" aria-label="Essay navigation">
+  <div>
+    {% if older_essay %}
+    <a class="essay-pagination-link" href="{{ older_essay.url | relative_url }}" rel="prev">
+      <span class="essay-pagination-direction">← Older essay</span>
+      <span>{{ older_essay.title }}</span>
+    </a>
+    {% endif %}
+  </div>
+  <div class="essay-pagination-newer">
+    {% if newer_essay %}
+    <a class="essay-pagination-link" href="{{ newer_essay.url | relative_url }}" rel="next">
+      <span class="essay-pagination-direction">Newer essay →</span>
+      <span>{{ newer_essay.title }}</span>
+    </a>
+    {% endif %}
+  </div>
+</nav>
+{% endif %}
+{% endif %}

@@ -3,6 +3,9 @@ layout: essay
 title: Welcome to Apollo
 description: A classic, beautiful theme for personal websites and portfolios.
 date: 2024-03-01
+tags:
+  - Design
+  - Writing
 hero:
   image: /assets/images/essays/welcome-demo.png
   alt: A minimalist abstract composition

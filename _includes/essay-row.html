@@ -1,0 +1,13 @@
+{% assign essay = include.item %}
+<li class="essay-list-item">
+  <time class="essay-list-date" datetime="{{ essay.date | date_to_xmlschema }}">
+    {{ essay.date | date: include.date_format }}
+  </time>
+  <div class="essay-list-content">
+    <a class="essay-list-title" href="{{ essay.url | relative_url }}">{{ essay.title }}</a>
+    {% if essay.description %}
+    <p class="essay-list-description muted">{{ essay.description }}</p>
+    {% endif %}
+    {% include essay-tags.html tags=essay.tags %}
+  </div>
+</li>
