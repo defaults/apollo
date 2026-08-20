@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet version="1.0"
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+  xmlns:atom="http://www.w3.org/2005/Atom">
+  <xsl:output method="html" encoding="UTF-8" indent="yes"/>
+
+  <xsl:template match="/">
+    <html lang="en">
+      <head>
+        <meta charset="UTF-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title><xsl:value-of select="atom:feed/atom:title"/></title>
+        <style>
+          body {
+            max-width: 720px;
+            margin: 48px auto;
+            padding: 0 20px;
+            color: #1f1e1d;
+            background: #f0eee6;
+            font-family: Georgia, serif;
+            line-height: 1.55;
+          }
+          a { color: #2458a6; }
+          .entry { margin: 1.5rem 0; }
+          .date { color: #6f6a60; font-size: 0.9rem; }
+        </style>
+      </head>
+      <body>
+        <h1><xsl:value-of select="atom:feed/atom:title"/></h1>
+        <p>This is an Atom feed. Copy this URL into an RSS reader to subscribe.</p>
+        <xsl:for-each select="atom:feed/atom:entry">
+          <div class="entry">
+            <h2><a href="{atom:link[@rel='alternate']/@href}"><xsl:value-of select="atom:title"/></a></h2>
+            <div class="date"><xsl:value-of select="substring(atom:published, 1, 10)"/></div>
+            <p><xsl:value-of select="atom:summary"/></p>
+          </div>
+        </xsl:for-each>
+      </body>
+    </html>
+  </xsl:template>
+</xsl:stylesheet>

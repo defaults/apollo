@@ -6,13 +6,20 @@ layout: default
   <header class="essay-header">
     <h1>{{ page.title }}</h1>
 
-    {% if page.date %}
-    <p class="date">{{ page.date | date: "%B %Y" }}</p>
-    {% endif %}
+    {% assign reading_minutes = content | number_of_words | plus: 199 | divided_by: 200 %}
+    <p class="essay-metadata muted">
+      {% if page.date %}
+      <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%B %Y" }}</time>
+      <span aria-hidden="true"> · </span>
+      {% endif %}
+      <span>{{ reading_minutes }} min read</span>
+    </p>
 
     {% if page.description %}
     <p class="description muted">{{ page.description }}</p>
     {% endif %}
+
+    {% include essay-tags.html tags=page.tags %}
   </header>
 
   {% assign hero_image = nil %}
@@ -60,5 +67,7 @@ layout: default
     {{ content }}
   </div>
 </article>
+
+{% include essay-pagination.html %}
 
 {% include back-to-top.html %}

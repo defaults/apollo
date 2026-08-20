@@ -12,6 +12,12 @@ author:
 
 twitter:
   username: "your_twitter"
+  card: summary_large_image
+
+social:
+  name: "Your Name"
+  links:
+    - https://github.com/yourhandle
 
 # Analytics (optional)
 google_analytics: ""  # e.g., G-XXXXXXXXXX

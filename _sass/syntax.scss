@@ -57,6 +57,22 @@
     margin: 0;
 }
 
+.code-block > .highlight {
+    display: block;
+    min-width: 0;
+    max-width: 100%;
+    padding: 0;
+    overflow-x: auto;
+}
+
+.code-block > .highlight > pre.highlight {
+    width: max-content;
+    min-width: 100%;
+    max-width: none;
+    padding: 1.25rem;
+    overflow: visible;
+}
+
 .highlight pre {
     margin: 0;
     padding: 0;

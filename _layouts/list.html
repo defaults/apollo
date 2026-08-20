@@ -3,9 +3,21 @@ layout: default
 ---
 
 <article>
-  {% if page.description %}
-  <div class="muted">{{ page.description }}</div>
-  {% endif %}
+  <header class="list-header">
+    <div>
+      <h1>{{ page.title | default: page.collection | default: "Posts" }}</h1>
+      {% if page.description %}
+      <p class="muted">{{ page.description }}</p>
+      {% endif %}
+    </div>
+
+    {% if page.collection and site.feed and site.feed.collections and site.feed.collections[page.collection] %}
+      {% assign collection_feed_path = site.feed.collections[page.collection].path %}
+      {% if collection_feed_path %}
+      <a class="feed-link" href="{{ collection_feed_path | relative_url }}" rel="alternate" type="application/atom+xml">RSS</a>
+      {% endif %}
+    {% endif %}
+  </header>
 
   {% if page.collection == 'publications' %}
     {% assign items = site.publications | sort: 'date' | reverse %}
@@ -15,14 +27,9 @@ layout: default
     {% assign items = site.posts | sort: 'date' | reverse %}
   {% endif %}
   
-  {% for item in items %}
-  <p>
-    <span class="muted">{{ item.date | date: "%y" }} · {{ item.date | date: "%m" }}</span>
-    <a href="{{ item.url | relative_url }}">{{ item.title }}</a>
-  </p>
-  {% endfor %}
-  
-  {% if items.size == 0 %}
+  {% if items.size > 0 %}
+    {% include essay-list.html items=items group_by_year=true %}
+  {% else %}
   <p class="muted">No {{ page.collection | default: 'essays' }} found yet.</p>
   {% endif %}
-</article> 
+</article>

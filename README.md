@@ -11,8 +11,8 @@ A minimal, high-performance Jekyll theme for personal websites and blogs. Design
 - 🎯 **Code Block UX**: Rouge highlighting, language labels, diff styling, and copy buttons.
 - 🖼️ **Figure Helpers**: Captioned images with lazy loading, wide layouts, and SEO-aware hero/social image metadata.
 - 🧮 **Opt-in Math & Diagrams**: Per-page MathJax and Mermaid support.
-- 🔍 **SEO Optimized**: Built-in metadata and social tags.
-- 📡 **Atom Feed Support**: Ships with collection feeds plus an aggregate root feed.
+- 🔍 **SEO Optimized**: Built-in metadata, canonical URLs, and social preview tags.
+- 📡 **Atom Feed Support**: Ships with visible collection feeds plus an aggregate root feed.
 
 ---
 
@@ -111,8 +111,8 @@ social:
 
 ### Step 5: SEO & LLM Optimization
 
-- **SEO**: Handled automatically by `jekyll-seo-tag`. Ensure `title`, `description`, `url`, and `logo` are set in `_config.local.yml`.
-- **Feeds**: `/feed.xml` is the aggregate Atom feed. Collection feeds are configured under `feed.collections` and default to `/essays/feed.xml`.
+- **SEO**: Handled automatically by `jekyll-seo-tag`. Ensure `title`, `description`, `url`, and `logo` are set in `_config.local.yml`. `url` must be the production origin, such as `https://example.com`, so canonical URLs and social images are absolute.
+- **Feeds**: `/feed.xml` is the aggregate Atom feed. Collection feeds are configured under `feed.collections` and default to `/essays/feed.xml`. List pages show a visible RSS link when their collection has a feed.
 - **LLM SEO**: A `/llms.txt` file is automatically generated for AI indexing.
 
 ### Step 6: Add Your Content
@@ -170,6 +170,9 @@ Use the figure include when you want captions, dimensions, or wide/full layouts:
 For post hero images, use `hero` in front matter:
 
 ```yaml
+title: "My Essay"
+description: "A concise summary for search and social previews."
+date: 2024-01-01
 hero:
   image: /assets/images/example.png
   alt: A readable description
@@ -177,7 +180,51 @@ hero:
 social_image: /assets/images/og/example.png
 ```
 
-`social_image` is used for SEO/share metadata. If it is omitted, Apollo falls back to the hero image, then the first image in the page, then `logo`.
+`social_image` is used for SEO/share metadata. Use a `1200x630` image for the most reliable large-card rendering on social sites. If `social_image` is omitted, Apollo falls back to the hero image, then the first image in the page, then `logo`.
+
+#### Videos
+
+Apollo renders YouTube, Vimeo, and direct video files (`.m4v`, `.mov`, `.mp4`, `.ogg`, `.webm`) as responsive players. For captioned embeds, use the video include:
+
+```liquid
+{% include video.html
+  src="https://www.youtube.com/watch?v=M7lc1UVf-VE"
+  caption="A short caption for the video."
+%}
+```
+
+Standalone video URLs in essay Markdown are also converted into players. Use `layout="wide"` or `layout="full"` on the include when the video should break out from the text column.
+
+#### Reader features
+
+Essay indexes are grouped by year and show optional descriptions and tags. Individual essays include estimated reading time, optional topic tags, and older/newer navigation. Existing front matter remains valid; add tags only when useful:
+
+```yaml
+tags:
+  - Design
+  - Writing
+```
+
+### Publishing Validation
+
+Run the publishing check before deploying or after changing metadata/feed behavior:
+
+```bash
+bash scripts/validate-publishing.sh
+```
+
+For a consumer site that vendors Apollo under `apollo/`, run:
+
+```bash
+bash apollo/scripts/validate-publishing.sh
+```
+
+The validator stages the site, runs Jekyll, then checks generated output for `/feed.xml`, `/essays/feed.xml`, feed discovery links, canonical URLs, Open Graph/Twitter images, `/robots.txt`, `/sitemap.xml`, and `/llms.txt`. It requires `vips` and the Ruby bundle to be installed first:
+
+```bash
+brew install vips
+BUNDLE_GEMFILE=apollo/Gemfile bundle install
+```
 
 #### Math and Mermaid
 
