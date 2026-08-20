@@ -11,32 +11,32 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
     
-    - name: Install libvips
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libvips-dev
+      - name: Install libvips
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libvips-dev
     
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: '3.2'
-        bundler-cache: true
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
         
-    - name: Install dependencies
-      run: bundle install
+      - name: Install dependencies
+        run: bundle install
 
-    - name: Compose Site
-      run: bash scripts/compose.sh build
+      - name: Compose Site
+        run: bash scripts/compose.sh build
 
-    - name: Build Jekyll Site
-      run: bundle exec jekyll build --source build/src --destination _site
+      - name: Build Jekyll Site
+        run: bundle exec jekyll build --source build/src --destination _site
       
-    - name: Verify CSS Generation
-      run: |
-        if [ ! -f "_site/assets/css/styles.css" ]; then
-          echo "Error: styles.css was not generated!"
-          exit 1
-        fi
-        echo "styles.css generated successfully."
+      - name: Verify CSS Generation
+        run: |
+          if [ ! -f "_site/assets/css/styles.css" ]; then
+            echo "Error: styles.css was not generated!"
+            exit 1
+          fi
+          echo "styles.css generated successfully."

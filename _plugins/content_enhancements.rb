@@ -242,7 +242,7 @@ Jekyll::Hooks.register [:pages, :documents], :post_render do |page|
     modified = true if Apollo::ContentEnhancements.replace_video_placeholder(node, doc)
   end
 
-  doc.css('article p').each do |paragraph|
+  doc.xpath("//*[local-name()='article']//*[local-name()='p']").each do |paragraph|
     video_url = Apollo::ContentEnhancements.standalone_video_url(paragraph)
     next unless video_url
 
